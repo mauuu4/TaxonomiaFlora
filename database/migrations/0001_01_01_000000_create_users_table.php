@@ -11,21 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::create('USUARIOS', function (Blueprint $table) {
+            $table->id('user_id');
+            $table->string('user_nombre', 50);
+            $table->string('user_apellido', 50);
+            $table->string('user_email', 35)->unique();
+            $table->string('user_password', 15);
+            $table->string('user_telefono', 10);
+            $table->timestamp('user_creacion');
+            $table->timestamp('user_actualizacion');
         });
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
+        // Schema::create('password_reset_tokens', function (Blueprint $table) {
+        //     $table->string('email')->primary();
+        //     $table->string('token');
+        //     $table->timestamp('created_at')->nullable();
+        // });
     }
 
     /**
@@ -33,7 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('USUARIOS');
+        // Schema::dropIfExists('password_reset_tokens');
     }
 };

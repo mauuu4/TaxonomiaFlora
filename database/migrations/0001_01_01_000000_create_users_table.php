@@ -20,12 +20,6 @@ return new class extends Migration
             $table->string('user_telefono', 10);
             $table->timestamps();
         });
-
-        // Schema::create('password_reset_tokens', function (Blueprint $table) {
-        //     $table->string('email')->primary();
-        //     $table->string('token');
-        //     $table->timestamp('created_at')->nullable();
-        // });
     }
 
     /**
@@ -34,6 +28,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('USUARIOS');
-        // Schema::dropIfExists('password_reset_tokens');
     }
 };

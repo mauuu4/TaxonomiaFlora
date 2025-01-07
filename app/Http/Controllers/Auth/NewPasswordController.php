@@ -3,59 +3,56 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class NewPasswordController extends Controller
 {
     /**
      * Display the password reset view.
      */
-    public function create(Request $request): View
+    public function create(string $token, Request $request): \Illuminate\View\View
     {
-        return view('auth.reset-password', ['request' => $request]);
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->query('email'),
+        ]);
     }
 
     /**
      * Handle an incoming new password request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        // Validar los datos del formulario
         $request->validate([
             'token' => ['required'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'exists:USUARIOS,user_email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+        // Recuperar el token de la caché
+        $cachedToken = Cache::get('password_reset_' . $request->email);
 
-                event(new PasswordReset($user));
-            }
-        );
+        // Verificar si el token coincide
+        if (!$cachedToken || $cachedToken !== $request->token) {
+            return back()->withErrors(['email' => __('The password reset token is invalid or has expired.')]);
+        }
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+        // Actualizar la contraseña en la base de datos
+        DB::table('USUARIOS')
+            ->where('user_email', $request->email)
+            ->update([
+                'user_password' => Hash::make($request->password),
+            ]);
+
+        // Eliminar el token de la caché
+        Cache::forget('password_reset_' . $request->email);
+
+        // Redirigir al login con un mensaje de éxito
+        return redirect()->route('login')->with('status', __('Your password has been reset!'));
     }
 }

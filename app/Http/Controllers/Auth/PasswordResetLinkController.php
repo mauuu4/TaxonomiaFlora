@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+
 
 class PasswordResetLinkController extends Controller
 {
     /**
      * Display the password reset link request view.
      */
-    public function create(): \Illuminate\View\View
+    public function create(): View
     {
         return view('auth.forgot-password');
     }
@@ -22,7 +25,7 @@ class PasswordResetLinkController extends Controller
     /**
      * Handle an incoming password reset link request.
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'user_email' => ['required', 'email', 'exists:USUARIOS,user_email'],

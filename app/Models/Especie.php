@@ -2,12 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Especie extends Model
 {
+    use HasFactory;
+
     protected $table = 'TAX_ESPECIES';
     protected $primaryKey = 'esp_id';
+
+    protected function espNombreCientifico(): Attribute
+    {
+        return Attribute::make(
+            set: function ($value) {
+                return strtolower($value);
+            },
+            get: function ($value) {
+                return ucfirst($value);
+            }
+        );
+    }
 
     protected $fillable = [
         'esp_gene_id',
@@ -20,4 +36,6 @@ class Especie extends Model
     {
         return $this->belongsTo(Genero::class, 'esp_gene_id', 'gene_id');
     }
+
+
 }

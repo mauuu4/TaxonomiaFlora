@@ -15,5 +15,13 @@ class GeneroSeeder extends Seeder
     {
         Genero::create(['gene_nombre' => 'Acacia', 'gene_fam_id' => 1]); // Fabaceae
         Genero::create(['gene_nombre' => 'Rosa', 'gene_fam_id' => 2]);   // Rosaceae
+        Genero::create(['gene_nombre' => 'Albizia', 'gene_fam_id' => 1]); // Fabaceae
+        Genero::create(['gene_nombre' => 'Cassia', 'gene_fam_id' => 1]); // Fabaceae
+        Genero::create(['gene_nombre' => 'Phaseolus', 'gene_fam_id' => 1]); // Fabaceae
+        Genero::create(['gene_nombre' => 'Malus', 'gene_fam_id' => 2]); // Rosaceae
+        Genero::create(['gene_nombre' => 'Prunus', 'gene_fam_id' => 2]); // Rosaceae
+        Genero::create(['gene_nombre' => 'Fragaria', 'gene_fam_id' => 2]); // Rosaceae
+        Genero::create(['gene_nombre' => 'Geum', 'gene_fam_id' => 1]); // Fabaceae
+        Genero::create(['gene_nombre' => 'Vigna ', 'gene_fam_id' => 1]); // Fabaceae
     }
 }

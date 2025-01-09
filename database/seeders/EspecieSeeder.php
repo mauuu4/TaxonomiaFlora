@@ -38,5 +38,8 @@ class EspecieSeeder extends Seeder
             'esp_descripcion' => 'Árbol ornamental de rápido crecimiento.',
             'esp_gene_id' => 1, // Acacia
         ]);
+
+        // Generar 10 especies adicionales con el factory
+        Especie::factory(100)->create();
     }
 }

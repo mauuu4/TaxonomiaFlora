@@ -22,4 +22,16 @@ Route::get('/especies', [EspecieController::class, 'index']);
 Route::get('/especies/create', [EspecieController::class, 'create']);
 Route::get('/especies/{especie}', [EspecieController::class, 'show']);
 
+Route::get('prueba', function () {
+
+    $especie = new App\Models\Especie();
+    $especie->esp_gene_id = 1;
+    $especie->esp_nombre_cientifico = 'CAnIS lUpUUUs';
+    $especie->esp_nombre_comun = 'Lobo';
+    $especie->esp_descripcion = 'El lobo (Canis lupus)......';
+    $especie->save();
+
+    return $especie;
+});
+
 require __DIR__.'/auth.php';

@@ -10,6 +10,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
+                    @foreach ($especies = App\Models\Especie::all() as $especie)
+                        <div class="p-6 bg-white border-b border-gray-200">
+                            <h1>{{ $especie->esp_nombre_comun }}</h1>
+                            <p>{{ $especie->esp_nombre_cientifico }}</p>
+                            <p>{{ $especie->esp_descripcion }}</p>
+                        </div>                        
+                    @endforeach
                 </div>
             </div>
         </div>

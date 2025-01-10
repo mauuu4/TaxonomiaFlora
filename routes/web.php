@@ -22,9 +22,9 @@ Route::get('/especies', [EspecieController::class, 'index'])->name('especies.ind
 
 Route::get('/especies/create', [EspecieController::class, 'create'])->name('especies.create');
 Route::post('/especies', [EspecieController::class, 'store'])->name('especies.store');
-
 Route::get('/especies/{especie}', [EspecieController::class, 'show'])->name('especies.show');
 
 Route::get('/especies/{especie}/edit', [EspecieController::class, 'edit'])->name('especies.edit');
+Route::put('/especies/{especie}', [EspecieController::class, 'update'])->name('especies.update');
 
 require __DIR__.'/auth.php';

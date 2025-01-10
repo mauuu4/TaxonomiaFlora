@@ -1,5 +1,7 @@
 <x-app-layout>
-    <a href="/especies">Volver a Especies</a>
+    <a href="{{ route('especies.index') }}" class="inline-flex items-center px-4 py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-green-800 active:bg-gray-500 focus:outline-none focus:border-gray-500 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 mr-3">
+        {{ __('Volver a Especies') }}
+    </a>
 
     <x-slot name="header">
         <h1 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -13,6 +15,9 @@
         {{ __('Descripcion') }} {{$especie->esp_descripcion}}
     </p>
     <p>
-        {{ __('Genero') }} {{$especie->esp_gene_id}}
+        {{ __('Género:') }} {{$especie->genero->gene_nombre}}
     </p>
+    <a href="{{ route('especies.edit', $especie->esp_id) }}" class="inline-flex items-center px-4 py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-green-800 active:bg-gray-500 focus:outline-none focus:border-gray-500 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 mr-3">
+        {{ __('Edit') }}
+    </a>
 </x-app-layout>

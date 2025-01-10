@@ -37,7 +37,7 @@ class EspecieController extends Controller
 
     public function show($especie)
     {
-        $especie = Especie::find($especie);
+        $especie = Especie::with('genero')->find($especie);
         return view('especies.show', compact('especie'));
     }
 
@@ -46,5 +46,20 @@ class EspecieController extends Controller
         $especie = Especie::find($especie);
         $generos = Genero::all();
         return view('especies.edit', compact('especie', 'generos'));
+    }
+
+    public function update(Request $request, $especie)
+    {
+        $validated = $request->validate([
+            'esp_gene_id' => ['required', 'exists:TAX_GENEROS,gene_id'],
+            'esp_nombre_cientifico' => ['required','min:3','max:50', 'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
+            'esp_nombre_comun' => ['required', 'min:3', 'max:50', 'regex:/^(?!^\d+$)[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
+            'esp_descripcion' => ['nullable','max:500', 'regex:/\S/'],
+        ]);
+
+        Especie::find($especie)->update($validated);
+
+        return redirect()->route('especies.show', $especie)
+            ->with('success', 'Especie actualizada exitosamente.');
     }
 }

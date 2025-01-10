@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Especie;
 use Illuminate\Http\Request;
 
 class EspecieController extends Controller
 {
     public function index()
     {
-        return view('especies.index');
+        $especies = Especie::all();
+        return view('especies.index', compact('especies'));
     }
 
     public function create()
@@ -18,6 +20,7 @@ class EspecieController extends Controller
 
     public function show($especie)
     {
+        $especie = Especie::find($especie);
         return view('especies.show', compact('especie'));
     }
 }

@@ -37,5 +37,9 @@ class Especie extends Model
         return $this->belongsTo(Genero::class, 'esp_gene_id', 'gene_id');
     }
 
-
+    //get route key name
+    public function getRouteKeyName()
+    {
+        return 'esp_nombre_cientifico';
+    }
 }

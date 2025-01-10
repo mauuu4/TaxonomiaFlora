@@ -10,7 +10,7 @@ class EspecieController extends Controller
 {
     public function index()
     {
-        $especies = Especie::orderBy('esp_id', 'desc')->get();
+        $especies = Especie::orderBy('esp_id', 'desc')->paginate();
         return view('especies.index', compact('especies'));
     }
 

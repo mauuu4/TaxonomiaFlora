@@ -19,4 +19,8 @@
             </li>
         @endforeach
     </ul>
+
+    <div>
+        {{ $especies->links() }}
+    </div>
 </x-app-layout>

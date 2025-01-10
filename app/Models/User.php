@@ -51,7 +51,7 @@ class User extends Authenticatable
         ];
     }
 
-    protected function nombre(): Attribute
+    protected function userNombre(): Attribute
     {
         return Attribute::make(
             set: function ($value) {
@@ -63,4 +63,25 @@ class User extends Authenticatable
     {
         return $this->user_password;
     }
+
+    public function registros()
+    {
+        return $this->hasMany(Registro::class, 'user_id', 'user_id');
+    }
+
+    // /**
+    //  * Relación muchos a muchos con Role.
+    //  */
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    // }
+
+    // /**
+    //  * Verificar si el usuario tiene un rol específico.
+    //  */
+    // public function hasRole(string $roleName): bool
+    // {
+    //     return $this->roles()->where('name', $roleName)->exists();
+    // }
 }

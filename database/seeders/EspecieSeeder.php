@@ -17,6 +17,7 @@ class EspecieSeeder extends Seeder
             'esp_nombre_cientifico' => 'Acacia dealbata',
             'esp_nombre_comun' => 'Mimosa plateada',
             'esp_descripcion' => 'Árbol ornamental de rápido crecimiento.',
+            'esp_estado_valid' => true,
             'esp_gene_id' => 1, // Acacia
         ]);
 
@@ -24,18 +25,21 @@ class EspecieSeeder extends Seeder
             'esp_nombre_cientifico' => 'Rosa canina',
             'esp_nombre_comun' => 'Escaramujo',
             'esp_descripcion' => 'Arbusto con flores rosadas y frutos rojos.',
+            'esp_estado_valid' => false,
             'esp_gene_id' => 2, // Rosa
         ]);
         Especie::create([
             'esp_nombre_cientifico' => 'Rosa no canina',
             'esp_nombre_comun' => 'Escaramujo',
             'esp_descripcion' => 'Arbusto sin flores y frutos.',
+            'esp_estado_valid' => true,
             'esp_gene_id' => 2, // Rosa
         ]);
         Especie::create([
             'esp_nombre_cientifico' => 'Acacia dealbata mod',
             'esp_nombre_comun' => 'Mimosa plateada',
             'esp_descripcion' => 'Árbol ornamental de rápido crecimiento.',
+            'esp_estado_valid' => false,
             'esp_gene_id' => 1, // Acacia
         ]);
 

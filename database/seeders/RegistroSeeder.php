@@ -21,6 +21,11 @@ class RegistroSeeder extends Seeder
         Registro::create([
             'esp_id' => 2,
             'user_id' => 3,
+            'regis_estado' => true,
+        ]);
+        Registro::create([
+            'esp_id' => 3,
+            'user_id' => 2,
             'regis_estado' => false,
         ]);
     }

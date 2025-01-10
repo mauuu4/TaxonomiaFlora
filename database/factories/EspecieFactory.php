@@ -20,7 +20,8 @@ class EspecieFactory extends Factory
             'esp_gene_id' => $this->faker->numberBetween(1, 10),
             'esp_nombre_cientifico' => $this->faker->word . ' ' . $this->faker->word,
             'esp_nombre_comun' => $this->faker->word,
-            'esp_descripcion' => $this->faker->text(150),
+            'esp_descripcion' => $this->faker->text(500),
+            'esp_estado_valid' => $this->faker->boolean,
         ];
     }
 }

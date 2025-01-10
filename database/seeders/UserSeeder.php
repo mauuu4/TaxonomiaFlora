@@ -19,28 +19,32 @@ class UserSeeder extends Seeder
             'user_telefono' => '1234567890',
             'user_email' => 'admin@gmail.com',
             'user_password' => bcrypt('admin123'),
+            'user_estado' => true,
         ]);
 
         User::create([
             'user_nombre' => 'Mauricio',
             'user_apellido' => 'Romero',
-            'user_telefono' => '1234567890',
             'user_email' => 'mauriciord2004@gmail.com',
+            'user_telefono' => '1234567890',
             'user_password' => bcrypt('mau12345'),
+            'user_estado' => false,
         ]);
         User::create([
             'user_nombre' => 'Steven',
             'user_apellido' => 'Moran',
-            'user_telefono' => '1234567890',
             'user_email' => 'stevenmoran@gmail.com',
+            'user_telefono' => '1234567890',
             'user_password' => bcrypt('steven12345'),
+            'user_estado' => true,
         ]);
         User::create([
             'user_nombre' => 'Jean',
             'user_apellido' => 'Torres',
-            'user_telefono' => '1234567890',
             'user_email' => 'jeanmtu@outlook.com',
+            'user_telefono' => '1234567890',
             'user_password' => bcrypt('jean12345'),
+            'user_estado' => false,
         ]);
     }
 }

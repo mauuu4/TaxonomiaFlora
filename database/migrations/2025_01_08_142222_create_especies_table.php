@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('esp_nombre_cientifico', 50);
             $table->string('esp_nombre_comun', 50);
             $table->text('esp_descripcion')->nullable();
+            $table->boolean('esp_estado_valid')->default(false);
             $table->timestamps();
-
         });
     }
 

@@ -62,4 +62,11 @@ class EspecieController extends Controller
         return redirect()->route('especies.show', $especie)
             ->with('success', 'Especie actualizada exitosamente.');
     }
+
+    public function destroy($especie)
+    {
+        Especie::destroy($especie);
+        return redirect()->route('especies.index')
+            ->with('success', 'Especie eliminada exitosamente.');
+    }
 }

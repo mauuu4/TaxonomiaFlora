@@ -10,17 +10,17 @@
     <br>
 
     <ul>
-        @foreach ($especies as $especie)
+        @foreach ($registros as $registro)
             <li>
-                <a href="{{ route('especies.show', $especie->esp_id) }}">
-                    {{ $especie->esp_nombre_cientifico }} -
-                    {{ $especie->esp_nombre_comun }} 
+                <a href="{{ route('especies.show', $registro->especie->esp_id) }}">
+                    {{ $registro->especie->esp_nombre_cientifico }} -
+                    {{ $registro->especie->esp_nombre_comun }} 
                 </a>
             </li>
         @endforeach
     </ul>
 
     <div>
-        {{ $especies->links() }}
+        {{ $registros->links() }}
     </div>
 </x-app-layout>

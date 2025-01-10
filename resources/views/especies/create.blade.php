@@ -49,7 +49,7 @@
                         {{ __('Cancel') }}
                     </a>
                     <x-primary-button class="ms-4">
-                        {{ __('Register') }}
+                        {{ __('Save') }}
                     </x-primary-button>
                 </div>
             </form>

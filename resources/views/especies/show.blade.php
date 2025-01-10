@@ -17,6 +17,13 @@
     <p>
         {{ __('Género:') }} {{$especie->genero->gene_nombre}}
     </p>
+    <p>
+        {{ __('Familia:') }} {{$especie->genero->familia->fam_nombre}}
+    </p>
+    <p>
+        {{ __('Reino:') }} {{$especie->genero->familia->reino->reino_nombre}}
+    </p>
+
     <a href="{{ route('especies.edit', $especie->esp_id) }}" class="inline-flex items-center px-4 py-2 bg-green-400 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-green-800 active:bg-gray-500 focus:outline-none focus:border-gray-500 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150 mr-3">
         {{ __('Edit') }}
     </a>

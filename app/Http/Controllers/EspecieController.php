@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Especie;
 use App\Models\Genero;
+use App\Models\Registro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EspecieController extends Controller
 {
     public function index()
     {
-        $especies = Especie::orderBy('esp_id', 'desc')->paginate();
-        return view('especies.index', compact('especies'));
+        $registros = auth()->user()->registros()->with('especie')->orderBy('regis_id', 'desc')->paginate();
+ 
+        return view('especies.index', compact('registros'));
     }
 
     public function create()
@@ -29,7 +32,13 @@ class EspecieController extends Controller
             'esp_descripcion' => ['nullable','max:500', 'regex:/\S/'],
         ]);
 
-        Especie::create($validated);
+        $especie = Especie::create($validated);
+
+        Registro::create([
+            'esp_id' => $especie->esp_id,  // Asignar el esp_id correctamente
+            'user_id' => auth()->id(), // Usuario autenticado
+            'regis_estado' => false, // Estado booleano de validación
+        ]);
 
         return redirect()->route('especies.index')
             ->with('success', 'Especie registrada exitosamente.');
@@ -65,7 +74,14 @@ class EspecieController extends Controller
 
     public function destroy($especie)
     {
+        $registro = Registro::where('esp_id', $especie)->first();
+
+        if ($registro) {
+            $registro->delete();
+        }
+        
         Especie::destroy($especie);
+        
         return redirect()->route('especies.index')
             ->with('success', 'Especie eliminada exitosamente.');
     }

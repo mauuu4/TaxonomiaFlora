@@ -44,6 +44,6 @@ class EspecieSeeder extends Seeder
         ]);
 
         // Generar 10 especies adicionales con el factory
-        Especie::factory(100)->create();
+        // Especie::factory(100)->create();
     }
 }

@@ -9,7 +9,10 @@ class Imagen extends Model
     protected $table = 'TAX_IMAGENES';
     protected $primaryKey = 'img_id';
 
-    protected $fillable = ['img_ruta', 'img_descripcion', 'img_esp_id'];
+    protected $fillable = [
+        'img_ruta', 
+        'img_descripcion', 
+        'img_esp_id'];
 
     public function especie()
     {

@@ -59,3 +59,21 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
         
 });
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return 'Bienvenido administrador';
+    });
+});
+
+Route::middleware(['auth', 'taxonomist'])->group(function () {
+    Route::get('/taxonomist', function () {
+        return 'Bienvenido taxonomista';
+    });
+});
+
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/user', function () {
+        return 'Bienvenido usuario';
+    });
+});

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :nav="'dashboard'">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Editar Especie') }}: {{ $especie->esp_nombre_cientifico }}

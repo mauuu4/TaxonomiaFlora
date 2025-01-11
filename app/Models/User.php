@@ -69,19 +69,19 @@ class User extends Authenticatable
         return $this->hasMany(Registro::class, 'user_id', 'user_id');
     }
 
-    // /**
-    //  * Relación muchos a muchos con Role.
-    //  */
-    // public function roles()
-    // {
-    //     return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
-    // }
+    /**
+     * Relación muchos a muchos con Role.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
 
-    // /**
-    //  * Verificar si el usuario tiene un rol específico.
-    //  */
-    // public function hasRole(string $roleName): bool
-    // {
-    //     return $this->roles()->where('name', $roleName)->exists();
-    // }
+    /**
+     * Verificar si el usuario tiene un rol específico.
+     */
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()->where('name', $roleName)->exists();
+    }
 }

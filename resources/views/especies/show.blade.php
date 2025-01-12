@@ -5,8 +5,8 @@
                 <div class="p-8">
                     <!-- Sección de encabezado con tipografía mejorada y espaciado -->
                     <div class="mb-8 border-b border-green-300 pb-6">
-                        <h1 class="text-4xl font-bold text-green-800 mb-2">{{ $especie->esp_nombre_cientifico }}</h1>
-                        <p class="text-lg text-green-600 italic">{{ $especie->esp_nombre_comun }}</p>
+                        <h1 class="text-4xl font-bold text-green-800 mb-2 italic">{{ $especie->esp_nombre_cientifico }}</h1>
+                        <p class="text-lg">Nombre común: {{ $especie->esp_nombre_comun }}</p>
                     </div>
 
                     <!-- Información general con diseño tipo tarjeta -->

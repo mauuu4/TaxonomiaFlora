@@ -161,6 +161,7 @@ class EspecieController extends Controller
         // Eliminar registros relacionados
         $registro = Registro::where('esp_id', $especie->esp_id)->first();
         if ($registro) {
+            $registro->validaciones()->delete();
             $registro->delete();
         }
         

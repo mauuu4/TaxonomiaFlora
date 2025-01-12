@@ -28,7 +28,7 @@ class EspecieController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'esp_gene_id' => ['required', 'exists:TAX_GENEROS,gene_id'],
+            'esp_gene_id' => ['required', 'exists:tax_generos,gene_id'],
             'esp_nombre_cientifico' => ['required','min:3','max:50', 'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
             'esp_nombre_comun' => ['required', 'min:3', 'max:50', 'regex:/^(?!^\d+$)[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
             'esp_descripcion' => ['nullable', 'string', 'max:500', 'regex:/\S/'],
@@ -68,7 +68,6 @@ class EspecieController extends Controller
         Registro::create([
             'esp_id' => $especie->esp_id,  // Asignar el esp_id correctamente
             'user_id' => auth()->id(), // Usuario autenticado
-            'regis_estado' => false, // Estado booleano de validación
         ]);
 
         return redirect()->route('especies.index')
@@ -91,7 +90,7 @@ class EspecieController extends Controller
     public function update(Request $request, $especie)
     {
         $validated = $request->validate([
-            'esp_gene_id' => ['required', 'exists:TAX_GENEROS,gene_id'],
+            'esp_gene_id' => ['required', 'exists:tax_generos,gene_id'],
             'esp_nombre_cientifico' => ['required','min:3','max:50', 'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
             'esp_nombre_comun' => ['required', 'min:3', 'max:50', 'regex:/^(?!^\d+$)[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
             'esp_descripcion' => ['nullable', 'string', 'max:500', 'regex:/\S/'],
@@ -139,6 +138,12 @@ class EspecieController extends Controller
                 'ubi_descripcion' => $request->ubi_descripcion,
             ]);
         }
+
+        //update registro estado
+        $registro = Registro::where('esp_id', $especie->esp_id)->first();
+        $registro->update([
+            'regis_estado' => 'Pendiente'
+        ]);
 
         return redirect()->route('especies.show', $especie->esp_id)
             ->with('success', 'Especie actualizada exitosamente.');

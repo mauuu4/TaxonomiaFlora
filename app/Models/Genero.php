@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Genero extends Model
 {
-    protected $table = 'TAX_GENEROS';
+    protected $table = 'tax_generos';
     protected $primaryKey = 'gene_id';
     
     protected $fillable = ['gene_nombre', 'gene_fam_id'];

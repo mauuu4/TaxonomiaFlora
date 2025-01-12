@@ -10,7 +10,7 @@ class Especie extends Model
 {
     use HasFactory;
 
-    protected $table = 'TAX_ESPECIES';
+    protected $table = 'tax_especies';
     protected $primaryKey = 'esp_id';
 
     protected $fillable = [
@@ -18,6 +18,7 @@ class Especie extends Model
         'esp_nombre_cientifico', 
         'esp_nombre_comun', 
         'esp_descripcion', 
+        'esp_estado_valid'
     ];
 
     protected function espNombreCientifico(): Attribute

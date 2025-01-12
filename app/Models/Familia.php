@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Familia extends Model
 {
-    protected $table = 'TAX_FAMILIAS';
+    protected $table = 'tax_familias';
     protected $primaryKey = 'fam_id';
 
     protected $fillable = ['fam_nombre', 'fam_reino_id'];

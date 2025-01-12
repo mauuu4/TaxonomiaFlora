@@ -6,7 +6,7 @@
                     <!-- Encabezado y Botón de Registro -->
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">
-                            {{ __('Especies') }}
+                            {{ __('Validar Especies') }}
                         </h1>
                         <a href="{{ route('especies.create') }}" 
                            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-150 ease-in-out flex items-center">
@@ -50,10 +50,8 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                {{ $registro->regis_estado === 'Validado' ? 'bg-green-100 text-green-800' : 
-                                                   ($registro->regis_estado === 'Rechazado' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                                {{ $registro->regis_estado }}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $registro->regis_estado ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                {{ $registro->regis_estado ? 'Validado' : 'Pendiente' }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('TAX_IMAGENES', function (Blueprint $table) {
+        Schema::create('tax_imagenes', function (Blueprint $table) {
             $table->id('img_id');
-            $table->foreignId('img_esp_id')->constrained('TAX_ESPECIES', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('img_esp_id')->constrained('tax_especies', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
             $table->string('img_ruta');
             $table->text('img_descripcion')->nullable();
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('TAX_IMAGENES');
+        Schema::dropIfExists('tax_imagenes');
     }
 };

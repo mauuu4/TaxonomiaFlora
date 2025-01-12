@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('TAX_REGISTROS', function (Blueprint $table) {
+        Schema::create('tax_registros', function (Blueprint $table) {
             $table->id('regis_id');
-            $table->foreignId('esp_id')->constrained('TAX_ESPECIES', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('user_id')->constrained('USUARIOS', 'user_id')->onUpdate('cascade')->onDelete('restrict');
-            $table->boolean('regis_estado')->default(false);
+            $table->foreignId('esp_id')->constrained('tax_especies', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('user_id')->constrained('usuarios', 'user_id')->onUpdate('cascade')->onDelete('restrict');
+            $table->string('regis_estado', 20)->default('Pendiente');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('TAX_REGISTROS');
+        Schema::dropIfExists('tax_registros');
     }
 };

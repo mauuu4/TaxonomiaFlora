@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reino extends Model
 {
-    protected $table = 'TAX_REINOS';
+    protected $table = 'tax_reinos';
     protected $primaryKey = 'reino_id';
 
     protected $fillable = ['reino_nombre'];

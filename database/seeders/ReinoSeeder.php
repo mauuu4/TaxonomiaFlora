@@ -15,5 +15,6 @@ class ReinoSeeder extends Seeder
     {
         Reino::create(['reino_nombre' => 'Plantae']);
         Reino::create(['reino_nombre' => 'Fungi']);
+        Reino::create(['reino_nombre' => 'Animalia']);
     }
 }

@@ -11,8 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('USUARIOS', function (Blueprint $table) {
+        Schema::create('permisos_usuarios', function (Blueprint $table) {
+            $table->id('perus_id');
+            $table->string('perus_detalle', 50);
+        });
+
+        Schema::create('tipos_usuarios', function (Blueprint $table) {
+            $table->id('tipus_id');
+            $table->foreignId('perus_id')->constrained('permisos_usuarios', 'perus_id')->onUpdate('restrict')->onDelete('restrict');
+            $table->string('tipus_detalles', 50);
+        });
+
+        Schema::create('usuarios', function (Blueprint $table) {
             $table->id('user_id');
+            $table->foreignId('tipus_id')->constrained('tipos_usuarios', 'tipus_id')->onUpdate('cascade')->onDelete('restrict');
             $table->string('user_nombre', 50);
             $table->string('user_apellido', 50);
             $table->string('user_email', 35)->unique();
@@ -22,33 +34,33 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('description')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('roles', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('name')->unique();
+        //     $table->string('description')->nullable();
+        //     $table->timestamps();
+        // });
 
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('description')->nullable();
-            $table->timestamps();
-        });
+        // Schema::create('permissions', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('name')->unique();
+        //     $table->string('description')->nullable();
+        //     $table->timestamps();
+        // });
 
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('user_id')->constrained('USUARIOS', 'user_id')->onUpdate('cascade')->onDelete('restrict');
-            $table->timestamps();
-        });
+        // Schema::create('role_user', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
+        //     $table->foreignId('user_id')->constrained('usuarios', 'user_id')->onUpdate('cascade')->onDelete('restrict');
+        //     $table->timestamps();
+        // });
 
-        Schema::create('permission_role', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('permission_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
-            $table->timestamps();
-        });
+        // Schema::create('permission_role', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('permission_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
+        //     $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -56,10 +68,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
-        Schema::dropIfExists('permissions');
-        Schema::dropIfExists('role_user');
-        Schema::dropIfExists('permission_role');
-        Schema::dropIfExists('USUARIOS');
+        Schema::dropIfExists('permisos_usuarios');
+        Schema::dropIfExists('tipos_usuarios');
+        Schema::dropIfExists('usuarios');
     }
 };

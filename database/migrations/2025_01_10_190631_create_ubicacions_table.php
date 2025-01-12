@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('TAX_UBICACIONES', function (Blueprint $table) {
+        Schema::create('tax_ubicaciones', function (Blueprint $table) {
             $table->id('ubi_id');
-            // $table->foreignId('ubi_mapa_id')->constrained('TAX_MAPAS', 'mapa_id')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('ubi_esp_id')->constrained('TAX_ESPECIES', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
+            // $table->foreignId('ubi_mapa_id')->constrained('tax_mapas', 'mapa_id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('ubi_esp_id')->constrained('tax_especies', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
             $table->double('ubi_longitud');
             $table->double('ubi_latitud');
             $table->string('ubi_region', 30);
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('TAX_UBICACIONES');
+        Schema::dropIfExists('tax_ubicaciones');
     }
 };

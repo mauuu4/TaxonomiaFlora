@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('TAX_FAMILIAS', function (Blueprint $table) {
+        Schema::create('tax_familias', function (Blueprint $table) {
             $table->id('fam_id');
-            $table->foreignId('fam_reino_id')->constrained('TAX_REINOS', 'reino_id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('fam_reino_id')->constrained('tax_reinos', 'reino_id')->onUpdate('cascade')->onDelete('restrict');
             $table->string('fam_nombre', 50)->unique();
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('TAX_FAMILIAS');
+        Schema::dropIfExists('tax_familias');
     }
 };

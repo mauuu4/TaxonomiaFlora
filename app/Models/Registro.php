@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Registro extends Model
 {
-    protected $table = 'TAX_REGISTROS';
+    protected $table = 'tax_registros';
     protected $primaryKey = 'regis_id';
 
     protected $fillable = [
@@ -23,5 +23,10 @@ class Registro extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+    
+    public function validaciones()
+    {
+        return $this->hasMany(Validacion::class, 'valid_regis_id', 'regis_id');
     }
 }

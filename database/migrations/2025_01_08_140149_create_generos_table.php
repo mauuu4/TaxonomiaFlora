@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('TAX_GENEROS', function (Blueprint $table) {
+        Schema::create('tax_generos', function (Blueprint $table) {
             $table->id('gene_id');
-            $table->foreignId('gene_fam_id')->constrained('TAX_FAMILIAS', 'fam_id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('gene_fam_id')->constrained('tax_familias', 'fam_id')->onUpdate('cascade')->onDelete('restrict');
             $table->string('gene_nombre', 50)->unique();
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('TAX_GENEROS');
+        Schema::dropIfExists('tax_generos');
     }
 };

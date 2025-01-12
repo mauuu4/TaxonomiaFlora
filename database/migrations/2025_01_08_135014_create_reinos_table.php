@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('TAX_REINOS', function (Blueprint $table) {
+        Schema::create('tax_reinos', function (Blueprint $table) {
             $table->id('reino_id');
             $table->string('reino_nombre', 50)->unique();
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('TAX_REINOS');
+        Schema::dropIfExists('tax_reinos');
     }
 };

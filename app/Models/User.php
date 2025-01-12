@@ -14,7 +14,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $table = 'USUARIOS';
+    protected $table = 'usuarios';
     protected $primaryKey = 'user_id';
 
     /**
@@ -74,7 +74,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsTo(Tipo::class, 'tipus_id', 'tipus_id');
     }
 
     /**
@@ -82,6 +82,6 @@ class User extends Authenticatable
      */
     public function hasRole(string $roleName): bool
     {
-        return $this->roles()->where('name', $roleName)->exists();
+        return $this->roles()->where('tipus_detalles', $roleName)->exists();
     }
 }

@@ -9,6 +9,21 @@
                         <h1 class="text-2xl font-bold text-gray-800">
                             {{ __('Especies Pendientes de Validación') }}
                         </h1>
+                        <!-- Filtro de Estados -->                    
+                        <form action="{{ route('validate.index') }}" method="GET" class="flex items-center space-x-4">
+                            <select name="estado" 
+                                class="w-40 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white py-2 px-3 text-gray-700 text-sm">
+                                <option value="">Todos los estados</option>
+                                @foreach($estados as $estadoOption)
+                                    <option value="{{ $estadoOption }}" {{ $estado == $estadoOption ? 'selected' : '' }}>
+                                        {{ $estadoOption }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                Filtrar
+                            </button>
+                        </form>
                     </div>
 
                     <!-- Tabla de Especies por Validar -->

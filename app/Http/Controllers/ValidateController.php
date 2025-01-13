@@ -8,14 +8,24 @@ use Illuminate\Http\Request;
 
 class ValidateController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $registros = Registro::with(['especie.genero', 'user', 'validaciones'])
-            ->where('regis_estado', 'Pendiente')
-            ->orderBy('created_at', 'desc')
-            ->paginate();
-
-        return view('validate.index', compact('registros'));
+        $estado = $request->get('estado');
+        
+        $registrosQuery = Registro::with(['especie.genero', 'user', 'validaciones'])
+            ->orderBy('created_at', 'desc');
+        
+        // Aplicar filtro si se seleccionó un estado
+        if ($estado) {
+            $registrosQuery->where('regis_estado', $estado);
+        }
+        
+        $registros = $registrosQuery->paginate();
+        
+        // Obtener estados únicos para el filtro
+        $estados = ['Pendiente', 'Validado', 'Rechazado'];
+        
+        return view('validate.index', compact('registros', 'estados', 'estado'));
     }
 
     public function show($regis_id)

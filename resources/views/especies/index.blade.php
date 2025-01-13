@@ -31,6 +31,9 @@
                                     <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                         Estado
                                     </th>
+                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                        Comentarios
+                                    </th>
                                     <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                         Acciones
                                     </th>
@@ -55,6 +58,22 @@
                                                    ($registro->regis_estado === 'Rechazado' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
                                                 {{ $registro->regis_estado }}
                                             </span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm text-gray-500">
+                                                @if($registro->validaciones->isNotEmpty())
+                                                    <span class="whitespace-normal">
+                                                        {{ $registro->validaciones->first()->valid_comentarios }}
+                                                    </span>
+                                                    @if($registro->validaciones->count() > 1)
+                                                        <span class="text-xs text-gray-400 block mt-1">
+                                                            ({{ $registro->validaciones->count() }} validaciones en total)
+                                                        </span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-gray-400 italic">Sin validaciones</span>
+                                                @endif
+                                            </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex justify-end space-x-3">

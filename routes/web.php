@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaxonomistController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidateController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +27,11 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
-        return 'Bienvenido administrador';
-    });
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+    Route::resource('admin/users', UserController::class)->names('admin.users');
+    Route::patch('admin/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+        ->name('admin.users.toggle-status');
 });
 
 Route::middleware(['auth', 'taxonomist'])->group(function () {

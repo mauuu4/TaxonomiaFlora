@@ -14,7 +14,11 @@ class EspecieController extends Controller
 {
     public function index()
     {
-        $registros = auth()->user()->registros()->with('especie')->orderBy('regis_id', 'desc')->paginate();
+        $registros = auth()->user()->registros()
+            ->with(['especie', 'validaciones' => function($query) {
+                $query->orderBy('valid_fecha', 'desc');
+            }])
+            ->orderBy('regis_id', 'desc')->paginate();
  
         return view('especies.index', compact('registros'));
     }

@@ -25,15 +25,16 @@ class UserSeeder extends Seeder
         ]);
         Tipo::create([
             'perus_id' => 2,
-            'tipus_detalles' => 'user',
+            'tipus_detalles' => 'taxonomist',
         ]);
         Tipo::create([
             'perus_id' => 3,
-            'tipus_detalles' => 'taxonomist',
+            'tipus_detalles' => 'user',
         ]);
 
         User::create([
             'tipus_id' => 1,
+            'user_cedula' => '1234567890',
             'user_nombre' => 'admin',
             'user_apellido' => 'admin',
             'user_telefono' => '1234567890',
@@ -43,7 +44,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'tipus_id' => 3,
+            'tipus_id' => 2,
+            'user_cedula' => '1234567890',
             'user_nombre' => 'Mauricio',
             'user_apellido' => 'Romero',
             'user_email' => 'mauriciord2004@gmail.com',
@@ -52,7 +54,8 @@ class UserSeeder extends Seeder
             'user_estado' => false,
         ]);
         User::create([
-            'tipus_id' => 2,
+            'tipus_id' => 3,
+            'user_cedula' => '1234567890',
             'user_nombre' => 'Steven',
             'user_apellido' => 'Moran',
             'user_email' => 'stevenmoran@gmail.com',
@@ -62,6 +65,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
             'tipus_id' => 1,
+            'user_cedula' => '1234567890',
             'user_nombre' => 'Jean',
             'user_apellido' => 'Torres',
             'user_email' => 'jeanmtu@outlook.com',

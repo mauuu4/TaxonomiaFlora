@@ -30,6 +30,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
             'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'user_telefono' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
@@ -39,11 +40,14 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
+            'tipus_id' => 3,
+            'user_cedula' => $request->user_cedula,
             'user_nombre' => $request->user_nombre,
             'user_apellido' => $request->user_apellido,
             'user_telefono' => $request->user_telefono,
             'user_email' => $request->user_email,
             'user_password' => Hash::make($request->user_password),
+            'user_estado' => false,
         ]);
 
         event(new Registered($user));

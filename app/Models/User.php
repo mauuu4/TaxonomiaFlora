@@ -24,11 +24,13 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'tipus_id',
+        'user_cedula',
         'user_nombre',
         'user_apellido',
         'user_email',
         'user_password',
         'user_telefono',
+        'user_estado',
     ];
 
     /**
@@ -63,6 +65,11 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->user_password;
+    }
+
+    public function getAuthPasswordName()
+    {
+        return 'user_password';
     }
 
     public function registros()

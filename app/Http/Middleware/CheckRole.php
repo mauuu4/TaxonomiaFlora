@@ -19,7 +19,7 @@ class CheckRole
     {
         // Verifica si el usuario está autenticado
         if (!Auth::check()) {
-            return abort(403, 'Acceso denegado');
+            return redirect('/')->with('error', 'No tienes permiso para acceder a esta sección.');
         }
 
         // Obtén el rol del usuario

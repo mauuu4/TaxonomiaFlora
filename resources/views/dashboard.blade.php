@@ -20,6 +20,13 @@
                             @endif
                         </h1>
                     </div>
+
+                    <!-- Mensaje de Bienvenida -->
+                    <div class="mb-6">
+                        <p class="text-gray-600">
+                            Bienvenido, {{ Auth::user()->user_nombre }} {{ Auth::user()->user_apellido }}.
+                        </p>
+                    </div>
         
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Card de Usuarios -->

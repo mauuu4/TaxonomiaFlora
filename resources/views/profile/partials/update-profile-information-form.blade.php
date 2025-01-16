@@ -30,6 +30,12 @@
         </div>
 
         <div>
+            <x-input-label for="user_cedula" :value="__('Cedula')" />
+            <x-text-input id="user_cedula" name="user_cedula" type="text" class="mt-1 block w-full" :value="old('user_cedula', $user->user_cedula)" required/>
+            <x-input-error class="mt-2" :messages="$errors->get('user_cedula')" />
+        </div>
+
+        <div>
             <x-input-label for="user_telefono" :value="__('Phone')" />
             <x-text-input id="user_telefono" name="user_telefono" type="tel" class="mt-1 block w-full" :value="old('user_telefono', $user->user_telefono)" required autocomplete="tel" />
             <x-input-error class="mt-2" :messages="$errors->get('user_telefono')" />

@@ -44,6 +44,9 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        
+        //delete user with their registos
+        $user->registros()->delete();
 
         Auth::logout();
 

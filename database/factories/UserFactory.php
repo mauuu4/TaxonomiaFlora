@@ -25,11 +25,13 @@ class UserFactory extends Factory
     {
         return [
             'tipus_id' => $this->faker->numberBetween(1, 3),
+            'user_cedula' => (string)$this->faker->numberBetween(1000000000, 9999999999),
             'user_nombre' => $this->faker->name(),
             'user_apellido' => $this->faker->lastName(),
             'user_email' => $this->faker->unique()->safeEmail(),
             'user_telefono' => '09' . $this->faker->randomNumber(8),
             'user_password' => static::$password ??= Hash::make('password'),
+            'user_estado' => $this->faker->boolean,
         ];
     }
 }

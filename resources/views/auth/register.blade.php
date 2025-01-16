@@ -1,9 +1,15 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
+        <!-- Cedula -->
+        <div>
+            <x-input-label for="user_cedula" :value="__('Cedula')" />
+            <x-text-input id="user_cedula" class="block mt-1 w-full" type="text" name="user_cedula" :value="old('user_cedula')" required autofocus/>
+            <x-input-error :messages="$errors->get('user_cedula')" class="mt-2" />
+        </div>
 
         <!-- Name -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="user_nombre" :value="__('First Name')" />
             <x-text-input id="user_nombre" class="block mt-1 w-full" type="text" name="user_nombre" :value="old('user_nombre')" required autofocus autocomplete="given-name" />
             <x-input-error :messages="$errors->get('user_nombre')" class="mt-2" />

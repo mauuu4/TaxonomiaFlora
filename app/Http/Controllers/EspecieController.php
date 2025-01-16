@@ -9,6 +9,7 @@ use App\Models\Registro;
 use App\Models\Ubicacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\EspecieRequest;
 
 class EspecieController extends Controller
 {
@@ -29,23 +30,12 @@ class EspecieController extends Controller
         return view('especies.create', compact('generos'));
     }
 
-    public function store(Request $request)
+    public function store(EspecieRequest $request)
     {
-        $validated = $request->validate([
-            'esp_gene_id' => ['required', 'exists:tax_generos,gene_id'],
-            'esp_nombre_cientifico' => ['required','min:3','max:50', 'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
-            'esp_nombre_comun' => ['required', 'min:3', 'max:50', 'regex:/^(?!^\d+$)[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
-            'esp_descripcion' => ['nullable', 'string', 'max:500', 'regex:/\S/'],
-            'imagenes.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'img_descripcion.*' => ['nullable', 'string', 'max:255'],
-            'ubi_longitud' => ['required', 'numeric', 'between:-180,180'],
-            'ubi_latitud' => ['required', 'numeric', 'between:-90,90'],
-            'ubi_region' => ['required', 'string', 'max:30'],
-            'ubi_descripcion' => ['nullable', 'string', 'max:500'],
-        ]);
-
+        $validated = $request->validated();
+    
         $especie = Especie::create($validated);
-
+    
         // Guardar las imágenes
         if($request->hasFile('imagenes')) {
             foreach($request->file('imagenes') as $index => $imagen) {
@@ -58,7 +48,7 @@ class EspecieController extends Controller
                 ]);
             }
         }
-
+    
         // Crear la ubicación
         Ubicacion::create([
             'ubi_esp_id' => $especie->esp_id,
@@ -67,13 +57,13 @@ class EspecieController extends Controller
             'ubi_region' => $request->ubi_region,
             'ubi_descripcion' => $request->ubi_descripcion,
         ]);
-
+    
         // Crear el registro
         Registro::create([
-            'esp_id' => $especie->esp_id,  // Asignar el esp_id correctamente
-            'user_id' => auth()->id(), // Usuario autenticado
+            'esp_id' => $especie->esp_id,
+            'user_id' => auth()->id(),
         ]);
-
+    
         return redirect()->route('especies.index')
             ->with('success', 'Especie registrada exitosamente.');
     }
@@ -91,25 +81,14 @@ class EspecieController extends Controller
         return view('especies.edit', compact('especie', 'generos'));
     }
 
-    public function update(Request $request, $especie)
+    public function update(EspecieRequest $request, $especie)
     {
-        $validated = $request->validate([
-            'esp_gene_id' => ['required', 'exists:tax_generos,gene_id'],
-            'esp_nombre_cientifico' => ['required','min:3','max:50', 'regex:/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
-            'esp_nombre_comun' => ['required', 'min:3', 'max:50', 'regex:/^(?!^\d+$)[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
-            'esp_descripcion' => ['nullable', 'string', 'max:500', 'regex:/\S/'],
-            'nuevas_imagenes.*' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'nuevas_img_descripcion.*' => ['nullable', 'string', 'max:255'],
-            'ubi_longitud' => ['required', 'numeric', 'between:-180,180'],
-            'ubi_latitud' => ['required', 'numeric', 'between:-90,90'],
-            'ubi_region' => ['required', 'string', 'max:30'],
-            'ubi_descripcion' => ['nullable', 'string', 'max:500'],
-        ]);
-
+        $validated = $request->validated();
+    
         $especie = Especie::find($especie);
         $especie->update($validated);
-
-         // Manejar eliminación de imágenes
+    
+        // Manejar eliminación de imágenes
         if ($request->has('imagenes_eliminar')) {
             foreach ($request->imagenes_eliminar as $imagenId) {
                 $imagen = Imagen::find($imagenId);
@@ -119,7 +98,7 @@ class EspecieController extends Controller
                 }
             }
         }
-
+    
         // Manejar nuevas imágenes
         if($request->hasFile('nuevas_imagenes')) {
             foreach($request->file('nuevas_imagenes') as $index => $imagen) {
@@ -132,7 +111,7 @@ class EspecieController extends Controller
                 ]);
             }
         }
-
+    
         // Actualizar ubicación
         if($especie->ubicaciones->first()) {
             $especie->ubicaciones->first()->update([
@@ -142,13 +121,13 @@ class EspecieController extends Controller
                 'ubi_descripcion' => $request->ubi_descripcion,
             ]);
         }
-
+    
         //update registro estado
         $registro = Registro::where('esp_id', $especie->esp_id)->first();
         $registro->update([
             'regis_estado' => 'Pendiente'
         ]);
-
+    
         return redirect()->route('especies.show', $especie->esp_id)
             ->with('success', 'Especie actualizada exitosamente.');
     }

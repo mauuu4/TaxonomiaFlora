@@ -27,6 +27,12 @@
                             {{ __('Validar Especies') }}
                         </x-nav-link>
                     </div>
+                @elseif (Auth::check() && Auth::user()->hasRole('admin'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
+                    </div>
                 @endif
             </div>
 

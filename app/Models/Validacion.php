@@ -15,6 +15,10 @@ class Validacion extends Model
         'valid_fecha',
         'valid_comentarios' 
     ];
+    
+    protected $casts = [
+        'valid_fecha' => 'datetime',
+    ];
 
     public function registro()
     {

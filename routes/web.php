@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaxonomistController;
@@ -12,11 +13,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -25,26 +24,15 @@ Route::middleware('auth')->group(function () {
     ->names('especies');
 });
 
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    
-    Route::resource('admin/users', UserController::class)->names('admin.users');
-    Route::patch('admin/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
-        ->name('admin.users.toggle-status');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class);
 });
 
-Route::middleware(['auth', 'taxonomist'])->group(function () {
+Route::middleware(['auth', 'role:admin,taxonomist'])->group(function () {
     Route::get('/validate', [ValidateController::class, 'index'])->name('validate.index');
     Route::get('/validate/{regis_id}', [ValidateController::class, 'show'])->name('validate.show');
     Route::post('/validate/{regis_id}/validate', [ValidateController::class, 'validate'])->name('validate.validate');
     Route::post('/validate/{regis_id}/reject', [ValidateController::class, 'reject'])->name('validate.reject');
-});
-
-Route::middleware(['auth', 'user'])->group(function () {
-    Route::get('/user', function () {
-        return 'Bienvenido usuario';
-    });
 });
 
 require __DIR__.'/auth.php';

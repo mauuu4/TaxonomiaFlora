@@ -69,5 +69,7 @@ class UserSeeder extends Seeder
             'user_password' => bcrypt('jean12345'),
             'user_estado' => false,
         ]);
+
+        User::factory(100)->create();
     }
 }

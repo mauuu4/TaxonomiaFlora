@@ -43,7 +43,7 @@ class EspecieSeeder extends Seeder
             'esp_gene_id' => 1, // Acacia
         ]);
 
-        // Generar 10 especies adicionales con el factory
-        // Especie::factory(100)->create();
+        // Generar 100 especies adicionales con el factory
+        Especie::factory(100)->create();
     }
 }

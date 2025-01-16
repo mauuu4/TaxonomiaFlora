@@ -24,12 +24,8 @@ class Especie extends Model
     protected function espNombreCientifico(): Attribute
     {
         return Attribute::make(
-            set: function ($value) {
-                return strtolower($value);
-            },
-            get: function ($value) {
-                return ucfirst($value);
-            }
+            set: fn($value) => strtolower($value),
+            get: fn($value) => ucfirst($value)
         );
     }
 

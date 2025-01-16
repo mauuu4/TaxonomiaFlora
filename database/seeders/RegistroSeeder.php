@@ -33,5 +33,7 @@ class RegistroSeeder extends Seeder
             'user_id' => 2,
             'regis_estado' => 'Pendiente',
         ]);
+
+        Registro::factory(100)->create();
     }
 }

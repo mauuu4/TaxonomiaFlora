@@ -13,9 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'taxonomist' => CheckRole::class.':taxonomist',
-            'admin' => CheckRole::class.':admin',
-            'user' => CheckRole::class.':user',
+            'role' => CheckRole::class,        
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

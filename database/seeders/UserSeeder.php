@@ -15,25 +15,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        Permiso::create(['perus_detalle' => 'admin',]);
-        Permiso::create(['perus_detalle' => 'user',]);
-        Permiso::create(['perus_detalle' => 'taxonomist',]);
+        Permiso::create(['perus_detalle' => 'Taxonomia',]);
+
+        $permiso = Permiso::where('perus_detalle', 'Taxonomia')->first();
 
         Tipo::create([
-            'perus_id' => 1,
-            'tipus_detalles' => 'admin',
+            'perus_id' => $permiso->perus_id,
+            'tipus_detalles' => 'Administrador',
         ]);
         Tipo::create([
-            'perus_id' => 2,
-            'tipus_detalles' => 'taxonomist',
+            'perus_id' => $permiso->perus_id,
+            'tipus_detalles' => 'Taxonomo',
         ]);
         Tipo::create([
-            'perus_id' => 3,
-            'tipus_detalles' => 'user',
+            'perus_id' => $permiso->perus_id,
+            'tipus_detalles' => 'Usuario',
         ]);
 
         User::create([
-            'tipus_id' => 1,
+            'tipus_id' => Tipo::where('tipus_detalles', 'Administrador')->first()->tipus_id,
             'user_cedula' => '1234567890',
             'user_nombre' => 'admin',
             'user_apellido' => 'admin',
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'tipus_id' => 2,
+            'tipus_id' => Tipo::where('tipus_detalles', 'Taxonomo')->first()->tipus_id,
             'user_cedula' => '1234567890',
             'user_nombre' => 'Mauricio',
             'user_apellido' => 'Romero',
@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
             'user_estado' => false,
         ]);
         User::create([
-            'tipus_id' => 3,
+            'tipus_id' => Tipo::where('tipus_detalles', 'Usuario')->first()->tipus_id,
             'user_cedula' => '1234567890',
             'user_nombre' => 'Steven',
             'user_apellido' => 'Moran',
@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             'user_estado' => true,
         ]);
         User::create([
-            'tipus_id' => 1,
+            'tipus_id' => Tipo::where('tipus_detalles', 'Usuario')->first()->tipus_id,
             'user_cedula' => '1234567890',
             'user_nombre' => 'Jean',
             'user_apellido' => 'Torres',

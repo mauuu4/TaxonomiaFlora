@@ -35,18 +35,25 @@
                     <x-input-error :messages="$errors->get('user_apellido')" class="mt-2" />
                 </div>
 
-                <!-- Email -->
+                <!-- Cedula -->
                 <div class="mt-4">
-                    <x-input-label for="user_email" :value="__('Email')" />
-                    <x-text-input id="user_email" class="block mt-1 w-full" type="text" name="user_email" :value="old('user_email')" required/>
-                    <x-input-error :messages="$errors->get('user_email')" class="mt-2" />
+                    <x-input-label for="user_cedula" :value="__('Cedula')" />
+                    <x-text-input id="user_cedula" class="block mt-1 w-full" type="text" name="user_cedula" :value="old('user_cedula')" required/>
+                    <x-input-error :messages="$errors->get('user_cedula')" class="mt-2" />
                 </div>
-
+                
                 <!-- Telefono -->
                 <div class="mt-4">
                     <x-input-label for="user_telefono" :value="__('Telefono')" />
                     <x-text-input id="user_telefono" class="block mt-1 w-full" type="text" name="user_telefono" :value="old('user_telefono')" required/>
                     <x-input-error :messages="$errors->get('user_telefono')" class="mt-2" />
+                </div>
+
+                <!-- Email -->
+                <div class="mt-4">
+                    <x-input-label for="user_email" :value="__('Email')" />
+                    <x-text-input id="user_email" class="block mt-1 w-full" type="text" name="user_email" :value="old('user_email')" required/>
+                    <x-input-error :messages="$errors->get('user_email')" class="mt-2" />
                 </div>
 
                  <!-- Contraseña -->
@@ -59,7 +66,18 @@
                                     required autocomplete="new-password" />
 
                     <x-input-error :messages="$errors->get('user_password')" class="mt-2" />
-                </div>            
+                </div>    
+                
+                <!-- Confirm Password -->
+                <div class="mt-4">
+                    <x-input-label for="user_password_confirmation" :value="__('Confirm Password')" />
+
+                    <x-text-input id="user_password_confirmation" class="block mt-1 w-full"
+                                    type="password"
+                                    name="user_password_confirmation" required autocomplete="new-password" />
+
+                    <x-input-error :messages="$errors->get('user_password_confirmation')" class="mt-2" />
+                </div>
 
                 <!-- Botones -->
                 <div class="flex items-center justify-center mt-4 space-x-1">

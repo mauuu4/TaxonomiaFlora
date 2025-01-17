@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -39,8 +40,11 @@ class RegisteredUserController extends Controller
 
         ]);
 
+        // Busca el tipus_id correspondiente al tipo "user"
+        $tipoUsuario = Tipo::where('tipus_detalles', 'user')->first();
+
         $user = User::create([
-            'tipus_id' => 3,
+            'tipus_id' => $tipoUsuario->tipus_id,
             'user_cedula' => $request->user_cedula,
             'user_nombre' => $request->user_nombre,
             'user_apellido' => $request->user_apellido,

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Mapa;
 use App\Models\Registro;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -35,5 +36,10 @@ class RegistroSeeder extends Seeder
         ]);
 
         Registro::factory(100)->create();
+
+        Mapa::create([
+            'mapa_nombre' => 'Mapa de la región 1',
+            'mapa_url' => 'https://www.google.com/maps/',
+        ]);
     }
 }

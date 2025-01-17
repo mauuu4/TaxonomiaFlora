@@ -24,11 +24,11 @@ Route::middleware('auth')->group(function () {
     ->names('especies');
 });
 
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Administrador'])->group(function () {
     Route::resource('users', UserController::class);
 });
 
-Route::middleware(['auth', 'role:admin,taxonomist'])->group(function () {
+Route::middleware(['auth', 'role:Administrador,Taxonomo'])->group(function () {
     Route::get('/validate', [ValidateController::class, 'index'])->name('validate.index');
     Route::get('/validate/{regis_id}', [ValidateController::class, 'show'])->name('validate.show');
     Route::post('/validate/{regis_id}/validate', [ValidateController::class, 'validate'])->name('validate.validate');

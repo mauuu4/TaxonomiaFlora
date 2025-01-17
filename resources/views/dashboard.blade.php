@@ -11,9 +11,9 @@
                 <div class="p-6 text-gray-900">
                     <div class="mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">
-                            @if(Auth::user()->hasRole('admin'))
+                            @if(Auth::user()->hasRole('Administrador'))
                                 Panel de Administración
-                            @elseif(Auth::user()->hasRole('taxonomist'))
+                            @elseif(Auth::user()->hasRole('Taxonomo'))
                                 Panel de Taxonomo
                             @else
                                 Panel de Usuario
@@ -30,7 +30,7 @@
         
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Card de Usuarios -->
-                        @if (Auth::user()->hasRole('admin'))                          
+                        @if (Auth::user()->hasRole('Administrador'))                          
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-6">
                                     <div class="flex items-center justify-between">
@@ -84,7 +84,7 @@
                         </div>
         
                         <!-- Card de Validaciones Pendientes -->
-                        @if (Auth::user()->hasRole('taxonomist') || Auth::user()->hasRole('admin'))
+                        @if (Auth::user()->hasRole('Taxonomo') || Auth::user()->hasRole('Administrador'))
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-6">
                                     <div class="flex items-center justify-between">
@@ -111,7 +111,7 @@
                             </div>
                         @endif
                         <!-- Card de Especies Validadas -->
-                        @if (Auth::user()->hasRole('user'))
+                        @if (Auth::user()->hasRole('Usuario'))
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-6">
                                     <div class="flex items-center justify-between">
@@ -140,7 +140,7 @@
                     </div>
         
                     <!-- Tabla de Últimas Actividades -->
-                    @if(Auth::user()->hasRole('admin'))
+                    @if(Auth::user()->hasRole('Administrador'))
                         <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">

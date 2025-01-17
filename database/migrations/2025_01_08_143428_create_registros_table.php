@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('regis_id');
             $table->foreignId('esp_id')->constrained('tax_especies', 'esp_id')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('user_id')->constrained('usuarios', 'user_id')->onUpdate('cascade')->onDelete('restrict');
-            $table->string('regis_estado', 20)->default('Pendiente');
+            $table->string('regis_estado', 20);
             $table->timestamps();
         });
     }

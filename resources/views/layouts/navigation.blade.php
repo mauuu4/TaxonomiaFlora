@@ -21,16 +21,17 @@
                         {{ __('Especies') }}
                     </x-nav-link>
                 </div>
-                @if (Auth::check() && Auth::user()->hasRole('taxonomist'))
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('validate.index')" :active="request()->routeIs('validate.index')">
-                            {{ __('Validar Especies') }}
-                        </x-nav-link>
-                    </div>
-                @elseif (Auth::check() && Auth::user()->hasRole('admin'))
+                @if (Auth::check() && Auth::user()->hasRole('Administrador'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
                             {{ __('Usuarios') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                @if (Auth::check() && Auth::user()->hasRole('Taxonomo') || Auth::check() && Auth::user()->hasRole('Administrador'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('validate.index')" :active="request()->routeIs('validate.index')">
+                            {{ __('Validar Especies') }}
                         </x-nav-link>
                     </div>
                 @endif
@@ -91,7 +92,12 @@
             <x-responsive-nav-link :href="route('especies.index')" :active="request()->routeIs('especies.index')">
                 {{ __('Especies') }}
             </x-responsive-nav-link>
-            @if (Auth::check() && Auth::user()->hasRole('taxonomist'))
+            @if (Auth::check() && Auth::user()->hasRole('Administrador'))
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                    {{ __('Usuarios') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::check() && Auth::user()->hasRole('Taxonomo') || Auth::check() && Auth::user()->hasRole('Administrador'))
                 <x-responsive-nav-link :href="route('validate.index')" :active="request()->routeIs('validate.index')">
                     {{ __('Validar Especies') }}
                 </x-responsive-nav-link>

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -24,21 +25,24 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tipus_id' => 'required|exists:tipos_usuarios',
-            'user_nombre' => 'required|string|max:255',
-            'user_apellido' => 'required|string|max:255',
-            'user_email' => 'required|string|email|max:255|unique:usuarios',
-            'user_telefono' => 'required|string|max:255',
-            'user_password' => 'required|string|min:8',
+            'tipus_id' => 'required|exists:tipos_usuarios',            
+            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
+            'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'user_telefono' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
+            'user_email' => ['required', 'string', 'lowercase', 'email', 'max:35', 'unique:'.User::class],
+            'user_password' => ['required', 'confirmed',Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'tipus_id' => $request->tipus_id,
+            'user_cedula' => $request->user_cedula,
             'user_nombre' => $request->user_nombre,
             'user_apellido' => $request->user_apellido,
-            'user_email' => $request->user_email,
             'user_telefono' => $request->user_telefono,
+            'user_email' => $request->user_email,
             'user_password' => Hash::make($request->user_password),
+            'user_estado' => false,
         ]);
 
         return redirect()->route('admin.users.index');

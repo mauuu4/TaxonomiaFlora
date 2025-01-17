@@ -33,8 +33,9 @@ class EspecieController extends Controller
     public function store(EspecieRequest $request)
     {
         $validated = $request->validated();
-    
+        $validated['esp_estado_valid'] = false;
         $especie = Especie::create($validated);
+
     
         // Guardar las imágenes
         if($request->hasFile('imagenes')) {
@@ -51,6 +52,7 @@ class EspecieController extends Controller
     
         // Crear la ubicación
         Ubicacion::create([
+            'ubi_mapa_id' => 1,
             'ubi_esp_id' => $especie->esp_id,
             'ubi_longitud' => $request->ubi_longitud,
             'ubi_latitud' => $request->ubi_latitud,
@@ -62,6 +64,7 @@ class EspecieController extends Controller
         Registro::create([
             'esp_id' => $especie->esp_id,
             'user_id' => auth()->id(),
+            'regis_estado' => 'Pendiente'
         ]);
     
         return redirect()->route('especies.index')
@@ -86,6 +89,7 @@ class EspecieController extends Controller
         $validated = $request->validated();
     
         $especie = Especie::find($especie);
+        $validated['esp_estado_valid'] = false;
         $especie->update($validated);
     
         // Manejar eliminación de imágenes

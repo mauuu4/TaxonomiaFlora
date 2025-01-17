@@ -11,9 +11,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
+        if (auth()->user()->hasRole('Administrador')) {
             return $this->adminDashboard();
-        } elseif (auth()->user()->hasRole('taxonomist')) {
+        } elseif (auth()->user()->hasRole('Taxonomo')) {
             return $this->taxonomistDashboard();
         } else {
             return $this->userDashboard();

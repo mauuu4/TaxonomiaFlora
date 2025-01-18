@@ -1,4 +1,14 @@
 <x-app-layout :nav="'dashboard'">
+    @push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { 
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5rem;
+        }
+    </style>
+    @endpush
     <div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0 bg-gray-50">
         <h2 class="text-2xl font-semibold text-green-600 text-center">
             {{ __('Registrar Nueva Especie') }}
@@ -97,7 +107,7 @@
                             </button>
 
                             <div class="mt-2 h-64 bg-gray-100 rounded-lg border border-gray-200">
-                                <div id="map" class="h-full rounded-lg"></div>
+                                <div id="map"></div>
                             </div>
 
                             <div class="mt-4">
@@ -155,4 +165,60 @@
             container.appendChild(newInput);
         }
     </script>
+    @push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicializar el mapa centrado en Ecuador
+        const map = L.map('map').setView([-1.831239, -78.183406], 7);
+        
+        // Añadir la capa de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Variable para el marcador
+        let marker;
+
+        // Función para actualizar los campos de coordenadas
+        function updateCoordinates(latlng) {
+            document.getElementById('ubi_latitud').value = latlng.lat.toFixed(6);
+            document.getElementById('ubi_longitud').value = latlng.lng.toFixed(6);
+        }
+
+        // Evento de clic en el mapa
+        map.on('click', function(e) {
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                marker = L.marker(e.latlng, {draggable: true}).addTo(map);
+                
+                // Evento cuando se arrastra el marcador
+                marker.on('dragend', function(event) {
+                    updateCoordinates(marker.getLatLng());
+                });
+            }
+            updateCoordinates(e.latlng);
+        });
+
+        // Botón "Mostrar en el Mapa"
+        document.querySelector('button[type="button"]').addEventListener('click', function() {
+            const lat = parseFloat(document.getElementById('ubi_latitud').value);
+            const lng = parseFloat(document.getElementById('ubi_longitud').value);
+            
+            if (lat && lng) {
+                const latlng = L.latLng(lat, lng);
+                if (marker) {
+                    marker.setLatLng(latlng);
+                } else {
+                    marker = L.marker(latlng, {draggable: true}).addTo(map);
+                    
+                    marker.on('dragend', function(event) {
+                        updateCoordinates(marker.getLatLng());
+                    });
+                }
+                map.setView(latlng, 13);
+            }
+        });
+    </script>
+    @endpush
 </x-app-layout>

@@ -17,7 +17,7 @@ class EspecieController extends Controller
     {
         $registros = auth()->user()->registros()
             ->with(['especie', 'validaciones' => function($query) {
-                $query->orderBy('valid_fecha', 'desc');
+                $query->orderBy('valid_id', 'desc');
             }])
             ->orderBy('regis_id', 'desc')->paginate();
  
@@ -74,7 +74,8 @@ class EspecieController extends Controller
     public function show($especie)
     {
         $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);        
-        return view('especies.show', compact('especie'));
+        $validaciones = Registro::where('esp_id', $especie->esp_id)->first()->validaciones()->orderBy('valid_id', 'desc')->get();
+        return view('especies.show', compact('especie', 'validaciones'));
     }
 
     public function edit($especie)

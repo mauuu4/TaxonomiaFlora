@@ -100,6 +100,44 @@
                         </div>
                     @endif
 
+                    {{-- historial de validaciones tipo comentarios --}}
+                    @if($validaciones && $validaciones->count() > 0)
+                        <div class="mb-10">
+                            <h2 class="text-2xl font-semibold mb-6 text-green-800 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                Historial de Validaciones
+                            </h2>
+                            <div class="space-y-4">
+                                @foreach($validaciones as $validacion)
+                                    <div class="bg-green-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div class="space-y-3">
+                                                <p class="text-gray-700">
+                                                    <span class="font-semibold text-green-900">El usuario:</span>
+                                                    {{$user = App\Models\User::find($validacion->valid_user_id)->user_nombre}} sugirio:
+                                                </p>
+                                                <div>
+                                                    <span class="font-semibold text-green-900 mb-2">Fecha:</span>
+                                                    {{ $validacion->valid_fecha }}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                @if($validacion->valid_comentarios)
+                                                    <p class="text-gray-700">
+                                                        <span class="font-semibold text-green-900">Comentario:</span><br>
+                                                        <span class="text-gray-600 mt-2 block">{{ $validacion->valid_comentarios }}</span>
+                                                    </p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Botones de acción con estilo mejorado -->
                     <div class="flex justify-end space-x-4 pt-6 border-t border-green-200">
                         <a href="{{ route('especies.index') }}" 

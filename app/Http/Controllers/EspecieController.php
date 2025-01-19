@@ -68,7 +68,7 @@ class EspecieController extends Controller
             $this->especieService->update($especie, $request->validated());
             
             return redirect()->route('especies.show', $especie->esp_id)
-                ->with('success', 'Especie actualizada exitosamente.');
+                ->with('status', 'Especie actualizada exitosamente.');
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -83,7 +83,7 @@ class EspecieController extends Controller
             $this->especieService->delete($especie);
 
             return redirect()->route('especies.index')
-                ->with('success', 'Especie y todos sus datos relacionados eliminados exitosamente.');
+                ->with('warning', 'Especie y todos sus datos relacionados eliminados exitosamente.');
         } catch (\Exception $e) {
             return back()->with('error', 'Error al eliminar la especie: ' . $e->getMessage());
         }

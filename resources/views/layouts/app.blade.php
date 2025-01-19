@@ -37,7 +37,38 @@
                     </div>
                 </header>
             @endisset
-
+            
+            <div class="fixed inset-0 flex items-end justify-center px-4 py-6 pointer-events-none sm:p-24 sm:items-start z-50">
+                @if (session('success'))
+                    <div x-data="{ show: true }" 
+                        x-init="setTimeout(() => show = false, 3000)"
+                        x-show="show">                    
+                        <x-notification type="success" :message="session('success')" />
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div x-data="{ show: true }" 
+                        x-init="setTimeout(() => show = false, 3000)"                        
+                        x-show="show">                    
+                        <x-notification type="error" :message="session('error')" />
+                    </div>
+                @endif
+                @if (session('warning'))
+                    <div x-data="{ show: true }" 
+                        x-init="setTimeout(() => show = false, 3000)"                        
+                        x-show="show">                    
+                        <x-notification type="warning" :message="session('warning')" />
+                    </div>
+                @endif
+                @if (session('status'))
+                    <div x-data="{ show: true }" 
+                        x-init="setTimeout(() => show = false, 3000)"                        
+                        x-show="show">                    
+                        <x-notification type="info" :message="session('status')" />
+                    </div>
+                @endif
+            </div>         
+            
             <!-- Page Content -->
             <main>
                 {{ $slot }}

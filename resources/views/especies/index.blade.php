@@ -13,7 +13,8 @@
                         <h1 class="text-2xl font-bold text-gray-800">
                             {{ __('Especies Registradas') }}
                         </h1>
-                        <x-secondary-button href="{{ route('especies.create') }}" class="bg-green-600 hover:bg-green-700">
+                        <x-secondary-button x-data=""
+                        x-on:click.prevent="$dispatch('open-modal', 'create-especie-modal')" class="bg-green-600 hover:bg-green-700">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
@@ -23,14 +24,15 @@
                     @if($registros->isEmpty())
                         <div class="flex flex-col items-center justify-center">
                             <p class="text-gray-500 text-lg">No has registrado ninguna especie.</p>
-                            <x-secondary-button href="{{ route('especies.create') }}" class="bg-green-600 hover:bg-green-700">
+                            <x-secondary-button x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', 'create-especie-modal')" class="bg-green-600 hover:bg-green-700">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                 </svg>
                                 Registrar Especie
                             </x-secondary-button>
                         </div>
-                    @else                    
+                    @else                   
                         <!-- Tabla de Especies -->
                         <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
                             <table class="border-collapse table-auto w-full bg-white">
@@ -137,4 +139,26 @@
             </div>
         </div>
     </div>
+    <x-modal name="create-especie-modal" :show="$errors->isNotEmpty()" focusable maxWidth="4xl">
+        <div class="p-10">
+            <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
+                {{ __('Registrar Especie') }}
+            </h2>
+            <form method="POST" action="{{ route('especies.store') }}" enctype="multipart/form-data" class="mt-4">
+                @csrf
+                <div class="grid md:grid-cols-2 gap-6">
+                    @include('especies.partials.form-left-column')
+                    @include('especies.partials.form-right-column')
+                </div>
+                <div class="flex items-center justify-end mt-6 space-x-4">
+                    <x-secondary-button x-on:click="$dispatch('close')">
+                        {{ __('Cancelar') }}
+                    </x-secondary-button>
+                    <x-primary-button class="bg-green-500 hover:bg-green-700 focus:bg-green-700 active:bg-green-700">
+                        {{ __('Guardar') }}
+                    </x-primary-button>
+                </div>
+            </form>
+        </div>
+    </x-modal>
 </x-app-layout>

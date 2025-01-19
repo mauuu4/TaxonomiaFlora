@@ -20,7 +20,8 @@ class EspecieController extends Controller
     public function index()
     {
         $registros = $this->especieService->getPaginatedRegistros();
-        return view('especies.index', compact('registros'));
+        $generos = Genero::all();
+        return view('especies.index', compact('registros', 'generos'));
     }
 
     public function create()

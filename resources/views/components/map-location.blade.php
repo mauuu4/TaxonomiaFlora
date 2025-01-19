@@ -7,8 +7,18 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 @endpush
 
-<div class="mt-2 h-64 bg-gray-100 rounded-lg border border-gray-200">
-    <div id="map" class="h-full rounded-lg"></div>
+<div class="mt-2 h-64 bg-gray-100 rounded-lg border border-gray-200 relative z-0">
+    <div id="map" class="h-full rounded-lg" x-init="
+        $watch('show', value => {
+            if (value) {
+                setTimeout(() => {
+                    if (window.map) {
+                        window.map.invalidateSize();
+                    }
+                }, 100);
+            }
+        })
+    "></div>
 </div>
 
 @push('scripts')
@@ -21,20 +31,18 @@
         const interactive = {{ $interactive ? 'true' : 'false' }};
         const zoom = 16;
 
-        // Inicializar el mapa
-        const map = L.map('map', {
-            scrollWheelZoom: false // Deshabilitar zoom con scroll
+        // Hacer el mapa accesible globalmente
+        window.map = L.map('map', {
+            scrollWheelZoom: false
         }).setView([lat, lng], zoom);
 
-        // Agregar capas al mapa
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
-        }).addTo(map);
+        }).addTo(window.map);
 
-        // Añadir un marcador
         const marker = L.marker([lat, lng], {
             draggable: interactive
-        }).addTo(map);
+        }).addTo(window.map);
 
         // Si el marcador es interactivo, actualizar inputs de latitud y longitud
         if (interactive) {

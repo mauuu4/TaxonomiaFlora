@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
         ]);
 
         // Busca el tipus_id correspondiente al tipo "user"
-        $tipoUsuario = Tipo::where('tipus_detalles', 'user')->first();
+        $tipoUsuario = Tipo::where('tipus_detalles', 'Usuario')->first();
 
         $user = User::create([
             'tipus_id' => $tipoUsuario->tipus_id,

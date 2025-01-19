@@ -15,9 +15,10 @@
         multiple 
         accept="image/*"
         :max="maxImages"
+        required
         @change="handleFiles"
     >
-    
+    <x-input-error :messages="$errors->get($name)" class="mt-2" />
     <x-input-error :messages="$errors->get($name . '.*')" class="mt-2" />
     
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

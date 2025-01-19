@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Especie;
+use App\Models\Imagen;
+use App\Models\Mapa;
+use App\Models\Ubicacion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -43,7 +46,14 @@ class EspecieSeeder extends Seeder
             'esp_gene_id' => 1, // Acacia
         ]);
 
+        Mapa::create([
+            'mapa_nombre' => 'Mapa de la región 1',
+            'mapa_url' => 'https://www.google.com/maps/',
+        ]);
+
         // Generar 100 especies adicionales con el factory
         Especie::factory(100)->create();
+        Ubicacion::factory(104)->create();
+        Imagen::factory(104)->create();
     }
 }

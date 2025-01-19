@@ -16,7 +16,7 @@ class RegistroFactory extends Factory
      */
     public function definition(): array
     {
-        return [            
+        return [
             'esp_id' => $this->faker->numberBetween(1, 100),
             'user_id' => $this->faker->numberBetween(1, 100),
             'regis_estado' => $this->faker->randomElement(['Pendiente', 'Validado', 'Rechazado']),

@@ -36,10 +36,5 @@ class RegistroSeeder extends Seeder
         ]);
 
         Registro::factory(100)->create();
-
-        Mapa::create([
-            'mapa_nombre' => 'Mapa de la región 1',
-            'mapa_url' => 'https://www.google.com/maps/',
-        ]);
     }
 }

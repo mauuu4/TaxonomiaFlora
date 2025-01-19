@@ -4,23 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Especie;
 use App\Models\Genero;
-use App\Models\Imagen;
 use App\Models\Registro;
-use App\Models\Ubicacion;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\EspecieRequest;
+use App\Services\EspecieService;
 
 class EspecieController extends Controller
 {
+    protected $especieService;
+
+    public function __construct(EspecieService $especieService)
+    {
+        $this->especieService = $especieService;
+    }
+
     public function index()
     {
-        $registros = auth()->user()->registros()
-            ->with(['especie', 'validaciones' => function($query) {
-                $query->orderBy('valid_id', 'desc');
-            }])
-            ->orderBy('regis_id', 'desc')->paginate();
- 
+        $registros = $this->especieService->getPaginatedRegistros();
         return view('especies.index', compact('registros'));
     }
 
@@ -32,49 +31,26 @@ class EspecieController extends Controller
 
     public function store(EspecieRequest $request)
     {
-        $validated = $request->validated();
-        $validated['esp_estado_valid'] = false;
-        $especie = Especie::create($validated);
-
-    
-        // Guardar las imágenes
-        if($request->hasFile('esp_imagenes')) {
-            foreach($request->file('esp_imagenes') as $index => $imagen) {
-                $path = $imagen->store('especies', 'public');
-                
-                Imagen::create([
-                    'img_ruta' => $path,
-                    'img_descripcion' => $request->img_descripcion[$index] ?? null,
-                    'img_esp_id' => $especie->esp_id
-                ]);
-            }
+        try {
+            $this->especieService->store($request->validated());
+            return redirect()->route('especies.index')
+                ->with('success', 'Especie registrada exitosamente.');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->with('error', 'Error al registrar la especie: ' . $e->getMessage());
         }
-    
-        // Crear la ubicación
-        Ubicacion::create([
-            'ubi_mapa_id' => 1,
-            'ubi_esp_id' => $especie->esp_id,
-            'ubi_longitud' => $request->ubi_longitud,
-            'ubi_latitud' => $request->ubi_latitud,
-            'ubi_region' => $request->ubi_region,
-            'ubi_descripcion' => $request->ubi_descripcion,
-        ]);
-    
-        // Crear el registro
-        Registro::create([
-            'esp_id' => $especie->esp_id,
-            'user_id' => auth()->id(),
-            'regis_estado' => 'Pendiente'
-        ]);
-    
-        return redirect()->route('especies.index')
-            ->with('success', 'Especie registrada exitosamente.');
     }
 
     public function show($especie)
     {
         $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);        
-        $validaciones = Registro::where('esp_id', $especie->esp_id)->first()->validaciones()->orderBy('valid_id', 'desc')->get();
+        $validaciones = Registro::where('esp_id', $especie->esp_id)
+            ->first()
+            ->validaciones()
+            ->orderBy('valid_id', 'desc')
+            ->get();
+            
         return view('especies.show', compact('especie', 'validaciones'));
     }
 
@@ -87,82 +63,29 @@ class EspecieController extends Controller
 
     public function update(EspecieRequest $request, $especie)
     {
-        $validated = $request->validated();
-    
-        $especie = Especie::find($especie);
-        $validated['esp_estado_valid'] = false;
-        $especie->update($validated);
-    
-        // Manejar eliminación de imágenes
-        if ($request->has('imagenes_eliminar')) {
-            foreach ($request->imagenes_eliminar as $imagenId) {
-                $imagen = Imagen::find($imagenId);
-                if ($imagen) {
-                    Storage::disk('public')->delete($imagen->img_ruta);
-                    $imagen->delete();
-                }
-            }
+        try {
+            $especie = Especie::find($especie);
+            $this->especieService->update($especie, $request->validated());
+            
+            return redirect()->route('especies.show', $especie->esp_id)
+                ->with('success', 'Especie actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->with('error', 'Error al actualizar la especie: ' . $e->getMessage());
         }
-    
-        // Manejar nuevas imágenes
-        if($request->hasFile('nuevas_imagenes')) {
-            foreach($request->file('nuevas_imagenes') as $index => $imagen) {
-                $path = $imagen->store('especies', 'public');
-                
-                Imagen::create([
-                    'img_ruta' => $path,
-                    'img_descripcion' => $request->nuevas_img_descripcion[$index] ?? null,
-                    'img_esp_id' => $especie->esp_id
-                ]);
-            }
-        }
-    
-        // Actualizar ubicación
-        if($especie->ubicaciones->first()) {
-            $especie->ubicaciones->first()->update([
-                'ubi_longitud' => $request->ubi_longitud,
-                'ubi_latitud' => $request->ubi_latitud,
-                'ubi_region' => $request->ubi_region,
-                'ubi_descripcion' => $request->ubi_descripcion,
-            ]);
-        }
-    
-        //update registro estado
-        $registro = Registro::where('esp_id', $especie->esp_id)->first();
-        $registro->update([
-            'regis_estado' => 'Pendiente'
-        ]);
-    
-        return redirect()->route('especies.show', $especie->esp_id)
-            ->with('success', 'Especie actualizada exitosamente.');
     }
 
     public function destroy($especie)
     {
-        $especie = Especie::find($especie);
-    
-        // Eliminar imágenes del almacenamiento
-        foreach($especie->imagenes as $imagen) {
-            Storage::disk('public')->delete($imagen->img_ruta);
-        }
+        try {
+            $especie = Especie::find($especie);
+            $this->especieService->delete($especie);
 
-        // Eliminar registros relacionados
-        $registro = Registro::where('esp_id', $especie->esp_id)->first();
-        if ($registro) {
-            $registro->validaciones()->delete();
-            $registro->delete();
+            return redirect()->route('especies.index')
+                ->with('success', 'Especie y todos sus datos relacionados eliminados exitosamente.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al eliminar la especie: ' . $e->getMessage());
         }
-        
-        // Eliminar ubicaciones
-        $especie->ubicaciones()->delete();
-        
-        // Eliminar imágenes de la base de datos
-        $especie->imagenes()->delete();
-
-        // Eliminar la especie
-        $especie->delete();
-        
-        return redirect()->route('especies.index')
-            ->with('success', 'Especie y todos sus datos relacionados eliminados exitosamente.');
     }
 }

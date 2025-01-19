@@ -45,7 +45,7 @@ class UserController extends Controller
             'user_estado' => false,
         ]);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with('success', 'El usuario se creó con éxito');
     }
 
     public function edit($user)
@@ -64,6 +64,6 @@ class UserController extends Controller
         $user = User::findOrFail($user);
         $user->update($request->all());
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with('success', 'El usuario se actualizó con éxito');
     }
 }

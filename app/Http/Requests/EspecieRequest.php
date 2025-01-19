@@ -29,12 +29,14 @@ class EspecieRequest extends FormRequest
             'ubi_descripcion' => ['nullable', 'string', 'max:500'],
         ];
 
-         if ($this->isMethod('post')) {
-            $rules['imagenes.*'] = ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
+        if ($this->isMethod('post')) {
+            $rules['esp_imagenes'] = ['required', 'array', 'max:5']; // Máximo 5 imágenes
+            $rules['esp_imagenes.*'] = ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048']; // Validación por cada archivo
             $rules['img_descripcion.*'] = ['nullable', 'string', 'max:255'];
         }
 
         if ($this->isMethod('put')) {
+            $rules['nuevas_imagenes'] = ['nullable', 'array', 'max:5']; // Máximo 5 imágenes nuevas
             $rules['nuevas_imagenes.*'] = ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
             $rules['nuevas_img_descripcion.*'] = ['nullable', 'string', 'max:255'];
         }

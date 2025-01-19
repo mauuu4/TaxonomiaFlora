@@ -38,8 +38,8 @@ class EspecieController extends Controller
 
     
         // Guardar las imágenes
-        if($request->hasFile('imagenes')) {
-            foreach($request->file('imagenes') as $index => $imagen) {
+        if($request->hasFile('esp_imagenes')) {
+            foreach($request->file('esp_imagenes') as $index => $imagen) {
                 $path = $imagen->store('especies', 'public');
                 
                 Imagen::create([

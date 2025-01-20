@@ -10,6 +10,16 @@ class Genero extends Model
     protected $primaryKey = 'gene_id';
     
     protected $fillable = ['gene_nombre', 'gene_fam_id'];
+
+    public function setGeneNombreAttribute($value)
+    {
+        $this->attributes['gene_nombre'] = strtolower($value);
+    }
+
+    public function getGeneNombreAttribute($value)
+    {
+        return ucfirst($value);
+    }
     
     public function familia()
     {

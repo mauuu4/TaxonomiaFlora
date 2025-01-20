@@ -21,12 +21,24 @@ class Especie extends Model
         'esp_estado_valid'
     ];
 
-    protected function espNombreCientifico(): Attribute
+    public function setEspNombreCientificoAttribute($value)
     {
-        return Attribute::make(
-            set: fn($value) => strtolower($value),
-            get: fn($value) => ucfirst($value)
-        );
+        $this->attributes['esp_nombre_cientifico'] = strtolower($value);
+    }
+
+    public function setEspNombreComunAttribute($value)
+    {
+        $this->attributes['esp_nombre_comun'] = strtolower($value);
+    }
+
+    public function getEspNombreCientificoAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function getEspNombreComunAttribute($value)
+    {
+        return ucfirst($value);
     }
 
     public function getRouteKeyName()

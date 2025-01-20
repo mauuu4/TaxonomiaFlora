@@ -11,6 +11,16 @@ class Reino extends Model
 
     protected $fillable = ['reino_nombre'];
 
+    public function setReinoNombreAttribute($value)
+    {
+        $this->attributes['reino_nombre'] = strtolower($value);
+    }
+
+    public function getReinoNombreAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
     public function familias()
     {
         return $this->hasMany(Familia::class, 'fam_reino_id', 'reino_id');

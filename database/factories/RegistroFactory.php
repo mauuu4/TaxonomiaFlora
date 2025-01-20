@@ -18,7 +18,7 @@ class RegistroFactory extends Factory
     {
         return [
             'esp_id' => $this->faker->numberBetween(1, 100),
-            'user_id' => $this->faker->numberBetween(1, 100),
+            'user_id' => $this->faker->numberBetween(1, 4),
             'regis_estado' => $this->faker->randomElement(['Pendiente', 'Validado', 'Rechazado']),
         ];
     }

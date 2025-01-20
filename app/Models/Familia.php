@@ -10,6 +10,16 @@ class Familia extends Model
     protected $primaryKey = 'fam_id';
 
     protected $fillable = ['fam_nombre', 'fam_reino_id'];
+
+    public function setFamNombreAttribute($value)
+    {
+        $this->attributes['fam_nombre'] = strtolower($value);
+    }
+
+    public function getFamNombreAttribute($value)
+    {
+        return ucfirst($value);
+    }
     
     public function reino()
     {

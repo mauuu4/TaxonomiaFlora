@@ -13,12 +13,54 @@ class EspecieService
 {
     public function getPaginatedRegistros()
     {
+        // Consider adding a parameter for items per page
         return auth()->user()->registros()
-            ->with(['especie', 'validaciones' => function($query) {
+            ->with(['especie.genero.familia.reino', 'validaciones' => function($query) {
                 $query->orderBy('valid_id', 'desc');
             }])
             ->orderBy('regis_id', 'desc')
-            ->paginate();
+            ->paginate(10); // Specify number of items per page
+    }
+
+    public function getFilteredPaginatedRegistros($search = null, $genero = null, $familia = null, $reino = null, $estado = null)
+    {
+        $query = auth()->user()->registros()
+            ->with(['especie.genero.familia.reino', 'validaciones' => function($query) {
+                $query->orderBy('valid_id', 'desc');
+            }])
+            ->orderBy('regis_id', 'desc');
+    
+        // Si hay un término de búsqueda, aplicar el filtro sin distinguir entre mayúsculas y minúsculas
+        if ($search) {
+            $query->whereHas('especie', function($q) use ($search) {
+                $q->where('esp_nombre_comun', 'like', '%' . strtolower($search) . '%')
+                  ->orWhere('esp_nombre_cientifico', 'like', '%' . strtolower($search) . '%');
+            });
+        }
+    
+        // Filtro por género
+        if ($genero) {
+            $query->whereHas('especie.genero', function($q) use ($genero) {
+                $q->where('gene_id', $genero);
+            });
+        }
+    
+        // Filtro por familia
+        if ($familia) {
+            $query->whereHas('especie.genero.familia', function($q) use ($familia) {
+                $q->where('fam_id', $familia);
+            });
+        }
+    
+        // Filtro por reino
+        if ($reino) {
+            $query->whereHas('especie.genero.familia.reino', function($q) use ($reino) {
+                $q->where('reino_id', $reino);
+            });
+        }
+    
+    
+        return $query->paginate(10); // Paginación
     }
 
     public function store(array $data)

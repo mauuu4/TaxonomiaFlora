@@ -28,7 +28,7 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'user_email' => ['required', 'email', 'exists:USUARIOS,user_email'],
+            'user_email' => ['required', 'email', 'exists:usuarios,user_email'],
         ]);
 
         // Generar un token único

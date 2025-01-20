@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
+            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10', 'unique:'.User::class],
             'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'user_telefono' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],

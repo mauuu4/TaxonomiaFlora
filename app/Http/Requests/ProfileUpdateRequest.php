@@ -22,7 +22,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
+            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10', Rule::unique(User::class)->ignore($this->user()->user_id, 'user_id')],
             'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'user_telefono' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],

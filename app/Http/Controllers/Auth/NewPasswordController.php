@@ -30,7 +30,7 @@ class NewPasswordController extends Controller
         // Validar los datos del formulario
         $request->validate([
             'token' => ['required'],
-            'email' => ['required', 'email', 'exists:USUARIOS,user_email'],
+            'email' => ['required', 'email', 'exists:usuarios,user_email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -43,7 +43,7 @@ class NewPasswordController extends Controller
         }
 
         // Actualizar la contraseña en la base de datos
-        DB::table('USUARIOS')
+        DB::table('usuarios')
             ->where('user_email', $request->email)
             ->update([
                 'user_password' => Hash::make($request->password),

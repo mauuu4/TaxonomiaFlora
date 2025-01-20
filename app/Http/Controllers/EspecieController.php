@@ -33,6 +33,7 @@ class EspecieController extends Controller
             $request->genero, // Filtro por género
             $request->familia, // Filtro por familia
             $request->reino, // Filtro por reino
+            $request->estado // Filtro por estado de validación
         );
 
         return view('especies.index', compact('registros', 'generos', 'familias', 'reinos'));

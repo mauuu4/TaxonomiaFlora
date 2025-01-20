@@ -58,7 +58,11 @@ class EspecieService
                 $q->where('reino_id', $reino);
             });
         }
-    
+        
+        // Filtro por estado
+        if ($estado) {
+            $query->where('regis_estado', $estado);
+        }    
     
         return $query->paginate(10); // Paginación
     }

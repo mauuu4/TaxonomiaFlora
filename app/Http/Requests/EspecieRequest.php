@@ -38,7 +38,9 @@ class EspecieRequest extends FormRequest
         if ($this->isMethod('put')) {
             $rules['nuevas_imagenes'] = ['nullable', 'array', 'max:5']; // Máximo 5 imágenes nuevas
             $rules['nuevas_imagenes.*'] = ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'];
-            $rules['nuevas_img_descripcion.*'] = ['nullable', 'string', 'max:255'];
+            $rules['img_descripcion.*'] = ['nullable', 'string', 'max:255'];
+            $rules['img_descripcion_nueva.*'] = ['nullable', 'string', 'max:255'];
+            $rules['imagenes_eliminar'] = ['nullable', 'array', 'max:5']; // Máximo 5 imágenes a eliminar
         }
 
         return $rules;

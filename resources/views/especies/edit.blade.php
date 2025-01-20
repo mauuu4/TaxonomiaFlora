@@ -47,31 +47,46 @@
                             <x-input-error :messages="$errors->get('esp_descripcion')" class="mt-2" />
                         </div>
                         <!-- Imágenes Actuales -->
-                        <div>
-                            @if($especie->imagenes && $especie->imagenes->count() > 0)
-                                <div class="mt-4">
-                                    <h3 class="font-medium text-gray-700 mb-2">Imágenes Actuales</h3>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        @foreach($especie->imagenes as $imagen)
-                                            <div class="relative">
-                                                <img src="{{ asset('storage/' . $imagen->img_ruta) }}" 
-                                                     alt="Imagen de especie" 
-                                                     class="w-full h-32 object-cover rounded">
-                                                <input type="hidden" name="imagenes_existentes[]" value="{{ $imagen->img_id }}">
+                        @if($especie->imagenes && $especie->imagenes->count() > 0)
+                            <div class="mt-4">
+                                <x-input-label :value="__('Imágenes Actuales')" />
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
+                                    @foreach($especie->imagenes as $imagen)
+                                        <div class="relative">
+                                            <img src="{{ asset('storage/' . $imagen->img_ruta) }}" 
+                                                alt="Imagen de {{ $especie->esp_nombre_cientifico }}" 
+                                                class="rounded-lg shadow-md w-full h-32 object-cover">
+                                            
+                                            <!-- Checkbox para eliminar la imagen -->
+                                            <div class="absolute top-2 right-2">
+                                                <input 
+                                                    type="checkbox" 
+                                                    name="imagenes_eliminar[]" 
+                                                    value="{{ $imagen->img_id }}" 
+                                                    class="rounded border-gray-300 text-red-600 focus:ring-red-500">
                                             </div>
-                                        @endforeach
-                                    </div>
+                                            <div class="mt-2">
+                                                <input 
+                                                    type="text" 
+                                                    name="img_descripcion_nueva[{{ $imagen->img_id }}]" 
+                                                    value="{{ $imagen->img_descripcion }}" 
+                                                    placeholder="Descripción de la imagen" 
+                                                    class="block w-full text-sm border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                >
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                            @endif
-                        </div>
-                        <!-- Imágenes -->
-                        <div>
-                            <x-image-uploader 
-                            name="esp_imagenes" 
-                            label="Cambiar imágenes" 
-                            :maxImages="5"
-                            />
-                        </div>
+                            </div>
+                        @endif
+
+                        <!-- Nuevas Imágenes -->
+                        <x-image-uploader 
+                        name="nuevas_imagenes" 
+                        label="Imágenes" 
+                        :maxImages="5"
+                        />
+
                     </div>
                     <!-- Right Column -->
                     <div>

@@ -24,12 +24,6 @@ class EspecieController extends Controller
         return view('especies.index', compact('registros', 'generos'));
     }
 
-    public function create()
-    {
-        $generos = Genero::all();
-        return view('especies.create', compact('generos'));
-    }
-
     public function store(EspecieRequest $request)
     {
         try {

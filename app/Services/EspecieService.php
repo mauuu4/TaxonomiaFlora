@@ -53,6 +53,16 @@ class EspecieService
             // Update especie with validation state
             $data['esp_estado_valid'] = false;
             $especie->update($data);
+
+            if(isset($data['img_descripcion_nueva'])) {
+                foreach ($data['img_descripcion_nueva'] as $imagenId => $nuevaDescripcion) {
+                    $imagen = Imagen::find($imagenId);
+                    if ($imagen) {
+                        $imagen->img_descripcion = $nuevaDescripcion;
+                        $imagen->save();
+                    }
+                }
+            }
             
             // Handle image deletion
             if (isset($data['imagenes_eliminar'])) {
@@ -64,7 +74,7 @@ class EspecieService
                 $this->storeImages(
                     $especie, 
                     $data['nuevas_imagenes'],
-                    $data['nuevas_img_descripcion'] ?? []
+                    $data['img_descripcion'] ?? []
                 );
             }
             

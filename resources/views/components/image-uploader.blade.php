@@ -15,7 +15,7 @@
         multiple 
         accept="image/*"
         :max="maxImages"
-        required
+        {{-- required --}}
         @change="handleFiles"
     >
     <x-input-error :messages="$errors->get($name)" class="mt-2" />

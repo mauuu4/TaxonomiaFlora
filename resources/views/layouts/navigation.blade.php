@@ -18,7 +18,7 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('especies.index')" :active="request()->routeIs('especies.index')">
-                        {{ __('Especies') }}
+                        {{ __('Mis Registros') }}
                     </x-nav-link>
                 </div>
                 @if (Auth::check() && Auth::user()->hasRole('Administrador'))
@@ -90,7 +90,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('especies.index')" :active="request()->routeIs('especies.index')">
-                {{ __('Especies') }}
+                {{ __('Mis Registros') }}
             </x-responsive-nav-link>
             @if (Auth::check() && Auth::user()->hasRole('Administrador'))
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">

@@ -1,5 +1,3 @@
-@props(['nav' => 'default'])
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -19,16 +17,9 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">    
-            
-            {{-- Incluir nav solo si se pasa el atributo --}}
-            @isset($nav)
-                @if ($nav === 'dashboard')
-                    @include('layouts.navigation')
-                @elseif ($nav === 'homenav')
-                    @include('layouts.homenav')
-                @endif
-            @endisset
 
+            @include('layouts.navigation')
+            
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">

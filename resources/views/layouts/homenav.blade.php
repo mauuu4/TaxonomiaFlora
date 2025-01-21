@@ -17,9 +17,9 @@
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Inicio') }}
                     </x-nav-link>
-                    <x-nav-link href="#" :active="request()->routeIs('species')"
+                    <x-nav-link href="{{route('explorar.especies')}}" :active="request()->routeIs('explorar')"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
-                        {{ __('Especies') }}
+                        {{ __('Explorar') }}
                     </x-nav-link>
                     <x-nav-link href="#" :active="request()->routeIs('about')"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
@@ -29,12 +29,20 @@
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Contacto') }}
                     </x-nav-link>
+                    <x-nav-link href="#" :active="request()->routeIs('preguntas-frecuentes')"
+                        class="text-white hover:text-green-100 transition duration-150 ease-in-out">
+                        {{ __('Preguntas Frecuentes') }}
+                    </x-nav-link>
                 </div>
             </div>
 
             <!-- Right Section -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 @auth
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
+                        class="text-white hover:text-green-100 transition duration-150 ease-in-out">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
                     <!-- Settings Dropdown -->
                     <div class="ml-3 relative" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">
                         <div>
@@ -102,9 +110,9 @@
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Inicio') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#" :active="request()->routeIs('species')"
+            <x-responsive-nav-link href="#" :active="request()->routeIs('explorar')"
                 class="text-white hover:bg-green-400 hover:text-white">
-                {{ __('Especies') }}
+                {{ __('Explorar') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="#" :active="request()->routeIs('about')"
                 class="text-white hover:bg-green-400 hover:text-white">
@@ -113,6 +121,10 @@
             <x-responsive-nav-link href="#" :active="request()->routeIs('contact')"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Contacto') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="#" :active="request()->routeIs('preguntas-frecuentes')"
+                class="text-white hover:bg-green-400 hover:text-white">
+                {{ __('Preguntas Frecuentes') }}
             </x-responsive-nav-link>
         </div>
 
@@ -125,6 +137,11 @@
                 </div>
 
                 <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('dashboard')"
+                        class="text-white hover:bg-green-400">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+
                     <x-responsive-nav-link :href="route('profile.edit')"
                         class="text-white hover:bg-green-400">
                         {{ __('Profile') }}

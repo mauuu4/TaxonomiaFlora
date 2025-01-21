@@ -1,15 +1,13 @@
-<x-app-layout :nav="'dashboard'">
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Editar especie') }} {{ $especie->esp_nombre_cientifico }}
-        </h2>
-    </x-slot>
-
+<x-app-layout>
     <div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0 bg-gray-50">
         <div class="w-full max-w-4xl mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
             <form method="POST" action="{{ route('especies.update', $especie->esp_id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+
+                <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
+                    {{ __('Editar Especie') }}
+                </h2>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <!-- Left Column -->

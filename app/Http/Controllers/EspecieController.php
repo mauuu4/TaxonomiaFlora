@@ -87,6 +87,21 @@ class EspecieController extends Controller
     public function edit($especie)
     {
         $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
+        
+        // Verificar si se encontró la especie
+        if (!$especie) {
+            abort(404);
+        }
+    
+        // Obtener el registro asociado
+        $registro = Registro::where('esp_id', $especie->esp_id)->first();
+        
+        // Verificar si el usuario es el dueño del registro
+        if (auth()->id() !== $registro->user_id) {
+            return redirect()->route('especies.index')
+                ->with('error', 'No tienes permiso para editar esta especie.');
+        }
+    
         $generos = Genero::all();
         return view('especies.edit', compact('especie', 'generos'));
     }
@@ -95,10 +110,25 @@ class EspecieController extends Controller
     {
         try {
             $especie = Especie::find($especie);
+            
+            // Verificar si se encontró la especie
+            if (!$especie) {
+                abort(404);
+            }
+
+            // Verificar si el usuario es el dueño del registro
+            $registro = Registro::where('esp_id', $especie->esp_id)->first();
+
+            if (auth()->id() !== $registro->user_id) {
+                return redirect()->route('especies.index')
+                    ->with('error', 'No tienes permiso para actualizar esta especie.');
+            }
+
             $this->especieService->update($especie, $request->validated());
             
             return redirect()->route('especies.show', $especie->esp_id)
                 ->with('status', 'Especie actualizada exitosamente.');
+                
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -110,8 +140,21 @@ class EspecieController extends Controller
     {
         try {
             $especie = Especie::find($especie);
+            
+            // Verificar si se encontró la especie
+            if (!$especie) {
+                abort(404);
+            }
+    
+            // Verificar si el usuario es el dueño del registro
+            $registro = Registro::where('esp_id', $especie->esp_id)->first();
+            if (auth()->id() !== $registro->user_id) {
+                return redirect()->route('especies.index')
+                    ->with('error', 'No tienes permiso para eliminar esta especie.');
+            }
+    
             $this->especieService->delete($especie);
-
+    
             return redirect()->route('especies.index')
                 ->with('warning', 'Especie y todos sus datos relacionados eliminados exitosamente.');
         } catch (\Exception $e) {

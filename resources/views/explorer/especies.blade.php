@@ -43,11 +43,11 @@
                                         <h3 class="text-lg leading-6 font-medium text-gray-900">Filtrar especies</h3>
                                         <div class="mt-4 space-y-4">
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700">Reino</label>
+                                                <label class="block text-sm font-medium text-gray-700">Familia</label>
                                                 <select class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                                                     <option>Todos</option>
-                                                    <!-- @foreach($reinos as $reino) -->
-                                                    <option value="{{ $reino->id }}">{{ $reino->reino_nombre }}</option>
+                                                    <!-- @foreach($familias as $familia) -->
+                                                    <option value="{{ $familia->id }}">{{ $familia->fam_nombre }}</option>
                                                     <!-- @endforeach -->
                                                 </select>
                                             </div>

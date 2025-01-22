@@ -23,8 +23,13 @@ class DashboardController extends Controller
     protected function adminDashboard()
     {
         $totalUsuarios = User::count();
-        $totalRegistros = Registro::count();
-        $validacionesPendientes = Registro::where('regis_estado', 'Pendiente')->count();
+        $totalRegistros = Registro::whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })->count();
+        
+        $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })->where('regis_estado', 'Pendiente')->count();
         
         // Obtener las últimas actividades (necesitarás crear esta tabla)
         $ultimasActividades = collect([]); // Por ahora vacío, hasta que implementemos el sistema de actividades
@@ -39,16 +44,30 @@ class DashboardController extends Controller
 
     protected function taxonomistDashboard()
     {
-        $totalRegistros = auth()->user()->registros->count();
-        $validacionesPendientes = Registro::where('regis_estado', 'Pendiente')->count();
+        $totalRegistros = auth()->user()->registros()
+            ->whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })->count();
+            
+        $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })->where('regis_estado', 'Pendiente')->count();
         
         return view('dashboard', compact('validacionesPendientes', 'totalRegistros'));
     }
 
     protected function userDashboard()
     {   
-        $especiesValidadas = auth()->user()->registros->where('regis_estado', 'Validado')->count();
-        $totalRegistros = auth()->user()->registros->count();
+        $especiesValidadas = auth()->user()->registros()
+            ->whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })->where('regis_estado', 'Validado')->count();
+
+        $totalRegistros = auth()->user()->registros()
+            ->whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })->count();
+
         return view('dashboard', compact('totalRegistros', "especiesValidadas"));
     }
 }

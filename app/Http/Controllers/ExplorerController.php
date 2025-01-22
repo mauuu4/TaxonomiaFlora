@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Especie;
-use App\Models\Reino;
+use App\Models\Familia;
 use Illuminate\Http\Request;
 
 class ExplorerController extends Controller
 {
     public function especies(Request $request)
     {
-        $especies = Especie::orderBy('created_at', 'desc')->paginate(10);
-        $reinos = Reino::all();
-        return view('explorer.especies', compact('especies', 'reinos'));
+        $especies = Especie::whereHas('genero.familia.reino', function($query) {
+            $query->where('reino_nombre', 'plantae');
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+        $familias = Familia::whereHas('reino', function($query) {
+            $query->where('reino_nombre', 'plantae');
+        })->get();
+        
+        return view('explorer.especies', compact('especies', 'familias'));
     }
 }

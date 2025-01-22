@@ -13,16 +13,16 @@ class ValidateController extends Controller
         $estado = $request->get('estado');
         
         $registrosQuery = Registro::with(['especie.genero', 'user', 'validaciones'])
+            ->whereHas('especie.genero.familia.reino', function($query) {
+                $query->where('reino_nombre', 'plantae');
+            })
             ->orderBy('created_at', 'desc');
         
-        // Aplicar filtro si se seleccionó un estado
         if ($estado) {
             $registrosQuery->where('regis_estado', $estado);
         }
         
         $registros = $registrosQuery->paginate();
-        
-        // Obtener estados únicos para el filtro
         $estados = ['Pendiente', 'Validado', 'Rechazado'];
         
         return view('validate.index', compact('registros', 'estados', 'estado'));
@@ -36,7 +36,9 @@ class ValidateController extends Controller
             'especie.ubicaciones',
             'user',
             'validaciones'
-        ])->findOrFail($regis_id);
+            ])->whereHas('especie.genero.familia.reino', function($query) 
+                {$query->where('reino_nombre', 'plantae');
+            })->findOrFail($regis_id);
 
         return view('validate.show', compact('registro'));
     }

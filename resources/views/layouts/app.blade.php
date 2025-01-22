@@ -16,9 +16,13 @@
         @stack('styles')    
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">    
+        <div class="min-h-screen bg-green-50">    
 
-            @include('layouts.navigation')
+            @auth
+                @include('layouts.navigation')
+            @else
+                @include('layouts.homenav')
+            @endauth
             
             <!-- Page Heading -->
             @isset($header)

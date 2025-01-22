@@ -60,16 +60,18 @@
                 <div class="bg-white rounded-xl shadow-xl p-8 mb-16">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-emerald-600">10,000+</div>
+                            <div class="text-3xl font-bold text-emerald-600">{{ App\Models\Especie::count() }}+</div>
                             <div class="text-gray-600">Especies Registradas</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-emerald-600">500+</div>
+                            <div class="text-3xl font-bold text-emerald-600">{{ App\Models\User::whereHas('roles', function ($query) {
+                                $query->where('tipus_detalles', 'Taxonomo');
+                                })->count() }}+</div>
                             <div class="text-gray-600">Expertos Taxónomos</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-emerald-600">50+</div>
-                            <div class="text-gray-600">Países Participantes</div>
+                            <div class="text-3xl font-bold text-emerald-600">{{ App\Models\User::all()->count() }}+</div>
+                            <div class="text-gray-600">Usuarios Registrados</div>
                         </div>
                         <div class="text-center">
                             <div class="text-3xl font-bold text-emerald-600">1,000+</div>

@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecieController;
+use App\Http\Controllers\ExplorerController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TaxonomistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidateController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
     Route::resource('especies', EspecieController::class)
-    ->names('especies');
+        ->names('especies');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Administrador'])->group(function () {
@@ -34,5 +33,11 @@ Route::middleware(['auth', 'role:Administrador,Taxonomo'])->group(function () {
     Route::post('/validate/{regis_id}/validate', [ValidateController::class, 'validate'])->name('validate.validate');
     Route::post('/validate/{regis_id}/reject', [ValidateController::class, 'reject'])->name('validate.reject');
 });
+
+
+Route::get('/explorar', [ExplorerController::class, 'especies'])
+    ->name('explorar.especies');
+Route::get('especies/public/{especie}', [EspecieController::class, 'showPublic'])
+    ->name('especies.public.show');
 
 require __DIR__.'/auth.php';

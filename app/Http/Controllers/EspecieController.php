@@ -53,9 +53,28 @@ class EspecieController extends Controller
         }
     }
 
+    public function showPublic($especie)
+    {
+        $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
+        $validaciones = Registro::where('esp_id', $especie->esp_id)
+            ->first()
+            ->validaciones()
+            ->orderBy('valid_id', 'desc')
+            ->get();
+            
+        return view('especies.show', compact('especie', 'validaciones'));
+    }
+
     public function show($especie)
     {
-        $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);        
+        $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
+        $registro = $especie->registros->first();
+        
+        // Verificar si el usuario es el dueño del registro
+        if (auth()->id() !== $registro->user_id) {
+            return redirect()->route('especies.public.show', $especie->esp_id);
+        }
+
         $validaciones = Registro::where('esp_id', $especie->esp_id)
             ->first()
             ->validaciones()

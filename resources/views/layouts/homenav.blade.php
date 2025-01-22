@@ -19,7 +19,7 @@
                     </x-nav-link>
                     <x-nav-link href="{{route('explorar.especies')}}" :active="request()->routeIs('explorar')"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
-                        {{ __('Explorar') }}
+                        {{ __('Explorar Especies') }}
                     </x-nav-link>
                     <x-nav-link href="#" :active="request()->routeIs('about')"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
@@ -112,7 +112,7 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="#" :active="request()->routeIs('explorar')"
                 class="text-white hover:bg-green-400 hover:text-white">
-                {{ __('Explorar') }}
+                {{ __('Explorar Especies') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="#" :active="request()->routeIs('about')"
                 class="text-white hover:bg-green-400 hover:text-white">

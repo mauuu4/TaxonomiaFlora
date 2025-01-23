@@ -54,21 +54,6 @@ class EspecieController extends Controller
         }
     }
 
-    public function showPublic($especie)
-    {
-        $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
-        if (!$especie) {
-            abort(404);
-        }
-        $validaciones = Registro::where('esp_id', $especie->esp_id)
-            ->first()
-            ->validaciones()
-            ->orderBy('valid_id', 'desc')
-            ->get();
-            
-        return view('especies.show', compact('especie', 'validaciones'));
-    }
-
     public function show($especie)
     {
         $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
@@ -78,18 +63,29 @@ class EspecieController extends Controller
         
         $registro = $especie->registros->first();
 
-        // Verificar si el usuario es el dueño del registro
-        if (auth()->id() !== $registro->user_id) {
-            return redirect()->route('especies.public.show', $especie->esp_id);
-        }
-
         $validaciones = Registro::where('esp_id', $especie->esp_id)
             ->first()
             ->validaciones()
             ->orderBy('valid_id', 'desc')
             ->get();
+
+        $canEdit = false;
+        $canDelete = false;
             
-        return view('especies.show', compact('especie', 'validaciones'));
+        if (auth()->check()) {
+            // Check if current user can edit/delete
+            $canEdit = DB::select(
+                'SELECT check_especie_permissions(?, ?, ?)', 
+                [auth()->id(), $especie->esp_id, 'edit']
+            )[0]->check_especie_permissions;
+            
+            $canDelete = DB::select(
+                'SELECT check_especie_permissions(?, ?, ?)', 
+                [auth()->id(), $especie->esp_id, 'delete']
+            )[0]->check_especie_permissions;
+        }
+
+        return view('especies.show', compact('especie', 'validaciones', 'canEdit', 'canDelete'));
     }
 
     public function edit($especie)

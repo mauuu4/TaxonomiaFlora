@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::resource('especies', EspecieController::class)
+    Route::resource('especies', EspecieController::class)->except('show')
         ->names('especies');
 });
 
@@ -37,7 +37,8 @@ Route::middleware(['auth', 'role:Administrador,Taxonomo'])->group(function () {
 
 Route::get('/explorar', [ExplorerController::class, 'especies'])
     ->name('explorar.especies');
-Route::get('especies/public/{especie}', [EspecieController::class, 'showPublic'])
-    ->name('especies.public.show');
+
+Route::get('/especies/{especie}', [EspecieController::class, 'show'])
+    ->name('especies.show');
 
 require __DIR__.'/auth.php';

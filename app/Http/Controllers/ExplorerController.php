@@ -20,6 +20,6 @@ class ExplorerController extends Controller
             $query->where('reino_nombre', 'plantae');
         })->get();
         
-        return view('explorer.especies', compact('especies', 'familias'));
+        return view('explorar.especies', compact('especies', 'familias'));
     }
 }

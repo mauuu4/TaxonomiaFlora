@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Especie;
 use App\Models\Registro;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Familia;
+use App\Models\Genero;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -24,50 +26,113 @@ class DashboardController extends Controller
     {
         $totalUsuarios = User::count();
         $totalRegistros = Registro::whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
-            })->count();
+            $query->where('reino_nombre', 'plantae');
+        })->count();
         
         $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
-            })->where('regis_estado', 'Pendiente')->count();
+            $query->where('reino_nombre', 'plantae');
+        })->where('regis_estado', 'Pendiente')->count();
         
-        // Obtener las últimas actividades (necesitarás crear esta tabla)
-        $ultimasActividades = collect([]); // Por ahora vacío, hasta que implementemos el sistema de actividades
-        
+        // Métricas adicionales para administrador
+        $totalFamilias = Familia::count();
+        $totalGeneros = Genero::count();
+        $totalEspecies = Especie::count();
+
+        // Distribución de registros por estado
+        $registrosPorEstado = Registro::select('regis_estado', DB::raw('COUNT(*) as count'))
+            ->groupBy('regis_estado')
+            ->get();
+
+        // Usuarios más activos
+        $usuariosMasActivos = User::withCount('registros')
+            ->orderBy('registros_count', 'desc')
+            ->take(5)
+            ->get();
+
         return view('dashboard', compact(
             'totalUsuarios',
             'totalRegistros',
             'validacionesPendientes',
-            'ultimasActividades'
+            'totalFamilias',
+            'totalGeneros',
+            'totalEspecies',
+            'registrosPorEstado',
+            'usuariosMasActivos'
         ));
     }
 
     protected function taxonomistDashboard()
     {
-        $totalRegistros = auth()->user()->registros()
+        $user = auth()->user();
+        
+        $totalRegistros = $user->registros()
             ->whereHas('especie.genero.familia.reino', function($query) {
                 $query->where('reino_nombre', 'plantae');
             })->count();
             
         $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
-            })->where('regis_estado', 'Pendiente')->count();
+            $query->where('reino_nombre', 'plantae');
+        })->where('regis_estado', 'Pendiente')->count();
         
-        return view('dashboard', compact('validacionesPendientes', 'totalRegistros'));
+        // Registros pendientes asignados al taxonomo
+        $registrosPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
+            $query->where('reino_nombre', 'plantae');
+        })->where('regis_estado', 'Pendiente')
+          ->latest()
+          ->take(10)
+          ->get();
+
+        $registrosPorEstado = Registro::select('regis_estado', DB::raw('COUNT(*) as count'))
+        ->groupBy('regis_estado')
+        ->get();
+
+        // Estadísticas de validación del taxonomo
+        $estadisticasValidacion = Registro::where('user_id', $user->id)
+            ->select('regis_estado', DB::raw('COUNT(*) as count'))
+            ->groupBy('regis_estado')
+            ->get();
+
+        return view('dashboard', compact(
+            'totalRegistros', 
+            'validacionesPendientes', 
+            'registrosPendientes',
+            'estadisticasValidacion',
+            'registrosPorEstado'
+        ));
     }
 
     protected function userDashboard()
     {   
-        $especiesValidadas = auth()->user()->registros()
+        $user = auth()->user();
+
+        $especiesValidadas = $user->registros()
             ->whereHas('especie.genero.familia.reino', function($query) {
                 $query->where('reino_nombre', 'plantae');
             })->where('regis_estado', 'Validado')->count();
 
-        $totalRegistros = auth()->user()->registros()
+        $totalRegistros = $user->registros()
             ->whereHas('especie.genero.familia.reino', function($query) {
                 $query->where('reino_nombre', 'plantae');
             })->count();
 
-        return view('dashboard', compact('totalRegistros', "especiesValidadas"));
+        // Últimos registros del usuario
+        $ultimosRegistros = $user->registros()
+            ->with('especie.genero')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Distribución de registros por estado
+        $registrosPorEstado = $user->registros()
+            ->select('regis_estado', DB::raw('COUNT(*) as count'))
+            ->groupBy('regis_estado')
+            ->get();
+
+        return view('dashboard', compact(
+            'totalRegistros', 
+            'especiesValidadas', 
+            'ultimosRegistros',
+            'registrosPorEstado'
+        ));
     }
 }

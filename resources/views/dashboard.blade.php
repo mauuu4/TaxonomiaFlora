@@ -3,178 +3,156 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="mb-6">
+                    <!-- Título Dinámico -->
+                    <div class="mb-6 flex justify-between items-center">
                         <h1 class="text-2xl font-bold text-gray-800">
                             @if(Auth::user()->hasRole('Administrador'))
                                 Panel de Administración
                             @elseif(Auth::user()->hasRole('Taxonomo'))
                                 Panel de Taxonomo
                             @else
-                                Panel de Usuario
+                                Mi Panel de Especies
                             @endif
                         </h1>
                     </div>
 
-                    <!-- Mensaje de Bienvenida -->
-                    <div class="mb-6">
-                        <p class="text-gray-600">
-                            Bienvenido, {{ Auth::user()->user_nombre }} {{ Auth::user()->user_apellido }}.
+                    <!-- Mensaje de Bienvenida Personalizado -->
+                    <div class="mb-6 bg-green-100 border-l-4 border-green-500 p-4">
+                        <p class="text-green-700">
+                            Bienvenido, {{ Auth::user()->user_nombre }} {{ Auth::user()->user_apellido }}. 
+                            @if(Auth::user()->hasRole('Administrador'))
+                                Tienes acceso total al sistema de gestión de especies.
+                            @elseif(Auth::user()->hasRole('Taxonomo'))
+                                Puedes validar y gestionar registros de especies.
+                            @else
+                                Puedes continuar registrando y explorando especies.
+                            @endif
                         </p>
                     </div>
-        
+
+                    <!-- Tarjetas Estadísticas Dinámicas -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Card de Usuarios -->
-                        @if (Auth::user()->hasRole('Administrador'))                          
-                            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                                <div class="p-6">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-600">
-                                                Total Usuarios
-                                            </p>
-                                            <p class="text-2xl font-bold text-gray-900">
-                                                {{ $totalUsuarios }}
-                                            </p>
-                                        </div>
-                                        <div class="p-3 bg-indigo-100 rounded-full">
-                                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <a href="{{ route('admin.users.index') }}" class="text-sm text-indigo-600 hover:text-indigo-900">
-                                            Ver todos los usuarios →
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Tarjetas específicas según el rol -->
+                        @if (Auth::user()->hasRole('Administrador'))
+                            {{-- Tarjetas de Administrador --}}
+                            <x-dashboard-card 
+                                title="Total Usuarios" 
+                                :value="$totalUsuarios" 
+                                icon="users" 
+                                color="indigo" 
+                                :link="route('admin.users.index')"
+                            />
+                            <x-dashboard-card 
+                                title="Total Familias" 
+                                :value="$totalFamilias" 
+                                icon="collection" 
+                                color="blue" 
+                                :link="route('especies.index')"
+                            />
                         @endif
-        
-                        <!-- Card de Especies -->
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-6">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-600">
-                                            Total de Registros de Especies
-                                        </p>
-                                        <p class="text-2xl font-bold text-gray-900">
-                                            {{ $totalRegistros }}
-                                        </p>
-                                    </div>
-                                    <div class="p-3 bg-green-100 rounded-full">
-                                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="mt-4">
-                                    <a href="{{ route('especies.index') }}" class="text-sm text-green-600 hover:text-green-900">
-                                        Ver todos los Registros →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <!-- Card de Validaciones Pendientes -->
-                        @if (Auth::user()->hasRole('Taxonomo') || Auth::user()->hasRole('Administrador'))
-                            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                                <div class="p-6">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-600">
-                                                Validaciones Pendientes
-                                            </p>
-                                            <p class="text-2xl font-bold text-gray-900">
-                                                {{ $validacionesPendientes }}
-                                            </p>
-                                        </div>
-                                        <div class="p-3 bg-yellow-100 rounded-full">
-                                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <a href="{{ route('validate.index' , ['estado' => 'Pendiente']) }}" class="text-sm text-yellow-600 hover:text-yellow-900">
-                                            Ver validaciones pendientes →
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+
+                        {{-- Tarjeta común de Registros --}}
+                        <x-dashboard-card 
+                            title="Total Registros" 
+                            :value="$totalRegistros" 
+                            icon="database" 
+                            color="green" 
+                            :link="route('especies.index')"
+                        />
+
+                        @if (Auth::user()->hasRole('Taxonomo'))
+                            <x-dashboard-card 
+                                title="Validaciones Pendientes" 
+                                :value="$validacionesPendientes" 
+                                icon="check-circle" 
+                                color="yellow" 
+                                :link="route('validate.index', ['estado' => 'Pendiente'])"
+                            />
                         @endif
-                        <!-- Card de Especies Validadas -->
+
                         @if (Auth::user()->hasRole('Usuario'))
-                            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                                <div class="p-6">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-600">
-                                                Registros validados
-                                            </p>
-                                            <p class="text-2xl font-bold text-gray-900">
-                                                {{ $especiesValidadas }}
-                                            </p>
-                                        </div>
-                                        <div class="p-3 bg-green-100 rounded-full">
-                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <a href="{{ route('especies.index') }}" class="text-sm text-green-600 hover:text-yellow-900">
-                                            Ver especies validadas →
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-dashboard-card 
+                                title="Especies Validadas" 
+                                :value="$especiesValidadas" 
+                                icon="check-circle" 
+                                color="green" 
+                                :link="route('especies.index')"
+                            />
                         @endif
                     </div>
-        
-                    <!-- Tabla de Últimas Actividades -->
-                    @if(Auth::user()->hasRole('Administrador'))
-                        <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+                    <!-- Secciones Adicionales -->
+                    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Registros Recientes o Pendientes -->
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6">
                                 <h2 class="text-lg font-semibold text-gray-900 mb-4">
-                                    Últimas Actividades
+                                    @if(Auth::user()->hasRole('Administrador'))
+                                        Usuarios Más Activos
+                                    @elseif(Auth::user()->hasRole('Taxonomo'))
+                                        Registros Pendientes
+                                    @else
+                                        Mis Últimos Registros
+                                    @endif
                                 </h2>
-                                <div class="overflow-x-auto">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead>
-                                            <tr>
-                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Usuario
-                                                </th>
-                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Acción
-                                                </th>
-                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Fecha
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            @foreach($ultimasActividades as $actividad)
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {{ $actividad->user->user_nombre }}
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {{ $actividad->descripcion }}
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {{ $actividad->created_at->diffForHumans() }}
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                
+                                @if(Auth::user()->hasRole('Administrador'))
+                                    <ul class="divide-y divide-gray-200">
+                                        @foreach($usuariosMasActivos as $usuario)
+                                            <li class="py-4 flex justify-between">
+                                                <span>{{ $usuario->user_nombre }}</span>
+                                                <span class="text-gray-500">{{ $usuario->registros_count }} registros</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @elseif(Auth::user()->hasRole('Taxonomo'))
+                                    <ul class="divide-y divide-gray-200">
+                                        @foreach($registrosPendientes as $registro)
+                                            <li class="py-4 flex justify-between">
+                                                <span>{{ $registro->especie->esp_nombre_cientifico }}</span>
+                                                <span class="text-gray-500">{{ $registro->created_at->diffForHumans() }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <ul class="divide-y divide-gray-200">
+                                        @foreach($ultimosRegistros as $registro)
+                                            <li class="py-4 flex justify-between">
+                                                <span>{{ $registro->especie->esp_nombre_cientifico }}</span>
+                                                <span class="text-gray-500">{{ $registro->created_at->diffForHumans() }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Gráfico de Estado de Registros -->
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                                    Estado de Registros
+                                </h2>
+                                
+                                <div class="space-y-2">
+                                    @foreach($registrosPorEstado as $estado)
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">{{ $estado->regis_estado }}</span>
+                                            <span class="text-sm font-bold">{{ $estado->count }}</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div 
+                                                class="h-2.5 rounded-full 
+                                                {{ $estado->regis_estado === 'Validado' ? 'bg-green-600' : 
+                                                   ($estado->regis_estado === 'Pendiente' ? 'bg-yellow-600' : 'bg-red-600') }}"
+                                                style="width: {{ ($estado->count / $totalRegistros) * 100 }}%"
+                                            ></div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>

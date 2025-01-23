@@ -10,6 +10,7 @@ use App\Models\Familia;
 use App\Models\Reino;
 use App\Services\EspecieService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EspecieController extends Controller
 {
@@ -56,6 +57,9 @@ class EspecieController extends Controller
     public function showPublic($especie)
     {
         $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
+        if (!$especie) {
+            abort(404);
+        }
         $validaciones = Registro::where('esp_id', $especie->esp_id)
             ->first()
             ->validaciones()
@@ -68,8 +72,12 @@ class EspecieController extends Controller
     public function show($especie)
     {
         $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
-        $registro = $especie->registros->first();
+        if (!$especie) {
+            abort(404);
+        }
         
+        $registro = $especie->registros->first();
+
         // Verificar si el usuario es el dueño del registro
         if (auth()->id() !== $registro->user_id) {
             return redirect()->route('especies.public.show', $especie->esp_id);
@@ -86,22 +94,13 @@ class EspecieController extends Controller
 
     public function edit($especie)
     {
-        $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
+        $especie = Especie::find($especie);
         
-        // Verificar si se encontró la especie
-        if (!$especie) {
-            abort(404);
-        }
-    
-        // Obtener el registro asociado
-        $registro = Registro::where('esp_id', $especie->esp_id)->first();
-        
-        // Verificar si el usuario es el dueño del registro
-        if (auth()->id() !== $registro->user_id) {
+        if (!$especie || !$this->checkPermission($especie->esp_id, 'edit')) {
             return redirect()->route('especies.index')
                 ->with('error', 'No tienes permiso para editar esta especie.');
         }
-    
+        
         $generos = Genero::all();
         return view('especies.edit', compact('especie', 'generos'));
     }
@@ -110,16 +109,8 @@ class EspecieController extends Controller
     {
         try {
             $especie = Especie::find($especie);
-            
-            // Verificar si se encontró la especie
-            if (!$especie) {
-                abort(404);
-            }
 
-            // Verificar si el usuario es el dueño del registro
-            $registro = Registro::where('esp_id', $especie->esp_id)->first();
-
-            if (auth()->id() !== $registro->user_id) {
+            if (!$especie || !$this->checkPermission($especie->esp_id, 'edit')) {
                 return redirect()->route('especies.index')
                     ->with('error', 'No tienes permiso para actualizar esta especie.');
             }
@@ -141,14 +132,7 @@ class EspecieController extends Controller
         try {
             $especie = Especie::find($especie);
             
-            // Verificar si se encontró la especie
-            if (!$especie) {
-                abort(404);
-            }
-    
-            // Verificar si el usuario es el dueño del registro
-            $registro = Registro::where('esp_id', $especie->esp_id)->first();
-            if (auth()->id() !== $registro->user_id) {
+            if (!$especie || !$this->checkPermission($especie->esp_id, 'delete')) {
                 return redirect()->route('especies.index')
                     ->with('error', 'No tienes permiso para eliminar esta especie.');
             }
@@ -160,5 +144,13 @@ class EspecieController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Error al eliminar la especie: ' . $e->getMessage());
         }
+    }
+
+    private function checkPermission($especieId, $permission)
+    {
+        return DB::select(
+        'SELECT check_especie_permissions(?, ?, ?)',
+            [auth()->id(), $especieId, $permission]
+            )[0]->check_especie_permissions;
     }
 }

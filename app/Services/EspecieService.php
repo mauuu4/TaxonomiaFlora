@@ -96,6 +96,7 @@ class EspecieService
     public function update(Especie $especie, array $data)
     {
         return DB::transaction(function () use ($especie, $data) {
+            DB::statement("SET app.current_user_id = " . auth()->id());
             // Update especie with validation state
             $data['esp_estado_valid'] = false;
             $especie->update($data);
@@ -137,23 +138,26 @@ class EspecieService
     public function delete(Especie $especie)
     {
         return DB::transaction(function () use ($especie) {
+            // Set current user ID for permission checking
+            DB::statement("SET app.current_user_id = " . auth()->id());
+    
             // Delete images from storage
             foreach ($especie->imagenes as $imagen) {
                 Storage::disk('public')->delete($imagen->img_ruta);
             }
-
+    
             // Delete related records
             $registro = Registro::where('esp_id', $especie->esp_id)->first();
             if ($registro) {
                 $registro->validaciones()->delete();
                 $registro->delete();
             }
-
+    
             // Delete related records
             $especie->ubicaciones()->delete();
             $especie->imagenes()->delete();
             $especie->delete();
-
+    
             return true;
         });
     }

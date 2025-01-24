@@ -145,7 +145,6 @@
                                                 class="h-2.5 rounded-full 
                                                 {{ $estado->regis_estado === 'Validado' ? 'bg-green-600' : 
                                                    ($estado->regis_estado === 'Pendiente' ? 'bg-yellow-600' : 'bg-red-600') }}"
-                                                style="width: {{ ($estado->count / $totalRegistros) * 100 }}%"
                                             ></div>
                                         </div>
                                     @endforeach

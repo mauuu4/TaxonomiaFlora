@@ -37,7 +37,7 @@
                 <span class="whitespace-normal">
                     {{ $registro->ultimo_comentario }}
                 </span>
-                @if($registro->validaciones->count() > 1)
+                @if($registro->total_validaciones > 1)
                     <span class="text-xs text-gray-400 block mt-1">
                         ({{ $registro->total_validaciones }} validaciones en total)
                     </span>

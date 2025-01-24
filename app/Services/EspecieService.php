@@ -14,7 +14,7 @@ class EspecieService
 {
     public function getFilteredPaginatedRegistros($search = null, $genero = null, $familia = null, $estado = null)
     {
-        $query = DB::table('vw_registros_especies')
+        $query = DB::table('vista_registros_especies')
             ->where('user_id', auth()->id());
     
         // Búsqueda general

@@ -166,15 +166,28 @@
                     <!-- Botones de acción con estilo mejorado -->
                     <div class="flex justify-end space-x-4 pt-6 border-t border-green-200">
                         <div class="flex justify-end space-x-4 pt-6 border-t border-green-200">
-                            <x-secondary-button href="{{ url()->previous() }}"
-                                class="bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path>
-                                </svg>
-                                Volver
-                            </x-secondary-button>
+                            {{-- si no es el dueño del registro mandar al explorer --}}
+                            @if (url()->previous() == route('explorar.especies'))
+                                <x-secondary-button href="{{ route('explorar.especies') }}"
+                                    class="bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path>
+                                    </svg>
+                                    Volver
+                                </x-secondary-button>
+                            @else
+                                <x-secondary-button href="{{ route('especies.index') }}"
+                                    class="bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path>
+                                    </svg>
+                                    Volver
+                                </x-secondary-button>
+                            @endif
 
                             @if ($canEdit)
                                 <x-secondary-button href="{{ route('especies.edit', $especie->esp_id) }}"

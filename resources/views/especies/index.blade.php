@@ -22,7 +22,7 @@
                         </div>
                     @else
                         <!-- Formulario de búsqueda -->
-                        @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias, 'reinos' => $reinos])
+                        @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias])
                         <!-- Tabla de Especies -->
                         <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-scroll relative">
                             <table class="border-collapse table-auto w-full bg-white">

@@ -12,23 +12,6 @@
 
         <!-- Grid de filtros -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <!-- Filtro por Reino -->
-            <div class="space-y-2">
-                <label for="reino" class="block text-sm font-medium text-gray-700">
-                    {{ __('Reino') }}
-                </label>
-                <div class="relative">
-                    <select name="reino" id="reino" class="block w-full pl-3 pr-10 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent appearance-none">
-                        <option value="">{{ __('Todos los reinos') }}</option>
-                        @foreach ($reinos as $reinoItem)
-                            <option value="{{ $reinoItem->reino_id }}" {{ request('reino') == $reinoItem->reino_id ? 'selected' : '' }}>
-                                {{ $reinoItem->reino_nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
             <!-- Filtro por Familia -->
             <div class="space-y-2">
                 <label for="familia" class="block text-sm font-medium text-gray-700">

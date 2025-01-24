@@ -7,7 +7,6 @@ use App\Models\Genero;
 use App\Models\Registro;
 use App\Http\Requests\EspecieRequest;
 use App\Models\Familia;
-use App\Models\Reino;
 use App\Services\EspecieService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,21 +22,19 @@ class EspecieController extends Controller
 
     public function index(Request $request)
     {
-        // Obtener todos los géneros, familias y reinos para mostrarlos en el formulario de filtro
+        // Obtener todos los géneros y familias para mostrarlos en el formulario de filtro
         $generos = Genero::all();
         $familias = Familia::all();
-        $reinos = Reino::all();
 
         // Obtenemos los registros filtrados según los parámetros
         $registros = $this->especieService->getFilteredPaginatedRegistros(
             $request->search, // Si hay una búsqueda
             $request->genero, // Filtro por género
             $request->familia, // Filtro por familia
-            $request->reino, // Filtro por reino
             $request->estado // Filtro por estado de validación
         );
 
-        return view('especies.index', compact('registros', 'generos', 'familias', 'reinos'));
+        return view('especies.index', compact('registros', 'generos', 'familias'));
     }
     
 

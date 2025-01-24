@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Especie;
+use App\Models\Genero;
 use App\Models\Imagen;
 use App\Models\Ubicacion;
 use App\Models\Registro;
@@ -35,6 +36,12 @@ class EspecieService
     public function store(array $data)
     {
         return DB::transaction(function () use ($data) {
+            $nombreCientifico = explode(' ', $data['esp_nombre_cientifico']);
+            $genero = Genero::find($data['esp_gene_id']);
+            if (!$genero || $nombreCientifico[0] != $genero->gene_nombre) {
+                throw new \Exception('El nombre científico debe comenzar con el género.');
+            }
+
             // Create especie with validation state
             $data['esp_estado_valid'] = false;
             $especie = Especie::create($data);
@@ -62,6 +69,11 @@ class EspecieService
     {
         return DB::transaction(function () use ($especie, $data) {
             DB::statement("SET app.current_user_id = " . auth()->id());
+
+            $nombreCientifico = explode(' ', $data['esp_nombre_cientifico']);
+            if ($nombreCientifico[0] != $especie->genero->gene_nombre) {
+                throw new \Exception('El nombre científico debe comenzar con el género.');
+            }
             // Update especie with validation state
             $data['esp_estado_valid'] = false;
             $especie->update($data);

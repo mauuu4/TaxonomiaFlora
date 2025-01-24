@@ -13,7 +13,7 @@ class Genero extends Model
 
     public function setGeneNombreAttribute($value)
     {
-        $this->attributes['gene_nombre'] = strtolower($value);
+        $this->attributes['gene_nombre'] = ucfirst($value);
     }
 
     public function getGeneNombreAttribute($value)

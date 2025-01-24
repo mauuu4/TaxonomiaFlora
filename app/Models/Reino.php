@@ -13,7 +13,7 @@ class Reino extends Model
 
     public function setReinoNombreAttribute($value)
     {
-        $this->attributes['reino_nombre'] = strtolower($value);
+        $this->attributes['reino_nombre'] = ucfirst($value);
     }
 
     public function getReinoNombreAttribute($value)

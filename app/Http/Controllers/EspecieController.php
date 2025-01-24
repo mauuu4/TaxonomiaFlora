@@ -40,7 +40,7 @@ class EspecieController extends Controller
 
     public function store(EspecieRequest $request)
     {
-        try {
+        try {            
             $this->especieService->store($request->validated());
             return redirect()->route('especies.index')
                 ->with('success', 'Especie registrada exitosamente.');

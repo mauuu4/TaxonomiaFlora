@@ -23,22 +23,28 @@ class Especie extends Model
 
     public function setEspNombreCientificoAttribute($value)
     {
-        $this->attributes['esp_nombre_cientifico'] = strtolower($value);
+        $this->attributes['esp_nombre_cientifico'] = ucfirst(strtolower($value));       
     }
-
-    public function setEspNombreComunAttribute($value)
-    {
-        $this->attributes['esp_nombre_comun'] = strtolower($value);
-    }
-
+    
     public function getEspNombreCientificoAttribute($value)
     {
         return ucfirst($value);
     }
+ 
+    public function setEspNombreComunAttribute($value)
+    {
+        $this->attributes['esp_nombre_comun'] = ucfirst(strtolower($value));
+    }
+
 
     public function getEspNombreComunAttribute($value)
     {
         return ucfirst($value);
+    }
+
+    public function setEspDescripcionAttribute($value)
+    {
+        $this->attributes['esp_descripcion'] = ucfirst(strtolower($value));
     }
 
     public function getRouteKeyName()

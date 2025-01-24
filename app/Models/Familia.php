@@ -13,7 +13,7 @@ class Familia extends Model
 
     public function setFamNombreAttribute($value)
     {
-        $this->attributes['fam_nombre'] = strtolower($value);
+        $this->attributes['fam_nombre'] = ucfirst($value);
     }
 
     public function getFamNombreAttribute($value)

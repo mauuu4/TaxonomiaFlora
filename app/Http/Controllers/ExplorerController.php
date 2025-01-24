@@ -11,13 +11,13 @@ class ExplorerController extends Controller
     public function especies(Request $request)
     {
         $especies = Especie::whereHas('genero.familia.reino', function($query) {
-            $query->where('reino_nombre', 'plantae');
+            $query->where('reino_nombre', 'Plantae');
         })
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
         $familias = Familia::whereHas('reino', function($query) {
-            $query->where('reino_nombre', 'plantae');
+            $query->where('reino_nombre', 'Plantae');
         })->get();
         
         return view('explorar.especies', compact('especies', 'familias'));

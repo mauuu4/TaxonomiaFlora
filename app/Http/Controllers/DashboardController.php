@@ -26,11 +26,11 @@ class DashboardController extends Controller
     {
         $totalUsuarios = User::count();
         $totalRegistros = Registro::whereHas('especie.genero.familia.reino', function($query) {
-            $query->where('reino_nombre', 'plantae');
+            $query->where('reino_nombre', 'Plantae');
         })->count();
         
         $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
-            $query->where('reino_nombre', 'plantae');
+            $query->where('reino_nombre', 'Plantae');
         })->where('regis_estado', 'Pendiente')->count();
         
         // Métricas adicionales para administrador
@@ -67,16 +67,16 @@ class DashboardController extends Controller
         
         $totalRegistros = $user->registros()
             ->whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
+                $query->where('reino_nombre', 'Plantae');
             })->count();
             
         $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
-            $query->where('reino_nombre', 'plantae');
+            $query->where('reino_nombre', 'Plantae');
         })->where('regis_estado', 'Pendiente')->count();
         
         // Registros pendientes asignados al taxonomo
         $registrosPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
-            $query->where('reino_nombre', 'plantae');
+            $query->where('reino_nombre', 'Plantae');
         })->where('regis_estado', 'Pendiente')
           ->latest()
           ->take(10)
@@ -107,12 +107,12 @@ class DashboardController extends Controller
 
         $especiesValidadas = $user->registros()
             ->whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
+                $query->where('reino_nombre', 'Plantae');
             })->where('regis_estado', 'Validado')->count();
 
         $totalRegistros = $user->registros()
             ->whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
+                $query->where('reino_nombre', 'Plantae');
             })->count();
 
         // Últimos registros del usuario

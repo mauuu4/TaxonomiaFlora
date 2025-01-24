@@ -14,7 +14,7 @@ class ValidateController extends Controller
         
         $registrosQuery = Registro::with(['especie.genero', 'user', 'validaciones'])
             ->whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'plantae');
+                $query->where('reino_nombre', 'Plantae');
             })
             ->orderBy('created_at', 'desc');
         
@@ -37,7 +37,7 @@ class ValidateController extends Controller
             'user',
             'validaciones'
             ])->whereHas('especie.genero.familia.reino', function($query) 
-                {$query->where('reino_nombre', 'plantae');
+                {$query->where('reino_nombre', 'Plantae');
             })->findOrFail($regis_id);
 
         return view('validate.show', compact('registro'));

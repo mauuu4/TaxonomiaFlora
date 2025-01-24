@@ -1,27 +1,27 @@
 <tr class="hover:bg-gray-50">
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
-            {{ $registro->especie->genero->familia->reino->reino_nombre }}
+            {{ $registro->reino_nombre }}
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
-            {{ $registro->especie->genero->familia->fam_nombre }}
+            {{ $registro->fam_nombre }}
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
-            {{ $registro->especie->genero->gene_nombre }}
+            {{ $registro->gene_nombre }}
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900 italic">
-            {{ $registro->especie->esp_nombre_cientifico }}
+            {{ $registro->esp_nombre_cientifico }}
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm text-gray-500">
-            {{ $registro->especie->esp_nombre_comun }}
+            {{ $registro->esp_nombre_comun }}
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
@@ -33,13 +33,13 @@
     </td>
     <td class="px-6 py-4">
         <div class="text-sm text-gray-500">
-            @if($registro->validaciones->isNotEmpty())
+            @if($registro->total_validaciones > 0)
                 <span class="whitespace-normal">
-                    {{ $registro->validaciones->first()->valid_comentarios }}
+                    {{ $registro->ultimo_comentario }}
                 </span>
                 @if($registro->validaciones->count() > 1)
                     <span class="text-xs text-gray-400 block mt-1">
-                        ({{ $registro->validaciones->count() }} validaciones en total)
+                        ({{ $registro->total_validaciones }} validaciones en total)
                     </span>
                 @endif
             @else
@@ -49,7 +49,7 @@
     </td>
     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <div class="flex justify-end space-x-3">
-            <a href="{{ route('especies.show', $registro->especie->esp_id) }}" 
+            <a href="{{ route('especies.show', $registro->esp_id) }}" 
                class="text-indigo-600 hover:text-indigo-900">
                 Ver
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -13,41 +13,24 @@ class EspecieService
 {
     public function getFilteredPaginatedRegistros($search = null, $genero = null, $familia = null, $estado = null)
     {
-        $query = auth()->user()->registros()
-            ->with(['especie.genero.familia.reino', 'validaciones' => function($query) {
-                $query->orderBy('valid_id', 'desc');
-            }])
-            ->orderBy('regis_id', 'desc');
+        $query = DB::table('vw_registros_especies')
+            ->where('user_id', auth()->id());
     
-        // Si hay un término de búsqueda, aplicar el filtro sin distinguir entre mayúsculas y minúsculas
+        // Búsqueda general
         if ($search) {
-            $query->whereHas('especie', function($q) use ($search) {
-                $q->where('esp_nombre_comun', 'like', '%' . strtolower($search) . '%')
-                  ->orWhere('esp_nombre_cientifico', 'like', '%' . strtolower($search) . '%');
+            $query->where(function($q) use ($search) {
+                $q->where('esp_nombre_comun', 'ilike', "%{$search}%")
+                  ->orWhere('esp_nombre_cientifico', 'ilike', "%{$search}%");
             });
         }
     
-        // Filtro por género
-        if ($genero) {
-            $query->whereHas('especie.genero', function($q) use ($genero) {
-                $q->where('gene_id', $genero);
-            });
-        }
+        // Filtros específicos
+        if ($genero) $query->where('gene_id', $genero);
+        if ($familia) $query->where('fam_id', $familia);
+        if ($estado) $query->where('regis_estado', $estado);
     
-        // Filtro por familia
-        if ($familia) {
-            $query->whereHas('especie.genero.familia', function($q) use ($familia) {
-                $q->where('fam_id', $familia);
-            });
-        }
-        
-        // Filtro por estado
-        if ($estado) {
-            $query->where('regis_estado', $estado);
-        }    
-    
-        return $query->paginate(10); // Paginación
-    }
+        return $query->orderBy('regis_id', 'desc')->paginate(10);
+    }    
 
     public function store(array $data)
     {

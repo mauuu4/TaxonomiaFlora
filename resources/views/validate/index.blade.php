@@ -1,6 +1,13 @@
 <x-app-layout   >
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8"
+        x-data="{ 
+            viewMode: localStorage.getItem('speciesViewMode') || 'table',
+            updateViewMode(mode) {
+                this.viewMode = mode;
+                localStorage.setItem('speciesViewMode', mode);
+            }
+        }">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- Encabezado -->
@@ -10,7 +17,13 @@
                         </h1>
                     </div>
 
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-end">
+                        <x-view-mode-toggle/>
+                    </div>
+
                     @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias, 'action' => route('validate.index')])
+
+                    @include('especies.partials.grid-view')
 
                     <!-- Tabla de Especies por Validar -->
                     <div x-show="viewMode === 'table'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
@@ -27,6 +40,8 @@
                             </table>
                         </div>
                     </div>
+
+                    <x-map-view :registros="$registros"/>
 
                     <!-- Paginación -->
                     <div class="mt-6">

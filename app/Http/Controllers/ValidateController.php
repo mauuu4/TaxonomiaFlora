@@ -62,6 +62,8 @@ class ValidateController extends Controller
 
     public function validate(Request $request, $regis_id)
     {
+        DB::statement("SET app.current_user_id = " . auth()->id());
+
         $registro = Registro::findOrFail($regis_id);
 
         $validated = $request->validate([
@@ -92,6 +94,8 @@ class ValidateController extends Controller
 
     public function reject(Request $request, $regis_id)
     {
+        DB::statement("SET app.current_user_id = " . auth()->id());
+
         $registro = Registro::findOrFail($regis_id);
 
         $validated = $request->validate([
@@ -109,6 +113,10 @@ class ValidateController extends Controller
         // Actualizar el estado del registro
         $registro->update([
             'regis_estado' => 'Rechazado'
+        ]);
+
+        $registro->especie->update([
+            'esp_estado_valid' => false
         ]);
 
         return redirect()->route('validate.index')

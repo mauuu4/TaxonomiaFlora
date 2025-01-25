@@ -70,25 +70,25 @@ class EspecieSeeder extends Seeder
 
         Imagen::create([
             'img_esp_id' => 1,
-            'img_ruta' => 'https://www.arbolesornamentales.es/wp-content/uploads/2019/01/Acacia-dealbata.jpg',
+            'img_ruta' => 'especies/img1.jpeg',
             'img_descripcion' => 'Acacia dealbata',
         ]);
 
         Imagen::create([
             'img_esp_id' => 2,
-            'img_ruta' => 'https://www.arbolesornamentales.es/wp-content/uploads/2019/01/Rosa-canina.jpg',
+            'img_ruta' => 'especies/img2.jpeg',
             'img_descripcion' => 'Rosa canina',
         ]);
 
         Imagen::create([
             'img_esp_id' => 3,
-            'img_ruta' => 'https://www.arbolesornamentales.es/wp-content/uploads/2019/01/Rosa-no-canina.jpg',
+            'img_ruta' => 'especies/img3.jpeg',
             'img_descripcion' => 'Rosa no canina',
         ]);
 
         Imagen::create([
             'img_esp_id' => 4,
-            'img_ruta' => 'https://www.arbolesornamentales.es/wp-content/uploads/2019/01/Acacia-dealbata.jpg',
+            'img_ruta' => 'especies/img4.jpeg',
             'img_descripcion' => 'Acacia dealbata mod',
         ]);
 

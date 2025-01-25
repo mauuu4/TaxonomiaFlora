@@ -22,7 +22,7 @@
                         </div>
                     @else
                         <!-- Formulario de búsqueda -->
-                        @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias])
+                        @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias, 'action' => route('especies.index')])
                         <!-- Tabla de Especies -->
                         <div x-show="viewMode === 'table'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                             <div class="shadow overflow-x-auto overflow-y-auto border-b border-gray-200 sm:rounded-lg">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registro;
+use App\Models\Reino;
 use App\Models\Validacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,10 +12,37 @@ class ValidateController extends Controller
 {
     public function index(Request $request)
     {
-        $registros = $query = DB::table('vista_registros_especies')->where('regis_estado', 'Pendiente')
-            ->paginate(10);
+        $plantae = Reino::where('reino_nombre', 'Plantae')->first();
+        $familias = $plantae->familias;
         
-        return view('validate.index', compact('registros'));
+        $generos = collect();
+        foreach ($familias as $familia) {
+            $generos = $generos->merge($familia->generos);
+        }
+
+        $query = DB::table('vista_registros_especies')->orderBy('created_at', 'desc');
+
+        $estado = $request->estado ?? 'Pendiente';
+        $query->where('regis_estado', $estado);
+
+        $search = $request->search;
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('esp_nombre_comun', 'ilike', "%{$search}%")
+                  ->orWhere('esp_nombre_cientifico', 'ilike', "%{$search}%");
+            });
+        }
+
+        // Filtro por género
+        if ($request->genero) $query->where('gene_id', $request->genero);
+
+        // Filtro por familia
+        if ($request->familia) $query->where('fam_id', $request->familia);
+
+        // Paginación
+        $registros = $query->paginate(10);
+        
+        return view('validate.index', compact('registros', 'generos' ,'familias', 'estado'));
     }
 
     public function show($regis_id)

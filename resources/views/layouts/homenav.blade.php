@@ -13,23 +13,23 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link href="/" :active="request()->routeIs('home')" 
+                    <x-nav-link href="/"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Inicio') }}
                     </x-nav-link>
-                    <x-nav-link href="{{route('explorar.especies')}}" :active="request()->routeIs('explorar')"
+                    <x-nav-link href="{{route('explorar.especies')}}"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Explorar Especies') }}
                     </x-nav-link>
-                    <x-nav-link href="#" :active="request()->routeIs('about')"
+                    <x-nav-link href="#"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Nosotros') }}
                     </x-nav-link>
-                    <x-nav-link href="#" :active="request()->routeIs('contact')"
+                    <x-nav-link href="#"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Contacto') }}
                     </x-nav-link>
-                    <x-nav-link href="#" :active="request()->routeIs('preguntas-frecuentes')"
+                    <x-nav-link href="#"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Preguntas Frecuentes') }}
                     </x-nav-link>
@@ -39,7 +39,7 @@
             <!-- Right Section -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 @auth
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')"
+                    <x-nav-link href="{{ route('dashboard') }}"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -106,23 +106,23 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="/" :active="request()->routeIs('home')"
+            <x-responsive-nav-link href="/"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Inicio') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#" :active="request()->routeIs('explorar')"
+            <x-responsive-nav-link href="{{route('explorar.especies')}}"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Explorar Especies') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#" :active="request()->routeIs('about')"
+            <x-responsive-nav-link href="#"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Nosotros') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#" :active="request()->routeIs('contact')"
+            <x-responsive-nav-link href="#"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Contacto') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#" :active="request()->routeIs('preguntas-frecuentes')"
+            <x-responsive-nav-link href="#"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Preguntas Frecuentes') }}
             </x-responsive-nav-link>
@@ -132,8 +132,8 @@
         <div class="pt-4 pb-1 border-t border-green-400">
             @auth
                 <div class="px-4">
-                    <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-green-100">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-white">{{ Auth::user()->user_nombre }}</div>
+                    <div class="font-medium text-sm text-green-100">{{ Auth::user()->user_email }}</div>
                 </div>
 
                 <div class="mt-3 space-y-1">

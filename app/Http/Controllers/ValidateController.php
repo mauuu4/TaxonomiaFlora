@@ -5,27 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Registro;
 use App\Models\Validacion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ValidateController extends Controller
 {
     public function index(Request $request)
     {
-        $estado = $request->get('estado');
+        $registros = $query = DB::table('vista_registros_especies')->where('regis_estado', 'Pendiente')
+            ->paginate(10);
         
-        $registrosQuery = Registro::with(['especie.genero', 'user', 'validaciones'])
-            ->whereHas('especie.genero.familia.reino', function($query) {
-                $query->where('reino_nombre', 'Plantae');
-            })
-            ->orderBy('created_at', 'desc');
-        
-        if ($estado) {
-            $registrosQuery->where('regis_estado', $estado);
-        }
-        
-        $registros = $registrosQuery->paginate();
-        $estados = ['Pendiente', 'Validado', 'Rechazado'];
-        
-        return view('validate.index', compact('registros', 'estados', 'estado'));
+        return view('validate.index', compact('registros'));
     }
 
     public function show($regis_id)

@@ -1,9 +1,4 @@
-<x-app-layout :nav="'dashboard'">
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Validar Especies') }}
-        </h2>
-    </x-slot>
+<x-app-layout   >
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -13,102 +8,22 @@
                         <h1 class="text-2xl font-bold text-gray-800">
                             {{ __('Especies Pendientes de Validación') }}
                         </h1>
-                        <!-- Filtro de Estados -->                    
-                        <form action="{{ route('validate.index') }}" method="GET" class="flex items-center space-x-4">
-                            <select name="estado" 
-                                class="w-40 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white py-2 px-3 text-gray-700 text-sm">
-                                <option value="">Todos los estados</option>
-                                @foreach($estados as $estadoOption)
-                                    <option value="{{ $estadoOption }}" {{ $estado == $estadoOption ? 'selected' : '' }}>
-                                        {{ $estadoOption }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
-                                Filtrar
-                            </button>
-                        </form>
                     </div>
 
                     <!-- Tabla de Especies por Validar -->
-                    <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
-                        <table class="border-collapse table-auto w-full bg-white">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Género
-                                    </th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Nombre Científico
-                                    </th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Nombre Común
-                                    </th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Estado
-                                    </th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Registrado Por
-                                    </th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Fecha de Registro
-                                    </th>
-                                    <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Acciones
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($registros as $registro)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                {{ $registro->especie->genero->gene_nombre }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                {{ $registro->especie->esp_nombre_cientifico }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-500">
-                                                {{ $registro->especie->esp_nombre_comun }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                {{ $registro->regis_estado === 'Validado' ? 'bg-green-100 text-green-800' : 
-                                                   ($registro->regis_estado === 'Rechazado' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                                {{ $registro->regis_estado }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-500">
-                                                {{ $registro->user->user_nombre }} {{ $registro->user->user_apellido }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-500">
-                                                {{ $registro->created_at->format('d/m/Y') }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div class="flex justify-end space-x-3">
-                                                <a href="{{ route('validate.show', $registro->regis_id) }}" 
-                                                   class="text-indigo-600 hover:text-indigo-900"
-                                                   title="Ver detalles">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div x-show="viewMode === 'table'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                        <div class="shadow overflow-x-auto overflow-y-auto border-b border-gray-200 sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                    @include('especies.partials.table-header', ['viewType' => 'taxonomo'])
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach ($registros as $registro)
+                                        @include('especies.partials.table-row', ['viewType' => 'taxonomo'])
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <!-- Paginación -->

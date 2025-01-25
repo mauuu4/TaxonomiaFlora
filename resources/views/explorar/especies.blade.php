@@ -80,31 +80,30 @@
                 </div>
             </div>
 
-            <!-- Vista de Grid (tarjetas) -->
             <div x-show="viewMode === 'grid'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($especies as $especie)
+                    @foreach ($registros as $registro)
                     <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-300">
                         <div class="relative pb-48">
-                            <img class="absolute h-full w-full object-cover" src="{{ asset('storage/'.$especie->imagenes->first()->img_ruta) }}" alt="{{$especie->esp_nombre_cientifico}}">
+                            <img class="absolute h-full w-full object-cover" src="{{ asset('storage/'.$registro->img_ruta) }}" alt="{{$registro->esp_nombre_cientifico}}">
                         </div>
                         <div class="p-4">
                             <div class="uppercase tracking-wide text-sm font-semibold">
-                                {{ $especie->genero->familia->reino->reino_nombre }}
+                                {{ $registro->reino_nombre }}
                             </div>
                             <h3 class="mt-1 text-lg font-medium leading-6">
-                                <span class="italic text-emerald-500">{{ $especie->esp_nombre_cientifico }}</span>
+                                <span class="italic text-emerald-500">{{ $registro->esp_nombre_cientifico }}</span>
                             </h3>
-                            <p class="mt-1 text-gray-500">{{ $especie->esp_nombre_comun }}</p>
+                            <p class="mt-1 text-gray-500">{{ $registro->esp_nombre_comun }}</p>
                             <div class="mt-4">
                                 <span class="inline-flex items-center  py-0.5 rounded-full text-xs font-medium text-green-800">
-                                    Registrado por: {{ $especie->registros->first()->user->user_nombre }}
+                                    Registrado por: {{ $registro->user_nombre_completo }}
                                 </span>
                             </div>
                         </div>
                         <div class="bg-gray-50 px-4 py-4 sm:px-6">
                             <div class="text-sm">
-                                <a href="{{ route('especies.show', $especie->esp_id) }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                <a href="{{ route('especies.show', $registro->esp_id) }}" class="font-medium text-indigo-600 hover:text-indigo-500">
                                     Ver detalles<span class="ml-1">&rarr;</span>
                                 </a>
                             </div>
@@ -116,95 +115,14 @@
 
             <!-- Vista de Tabla -->
             <div x-show="viewMode === 'table'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <div class="shadow overflow-x-auto overflow-y-auto border-b border-gray-200 sm:rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Imagen
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nombre Científico
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nombre Común
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Genero
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Familia
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Reino
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Registrado por
-                                </th>
-                                <th scope="col" class="relative px-6 py-3">
-                                    <span class="sr-only">Acciones</span>
-                                </th>
-                            </tr>
+                        <thead>
+                            @include('especies.partials.table-header', ['viewType' => 'public'])
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($especies as $especie)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex-shrink-0 h-24 w-24 group relative">
-                                            <img class="h-24 w-24 rounded-lg object-cover shadow-sm hover:shadow-md transition-shadow duration-200" 
-                                                src="{{ asset('storage/'.$especie->imagenes->first()->img_ruta) }}" 
-                                                alt="{{$especie->esp_nombre_cientifico}}">
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-gray-900 italic">
-                                            {{ $especie->esp_nombre_cientifico }}
-                                        </div>                                    
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-500">
-                                            {{ $especie->esp_nombre_comun }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-500">
-                                            {{ $especie->genero->gene_nombre }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-900">
-                                            {{ $especie->genero->familia->fam_nombre }}
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            Género: {{ $especie->genero->gene_nombre }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-900">
-                                            {{ $especie->genero->familia->reino->reino_nombre }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center">
-                                            <div class="ml-3">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    {{ $especie->registros->first()->user->user_nombre }}
-                                                </div>
-                                                <div class="text-xs text-gray-500">
-                                                    Registrado: {{ $especie->registros->first()->created_at->format('d/m/Y') }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('especies.show', $especie->esp_id) }}"  class="text-indigo-600 hover:text-indigo-900 inline-flex items-center">
-                                            Ver detalles
-                                            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                            </svg>
-                                        </a>
-                                    </td>
-                                </tr>
+                            @foreach ($registros as $registro)
+                                @include('especies.partials.table-row', ['viewType' => 'public'])
                             @endforeach
                         </tbody>
                     </table>
@@ -213,7 +131,7 @@
 
             <!-- Paginación -->
             <div class="mt-8">
-                {{ $especies->links() }}
+                {{ $registros->links() }}
             </div>
         </div>
     </div>

@@ -21,18 +21,6 @@
                         {{ __('Mis Registros') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('explorar.especies')" :active="request()->routeIs('explorar.especies')">
-                        {{ __('Explorar Especies') }}
-                    </x-nav-link>
-                </div>
-                @if (Auth::check() && Auth::user()->hasRole('Administrador'))
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
-                            {{ __('Usuarios') }}
-                        </x-nav-link>
-                    </div>
-                @endif
                 @if (Auth::check() && Auth::user()->hasRole('Taxonomo') || Auth::check() && Auth::user()->hasRole('Administrador'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('validate.index')" :active="request()->routeIs('validate.index')">
@@ -40,6 +28,18 @@
                         </x-nav-link>
                     </div>
                 @endif
+                @if (Auth::check() && Auth::user()->hasRole('Administrador'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('explorar.especies')" :active="request()->routeIs('explorar.especies')">
+                        {{ __('Explorar Especies') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -94,19 +94,27 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
             <x-responsive-nav-link :href="route('especies.index')" :active="request()->routeIs('especies.index')">
                 {{ __('Mis Registros') }}
             </x-responsive-nav-link>
-            @if (Auth::check() && Auth::user()->hasRole('Administrador'))
-                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
-                    {{ __('Usuarios') }}
-                </x-responsive-nav-link>
-            @endif
+            
             @if (Auth::check() && Auth::user()->hasRole('Taxonomo') || Auth::check() && Auth::user()->hasRole('Administrador'))
                 <x-responsive-nav-link :href="route('validate.index')" :active="request()->routeIs('validate.index')">
                     {{ __('Validar Especies') }}
                 </x-responsive-nav-link>
             @endif
+            
+            @if (Auth::check() && Auth::user()->hasRole('Administrador'))
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                    {{ __('Usuarios') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <x-responsive-nav-link :href="route('explorar.especies')" :active="request()->routeIs('explorar.especies')">
+                {{ __('Explorar Especies') }}
+            </x-responsive-nav-link>
+            
         </div>
 
         <!-- Responsive Settings Options -->

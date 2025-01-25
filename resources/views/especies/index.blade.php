@@ -24,17 +24,19 @@
                         <!-- Formulario de búsqueda -->
                         @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias])
                         <!-- Tabla de Especies -->
-                        <div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-scroll relative">
-                            <table class="border-collapse table-auto w-full bg-white">
-                                <thead>
-                                    @include('especies.partials.table-header')
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($registros as $registro)
-                                        @include('especies.partials.table-row', ['registro' => $registro])
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div x-show="viewMode === 'table'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                            <div class="shadow overflow-x-auto overflow-y-auto border-b border-gray-200 sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead>
+                                        @include('especies.partials.table-header', ['viewType' => 'usuario'])
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($registros as $registro)
+                                            @include('especies.partials.table-row', ['viewType' => 'usuario'])
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     @endif
                     <!-- Paginación -->

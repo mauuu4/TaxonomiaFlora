@@ -69,45 +69,53 @@ class EspecieService
     {
         return DB::transaction(function () use ($especie, $data) {
             DB::statement("SET app.current_user_id = " . auth()->id());
-
+    
+            // Validate scientific name
             $nombreCientifico = explode(' ', $data['esp_nombre_cientifico']);
-            if ($nombreCientifico[0] != $especie->genero->gene_nombre) {
+            $genero = Genero::find($data['esp_gene_id']);
+            
+            if (!$genero || $nombreCientifico[0] != $genero->gene_nombre) {
                 throw new \Exception('El nombre científico debe comenzar con el género.');
             }
-            // Update especie with validation state
+    
+            // Reset validation state
             $data['esp_estado_valid'] = false;
+            
+            // Update species core information
             $especie->update($data);
-
-            if(isset($data['img_descripcion_nueva'])) {
+    
+            // Update image descriptions
+            if (!empty($data['img_descripcion_nueva'])) {
                 foreach ($data['img_descripcion_nueva'] as $imagenId => $nuevaDescripcion) {
-                    $imagen = Imagen::find($imagenId);
-                    if ($imagen) {
-                        $imagen->img_descripcion = $nuevaDescripcion;
-                        $imagen->save();
-                    }
+                    Imagen::where('img_id', $imagenId)->update([
+                        'img_descripcion' => $nuevaDescripcion
+                    ]);
                 }
             }
             
-            // Handle image deletion
-            if (isset($data['imagenes_eliminar'])) {
+            // Delete selected images
+            if (!empty($data['imagenes_eliminar'])) {
                 $this->deleteImages($data['imagenes_eliminar']);
             }
             
-            // Handle new images
-            if (isset($data['nuevas_imagenes'])) {
+            // Add new images
+            if (!empty($data['nuevas_imagenes'])) {
+                $remainingSlots = 5 - ($especie->imagenes->count() - count($data['imagenes_eliminar'] ?? []));
+                $imagesToStore = array_slice($data['nuevas_imagenes'], 0, $remainingSlots);
+                
                 $this->storeImages(
                     $especie, 
-                    $data['nuevas_imagenes'],
-                    $data['img_descripcion'] ?? []
+                    $imagesToStore,
+                    array_slice($data['img_descripcion'] ?? [], 0, $remainingSlots)
                 );
             }
             
-            // Update ubicacion
+            // Update location
             $this->updateUbicacion($especie, $data);
-
-            // Update registro estado
+    
+            // Update registration status
             $this->updateRegistroEstado($especie);
-
+    
             return $especie;
         });
     }

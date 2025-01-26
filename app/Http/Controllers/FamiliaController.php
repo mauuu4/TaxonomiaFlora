@@ -20,11 +20,6 @@ class FamiliaController extends Controller
         return view('familias.index', compact('familias'));
     }
 
-    public function create()
-    {
-        return view('familias.create');
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -78,7 +73,7 @@ class FamiliaController extends Controller
         ]);
 
         return redirect()->route('familias.index')
-            ->with('success', 'Familia actualizada exitosamente');
+            ->with('status', 'Familia actualizada exitosamente');
     }
 
     public function destroy(Familia $familia)

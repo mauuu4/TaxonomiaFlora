@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecieController;
 use App\Http\Controllers\ExplorerController;
 use App\Http\Controllers\FamiliaController;
+use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidateController;
@@ -33,6 +34,8 @@ Route::middleware(['auth', 'role:Administrador,Taxonomo'])->group(function () {
     Route::get('/validate/{regis_id}', [ValidateController::class, 'show'])->name('validate.show');
     Route::post('/validate/{regis_id}/validate', [ValidateController::class, 'validate'])->name('validate.validate');
     Route::post('/validate/{regis_id}/reject', [ValidateController::class, 'reject'])->name('validate.reject');
+
+    Route::resource('generos', GeneroController::class);
 
     Route::resource('familias', FamiliaController::class)->names('familias');
 });

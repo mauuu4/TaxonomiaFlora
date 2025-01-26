@@ -23,6 +23,9 @@
                 </div>
                 @if (Auth::check() && Auth::user()->hasRole('Taxonomo') || Auth::check() && Auth::user()->hasRole('Administrador'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('generos.index')" :active="request()->routeIs('generos.index')">
+                            {{ __('Generos Botánicos') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('familias.index')" :active="request()->routeIs('familias.index')">
                             {{ __('Familias Botánicas') }}
                         </x-nav-link>
@@ -103,6 +106,9 @@
             </x-responsive-nav-link>
             
             @if (Auth::check() && Auth::user()->hasRole('Taxonomo') || Auth::check() && Auth::user()->hasRole('Administrador'))
+                <x-responsive-nav-link :href="route('generos.index')" :active="request()->routeIs('generos.index')">
+                    {{ __('Generos Botánicos') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('familias.index')" :active="request()->routeIs('familias.index')">
                     {{ __('Familias Botánicas') }}
                 </x-responsive-nav-link>

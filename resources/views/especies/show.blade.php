@@ -3,10 +3,28 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-2xl sm:rounded-xl">
                 <div class="p-8">
-                    <!-- Sección de encabezado con tipografía mejorada y espaciado -->
-                    <div class="mb-8 border-b border-green-300 pb-6">
-                        <h1 class="text-4xl font-bold text-green-800 mb-2 italic">{{ $especie->esp_nombre_cientifico }}</h1>
-                        <p class="text-lg">Nombre común: {{ $especie->esp_nombre_comun }}</p>
+                    <!-- Sección de encabezado con diseño optimizado -->
+                    <div class="mb-9 border-b border-green-500 pb-6 flex items-center justify-between">
+                        <!-- Información principal -->
+                        <div>
+                            <h1 class="text-4xl font-bold text-green-800 mb-2 italic">
+                                {{ $especie->esp_nombre_cientifico }}
+                            </h1>
+                            <p class="text-lg text-gray-700">
+                                <span class="font-semibold text-green-900">Nombre común:</span>
+                                {{ $especie->esp_nombre_comun }}
+                            </p>
+                        </div>
+
+                        <!-- Estado del registro y usuario -->
+                        <div class="text-right">
+                            <span class="inline-flex text-xs leading-5 rounded-full">Estado de revisión</span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {{ $especie->registros->first()->regis_estado === 'Validado' ? 'bg-green-100 text-green-800' : 
+                                ( $especie->registros->first()->regis_estado === 'Rechazado' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                {{ $especie->registros->first()->regis_estado }}
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Información general con diseño tipo tarjeta -->
@@ -21,6 +39,10 @@
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-4">
+                                <p class="text-gray-700"><span class="font-semibold text-green-900">Reino:</span>
+                                    {{ $especie->genero->familia->reino->reino_nombre }}</p>
+                                <p class="text-gray-700"><span class="font-semibold text-green-900">Familia:</span>
+                                    {{ $especie->genero->familia->fam_nombre }}</p>
                                 <p class="text-gray-700"><span class="font-semibold text-green-900">Género:</span>
                                     {{ $especie->genero->gene_nombre }}</p>
                                 <div>
@@ -45,20 +67,22 @@
                         </h2>
                         @if ($especie->imagenes && $especie->imagenes->count() > 0)
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                @foreach ($especie->imagenes as $imagen)
-                                    <div class="group relative transition-all duration-300 transform hover:-translate-y-1">
-                                        <div class="overflow-hidden rounded-xl shadow-lg">
-                                            <img src="{{ asset('storage/' . $imagen->img_ruta) }}"
+                                @if ($especie->imagenes && $especie->imagenes->count() > 0)
+                                    @foreach ($especie->imagenes as $imagen)
+                                        <div class="group relative overflow-hidden rounded-2xl shadow-lg transform transition hover:scale-105">
+                                            <img src="{{ asset('storage/' . $imagen->img_ruta) }}" 
                                                 alt="Imagen de {{ $especie->esp_nombre_comun }}"
-                                                class="w-full h-56 object-cover transform transition-transform duration-300 group-hover:scale-105">
+                                                class="w-full h-64 object-cover transition-transform duration-300 group-hover:brightness-90">
+                                            @if ($imagen->img_descripcion)
+                                                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    {{ $imagen->img_descripcion }}
+                                                </div>
+                                            @endif
                                         </div>
-                                        @if ($imagen->img_descripcion)
-                                            <div class="mt-3 text-sm text-gray-600 font-medium">
-                                                {{ $imagen->img_descripcion }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <p>No hay imágenes disponibles.</p>
+                                @endif
                             </div>
                         @else
                             <p class="text-gray-600 bg-green-50 rounded-lg p-4 text-center">No hay imágenes disponibles.
@@ -117,6 +141,8 @@
                                 @endforeach
                             </div>
                         </div>
+                    @else
+                        <p>No hay ubicaciones disponibles.</p>
                     @endif
 
 
@@ -133,29 +159,36 @@
                             </h2>
                             <div class="space-y-4">
                                 @foreach ($validaciones as $validacion)
-                                    <div class="bg-green-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div class="space-y-3">
-                                                <p class="text-gray-700">
-                                                    <span class="font-semibold text-green-900">El usuario:</span>
-                                                    {{ $user = App\Models\User::find($validacion->valid_user_id)->user_nombre }}
-                                                    sugirio:
-                                                </p>
+                                    <div class="flex space-x-4 bg-green-50 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                        <!-- Avatar -->
+                                        <div class="flex-shrink-0">
+                                            <div class="w-12 h-12 bg-green-200 text-green-900 flex items-center justify-center font-bold rounded-full">
+                                                {{ strtoupper(substr($validacion->user_nombre ?? 'U', 0, 1)) }}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Content -->
+                                        <div class="flex-1 space-y-2">
+                                            <div class="flex items-center justify-between">
+                                                <!-- User Name and Date -->
                                                 <div>
-                                                    <span class="font-semibold text-green-900 mb-2">Fecha:</span>
-                                                    {{ $validacion->valid_fecha }}
+                                                    <p class="text-green-900 font-semibold">
+                                                        El usuario: {{ $validacion->user_nombre ?? 'Usuario desconocido' }}
+                                                    </p>
+                                                    <p class="text-gray-500 text-sm">
+                                                        {{ $validacion->updated_at->format('d/m/Y H:i') }}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div>
-                                                @if ($validacion->valid_comentarios)
-                                                    <p class="text-gray-700">
-                                                        <span
-                                                            class="font-semibold text-green-900">Comentario:</span><br>
-                                                        <span
-                                                            class="text-gray-600 mt-2 block">{{ $validacion->valid_comentarios }}</span>
-                                                    </p>
-                                                @endif
-                                            </div>
+                                            
+                                            <!-- Comment -->
+                                            @if ($validacion->valid_comentarios)
+                                                <p class="text-gray-700">
+                                                    {{ $validacion->valid_comentarios }}
+                                                </p>
+                                            @else
+                                                <p class="text-gray-400 italic">Sin comentarios.</p>
+                                            @endif
                                         </div>
                                     </div>
                                 @endforeach
@@ -164,9 +197,8 @@
                     @endif
 
                     <!-- Botones de acción con estilo mejorado -->
-                    <div class="flex justify-end space-x-4 pt-6 border-t border-green-200">
-                        <div class="flex justify-end space-x-4 pt-6 border-t border-green-200">
-                            {{-- si no es el dueño del registro mandar al explorer --}}
+                    <div class="flex justify-end space-x-4 pt-6 border-t border-green-500">
+                        <div class="flex justify-end space-x-4 pt-6">
                             @if (url()->previous() == route('explorar.especies'))
                                 <x-secondary-button href="{{ route('explorar.especies') }}"
                                     class="bg-green-100 text-green-700 rounded-lg hover:bg-green-200">
@@ -210,7 +242,8 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                         </path>
-                                    </svg> {{ __('ELIMINAR') }}</x-danger-button>
+                                    </svg> {{ __('ELIMINAR') }}
+                                </x-danger-button>
                             @endif
 
                             <x-modal name="confirm-especie-deletion" :show="$errors->isNotEmpty()" focusable>

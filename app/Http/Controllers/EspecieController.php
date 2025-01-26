@@ -7,6 +7,7 @@ use App\Models\Genero;
 use App\Models\Registro;
 use App\Http\Requests\EspecieRequest;
 use App\Models\Familia;
+use App\Models\User;
 use App\Services\EspecieService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,7 @@ class EspecieController extends Controller
 
     public function show($especie)
     {
-        $especie = Especie::with(['genero', 'imagenes', 'ubicaciones'])->find($especie);
+        $especie = Especie::find($especie);
         if (!$especie) {
             abort(404);
         }
@@ -65,6 +66,10 @@ class EspecieController extends Controller
             ->validaciones()
             ->orderBy('valid_id', 'desc')
             ->get();
+
+        $validaciones->each(function ($validacion) {
+            $validacion->user_nombre = User::find($validacion->valid_user_id)->user_nombre ?? 'Usuario desconocido';
+        });
 
         $canEdit = false;
         $canDelete = false;

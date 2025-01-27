@@ -7,14 +7,34 @@
                     <h1 class="text-5xl font-bold text-emerald-800 mb-6">
                         Taxonomía de Flora
                     </h1>
-                    <p class="text-xl text-emerald-700 max-w-2xl mx-auto mb-8">
+                    <p class="text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
                         Descubre, explora y contribuye al conocimiento botánico mundial. Una plataforma dedicada a la clasificación y documentación de especies vegetales.
                     </p>
+
+                    <!-- Buscador de Especie Mejorado -->
+                    <div class="max-w-2xl mx-auto mb-12">
+                        <form action="{{ route('explorar.especies') }}" method="GET" class="relative">
+                            <input type="text" 
+                                   id="search" 
+                                   name="search" 
+                                   placeholder="Buscar por nombre común o científico..." 
+                                   class="w-full py-4 px-6 pl-14 text-lg rounded-full border-2 border-emerald-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 shadow-lg transition-all duration-300"
+                            />
+                            <button type="submit" class="absolute left-4 top-1/2 -translate-y-1/2">
+                                <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
                     <div class="flex justify-center gap-6">
-                        <a href="{{ route('register') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+                        <a href="{{ route('register') }}" 
+                           class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl">
                             {{ __('Registrarse') }}
                         </a>
-                        <a href="{{ route('login') }}" class="bg-white hover:bg-gray-50 text-emerald-600 font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 border border-emerald-200">
+                        <a href="{{ route('login') }}" 
+                           class="bg-white hover:bg-gray-50 text-emerald-600 font-semibold py-4 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl border border border-emerald-200">
                             {{ __('Iniciar Sesión') }}
                         </a>
                     </div>

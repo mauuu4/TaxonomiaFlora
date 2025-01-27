@@ -21,15 +21,11 @@
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Explorar Especies') }}
                     </x-nav-link>
-                    <x-nav-link href="#"
+                    <x-nav-link href="/nosotros"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Nosotros') }}
                     </x-nav-link>
-                    <x-nav-link href="#"
-                        class="text-white hover:text-green-100 transition duration-150 ease-in-out">
-                        {{ __('Contacto') }}
-                    </x-nav-link>
-                    <x-nav-link href="#"
+                    <x-nav-link href="/preguntas-frecuentes"
                         class="text-white hover:text-green-100 transition duration-150 ease-in-out">
                         {{ __('Preguntas Frecuentes') }}
                     </x-nav-link>
@@ -114,15 +110,11 @@
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Explorar Especies') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#"
+            <x-responsive-nav-link href="/nosotros"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Nosotros') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="#"
-                class="text-white hover:bg-green-400 hover:text-white">
-                {{ __('Contacto') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="#"
+            <x-responsive-nav-link href="/preguntas-frecuentes"
                 class="text-white hover:bg-green-400 hover:text-white">
                 {{ __('Preguntas Frecuentes') }}
             </x-responsive-nav-link>

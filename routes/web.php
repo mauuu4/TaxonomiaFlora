@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     Route::resource('especies', EspecieController::class)->except('show')
         ->names('especies');
 });
@@ -47,4 +47,11 @@ Route::get('/explorar', [ExplorerController::class, 'especies'])
 Route::get('/especies/{especie}', [EspecieController::class, 'show'])
     ->name('especies.show');
 
-require __DIR__.'/auth.php';
+Route::get('/nosotros', function () {
+    return view('home.nosotros');
+});
+Route::get('/preguntas-frecuentes', function () {
+    return view('home.preguntas-frecuentes');
+});
+
+require __DIR__ . '/auth.php';

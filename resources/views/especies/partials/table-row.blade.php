@@ -21,9 +21,11 @@
             {{ $registro->esp_nombre_cientifico }}
         </div>
     </td>
-    <td class="px-6 py-4 whitespace-nowrap">
+    <td class="px-6 py-4">
         <div class="text-sm text-gray-500">
-            {{ $registro->esp_nombre_comun }}
+            <span class="whitespace-normal">
+                {{ $registro->esp_nombre_comun }}
+            </span>
         </div>
     </td>
     @if($viewType === 'public' || $viewType === 'taxonomo')

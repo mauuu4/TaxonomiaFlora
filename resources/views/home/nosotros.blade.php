@@ -80,10 +80,10 @@
                 <!-- Redes sociales -->
                 <h3 class="text-lg font-semibold text-gray-700 mb-2">Redes sociales</h3>
                 <div class="flex space-x-4">
-                    <a href="https://linkedin.com/in/stevenmoran" target="_blank"
+                    <a href="https://linkedin.com/in/steven-moranUx-Ui" target="_blank"
                         class="text-blue-500 hover:underline">LinkedIn</a>
-                    <a href="https://behance.net/stevenmoran" target="_blank"
-                        class="text-blue-500 hover:underline">Behance</a>
+                    <a href="https://github.com/ACR1MORAN" target="_blank"
+                        class="text-blue-500 hover:underline">GitHub</a>
                 </div>
             </div>
         </div>

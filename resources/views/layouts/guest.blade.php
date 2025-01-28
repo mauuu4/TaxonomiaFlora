@@ -13,18 +13,16 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="https://cdn.tailwindcss.com"></script>
-
     </head>
-    <body class="font-sans text-gray-900 antialiased" >
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 " style = "background-image: url('{{ asset('storage/images/Volcan.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"">
+    <body class="font-sans text-gray-900 antialiased">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-green-50 to-green-100">
             <div>
                 <a href="/">
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-lg mt-6 px-10 py-8 bg-white shadow-xl overflow-hidden sm:rounded-xl">
                 {{ $slot }}
             </div>
         </div>

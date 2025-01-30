@@ -42,13 +42,7 @@
                                 color="indigo" 
                                 :link="route('admin.users.index')"
                             />
-                            <x-dashboard-card 
-                                title="Total Familias" 
-                                :value="$totalFamilias" 
-                                icon="collection" 
-                                color="blue" 
-                                :link="route('especies.index')"
-                            />
+                            
                         @endif
 
                         {{-- Tarjeta común de Registros --}}
@@ -60,7 +54,21 @@
                             :link="route('especies.index')"
                         />
 
-                        @if (Auth::user()->hasRole('Taxonomo'))
+                        @if (Auth::user()->hasRole('Taxonomo') || Auth::user()->hasRole('Administrador'))
+                            <x-dashboard-card 
+                                title="Total Familias" 
+                                :value="$totalFamilias" 
+                                icon="collection" 
+                                color="blue" 
+                                :link="route('familias.index')"
+                            />
+                            <x-dashboard-card 
+                                title="Total Generos" 
+                                :value="$totalGeneros" 
+                                icon="database" 
+                                color="gray" 
+                                :link="route('generos.index')"
+                            />
                             <x-dashboard-card 
                                 title="Validaciones Pendientes" 
                                 :value="$validacionesPendientes" 

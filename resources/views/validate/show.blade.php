@@ -69,24 +69,27 @@
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h2 class="text-xl font-semibold mb-4">Ubicación</h2>
                         @foreach($registro->especie->ubicaciones as $ubicacion)
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <p class="text-sm text-gray-600">Región:</p>
-                                <p class="font-medium">{{ $ubicacion->ubi_region }}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <p class="text-sm text-gray-600">Región:</p>
+                                    <p class="font-medium">{{ $ubicacion->ubi_region }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Coordenadas:</p>
+                                    <p class="font-medium">
+                                        Lat: {{ $ubicacion->ubi_latitud }}, Long: {{ $ubicacion->ubi_longitud }}
+                                    </p>
+                                </div>
+                                @if($ubicacion->ubi_descripcion)
+                                <div class="col-span-2">
+                                    <p class="text-sm text-gray-600">Descripción de la ubicación:</p>
+                                    <p class="font-medium">{{ $ubicacion->ubi_descripcion }}</p>
+                                </div>
+                                @endif
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-600">Coordenadas:</p>
-                                <p class="font-medium">
-                                    Lat: {{ $ubicacion->ubi_latitud }}, Long: {{ $ubicacion->ubi_longitud }}
-                                </p>
+                            <div class="mt-4">
+                                <x-map-location :lat="$ubicacion->ubi_latitud" :lng="$ubicacion->ubi_longitud" :interactive="false" />
                             </div>
-                            @if($ubicacion->ubi_descripcion)
-                            <div class="col-span-2">
-                                <p class="text-sm text-gray-600">Descripción de la ubicación:</p>
-                                <p class="font-medium">{{ $ubicacion->ubi_descripcion }}</p>
-                            </div>
-                            @endif
-                        </div>
                         @endforeach
                     </div>
                     @endif

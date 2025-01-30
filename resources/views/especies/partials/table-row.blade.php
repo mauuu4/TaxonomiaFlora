@@ -75,12 +75,18 @@
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <a href="{{ $viewType === 'taxonomo' ? route('validate.show', $registro->regis_id) : route('especies.show', $registro->esp_id) }}" 
-           class="text-indigo-600 hover:text-indigo-900 inline-flex items-center">
-            Ver detalles
-            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-            </svg>
-        </a>
+        @if($viewType === 'taxonomo')
+            <a href="{{ route('validate.show', $registro->regis_id) }}">
+                Revisar
+            </a>
+        @else
+            <a href="{{ $viewType === 'taxonomo' ? route('validate.show', $registro->regis_id) : route('especies.show', $registro->esp_id) }}" 
+            class="text-indigo-600 hover:text-indigo-900 inline-flex items-center">
+                Ver detalles
+                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+            </a>
+        @endif
     </td>
 </tr>

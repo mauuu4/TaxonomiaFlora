@@ -29,7 +29,7 @@
                         <x-nav-link :href="route('familias.index')" :active="request()->routeIs('familias.index')">
                             {{ __('Familias Botánicas') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('validate.index')" :active="request()->routeIs('validate.index')">
+                        <x-nav-link :href="route('validate.index', ['estado' => 'Pendiente'])" :active="request()->routeIs('validate.index')">
                             {{ __('Validar Especies') }}
                         </x-nav-link>
                     </div>

@@ -7,7 +7,7 @@
                 <div class="shrink-0 flex items-center">
                     <a href="/" class="flex items-center space-x-2">
                         <x-application-logo class="block h-9 w-auto fill-current text-white" />
-                        <span class="font-semibold text-lg">Taxonomía Flora</span>
+                        <span class="font-semibold text-lg">Plantify</span>
                     </a>
                 </div>
 

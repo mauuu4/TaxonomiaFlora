@@ -45,11 +45,11 @@
                                     {{ $especie->genero->familia->fam_nombre }}</p>
                                 <p class="text-gray-700"><span class="font-semibold text-green-900">Género:</span>
                                     {{ $especie->genero->gene_nombre }}</p>
-                                <div>
-                                    <p class="font-semibold text-green-900 mb-2">Descripción:</p>
-                                    <p class="text-gray-700 leading-relaxed">
-                                        {{ $especie->esp_descripcion ?? 'No hay descripción disponible.' }}</p>
-                                </div>
+                            </div>
+
+                            <div class="md:col-span-2 space-y-2">
+                                <label class="font-semibold text-green-900 mb-2">Descripción:</label>
+                                <p class="text-gray-700 whitespace-pre-line">{{ $especie->esp_descripcion ?? 'No hay descripción disponible.' }}</p>
                             </div>
                         </div>
                     </div>

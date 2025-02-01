@@ -17,10 +17,6 @@
                         </h1>
                     </div>
 
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-end">
-                        <x-view-mode-toggle/>
-                    </div>
-
                     @include('especies.partials.filters', ['generos' => $generos, 'familias' => $familias, 'action' => route('validate.index')])
 
                     <!-- Tabla de Especies por Validar -->

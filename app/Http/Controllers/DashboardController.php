@@ -69,7 +69,11 @@ class DashboardController extends Controller
             ->whereHas('especie.genero.familia.reino', function($query) {
                 $query->where('reino_nombre', 'Plantae');
             })->count();
-            
+        
+        $totalFamilias = Familia::count();
+        $totalGeneros = Genero::count();
+        $totalEspecies = Especie::count();
+        
         $validacionesPendientes = Registro::whereHas('especie.genero.familia.reino', function($query) {
             $query->where('reino_nombre', 'Plantae');
         })->where('regis_estado', 'Pendiente')->count();
@@ -94,6 +98,9 @@ class DashboardController extends Controller
 
         return view('dashboard', compact(
             'totalRegistros', 
+            'totalFamilias',
+            'totalGeneros',
+            'totalEspecies',
             'validacionesPendientes', 
             'registrosPendientes',
             'estadisticasValidacion',

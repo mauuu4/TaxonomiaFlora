@@ -54,14 +54,16 @@ class User extends Authenticatable
         ];
     }
 
-    protected function userNombre(): Attribute
+    public function setUserNombreAttribute($value)
     {
-        return Attribute::make(
-            set: function ($value) {
-                return ucfirst($value);
-        });
+        $this->attributes['user_nombre'] = ucwords(strtolower($value));
     }
 
+    public function setUserApellidoAttribute($value)
+    {
+        $this->attributes['user_apellido'] = ucwords(strtolower($value));
+    }
+    
     public function getAuthPassword()
     {
         return $this->user_password;

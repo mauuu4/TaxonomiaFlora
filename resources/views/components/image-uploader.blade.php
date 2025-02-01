@@ -20,6 +20,7 @@
     >
     <x-input-error :messages="$errors->get($name)" class="mt-2" />
     <x-input-error :messages="$errors->get($name . '.*')" class="mt-2" />
+        <x-input-label for="img_descripcion" :value="__('Descripción de las imagenes. (Opcional)')" class="text-gray-600" />
     
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <template x-for="(preview, index) in previews" :key="preview.id">

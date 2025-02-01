@@ -1,23 +1,23 @@
 <!-- Left Column -->
 <div class="space-y-4" x-data="{
-    genre: '{{ old('esp_gene_id', '') }}',
-    epithet: '{{ old('epiteto', '') }}',
-    genreName: '',
-    scientificName: '',
-    updateScientificName() {
-        const selectedOption = document.querySelector(`#esp_gene_id option[value='${this.genre}']`);
-        this.genreName = selectedOption && this.genre !== '' ? selectedOption.text : '';
-        
-        if (this.genreName && this.genreName !== 'Seleccione un género' && this.epithet) {
-            this.scientificName = `${this.genreName} ${this.epithet}`;
-        } else {
-            this.scientificName = '';
+        genre: '{{ old('esp_gene_id', '') }}',
+        epithet: '{{ old('epiteto', '') }}',
+        genreName: '',
+        scientificName: '',
+        updateScientificName() {
+            const selectedOption = document.querySelector(`#esp_gene_id option[value='${this.genre}']`);
+            this.genreName = selectedOption && this.genre !== '' ? selectedOption.text : '';
+            
+            if (this.genreName && this.genreName !== 'Seleccione un género' && this.epithet) {
+                this.scientificName = `${this.genreName} ${this.epithet}`;
+            } else {
+                this.scientificName = '';
+            }
         }
-    }
-}">
+    }">
     <!-- Genero -->
     <div>
-        <x-input-label for="esp_gene_id" :value="__('Género')" class="text-gray-600" />
+        <x-input-label for="esp_gene_id" :value="__('Género *')" class="text-gray-600" />
         <select 
             id="esp_gene_id" 
             name="esp_gene_id" 
@@ -39,7 +39,7 @@
 
     <!-- Epíteto -->
     <div>
-        <x-input-label for="epiteto" :value="__('Epíteto')" class="text-gray-600" />
+        <x-input-label for="epiteto" :value="__('Epíteto *')" class="text-gray-600" />
         <x-text-input 
             id="epiteto" 
             class="block mt-1 w-full" 
@@ -73,14 +73,14 @@
 
     <!-- Nombre Comun -->
     <div>
-        <x-input-label for="esp_nombre_comun" :value="__('Nombre Común')" class="text-gray-600" />
+        <x-input-label for="esp_nombre_comun" :value="__('Nombre Común *')" class="text-gray-600" />
         <x-text-input id="esp_nombre_comun" class="block mt-1 w-full " type="text" name="esp_nombre_comun" :value="old('esp_nombre_comun')" required/>
         <x-input-error :messages="$errors->get('esp_nombre_comun')" class="mt-2" />
     </div>
 
     <!-- Descripcion -->
     <div>
-        <x-input-label for="esp_descripcion" :value="__('Descripción')" class="text-gray-600" />
+        <x-input-label for="esp_descripcion" :value="__('Descripción *')" class="text-gray-600" />
         <textarea id="esp_descripcion" name="esp_descripcion" 
             class="block mt-1 w-full rounded-md border-gray-300"
             rows="4">{{ old('esp_descripcion', '') }}</textarea>

@@ -66,6 +66,9 @@
             <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
                 {{ __('Registrar Especie') }}
             </h2>
+            <div class="mb-4 text-sm text-gray-600">
+                <p><strong>*</strong> Los campos marcados con asterisco son obligatorios.</p>
+            </div>
             <form method="POST" action="{{ route('especies.store') }}" enctype="multipart/form-data" class="mt-4">
                 @csrf
                 <div class="grid md:grid-cols-2 gap-6">

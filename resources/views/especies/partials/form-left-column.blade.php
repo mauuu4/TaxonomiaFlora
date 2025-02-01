@@ -39,7 +39,7 @@
 
     <!-- Epíteto -->
     <div>
-        <x-input-label for="epiteto" :value="__('Epíteto *')" class="text-gray-600" />
+        <x-input-label for="epiteto" :value="__('Epíteto Específico *')" class="text-gray-600" />
         <x-text-input 
             id="epiteto" 
             class="block mt-1 w-full" 

@@ -3,19 +3,20 @@
         <div>
             <x-input-label :value="__('Ubicación')" class="text-gray-600 font-bold mb-2"/>
             <x-map-location :lat="0.35836" :lng="-78.11147" />
-            
             <div class="grid grid-cols-2 gap-4 mt-4">
                 <div>
                     <x-input-label for="ubi_latitud" :value="__('Latitud *')" class="text-gray-600" />
-                    <x-text-input id="ubi_latitud" type="number" name="ubi_latitud" step="any" 
-                        :value="old('ubi_latitud')" required class="mt-1 block w-full bg-gray-50" />
+                    <x-text-input id="ubi_latitud" type="number" name="ubi_latitud" step="0.00001" 
+                        :value="old('ubi_latitud')" required class="mt-1 block w-full bg-gray-50" 
+                        oninput="this.value = parseFloat(this.value).toFixed(5)" />
                     <x-input-error :messages="$errors->get('ubi_latitud')" class="mt-2" />
                 </div>
 
                 <div>
                     <x-input-label for="ubi_longitud" :value="__('Longitud *')" class="text-gray-600" />
-                    <x-text-input id="ubi_longitud" type="number" name="ubi_longitud" step="any" 
-                        :value="old('ubi_longitud')" required class="mt-1 block w-full bg-gray-50" />
+                    <x-text-input id="ubi_longitud" type="number" name="ubi_longitud" step="0.00001" 
+                        :value="old('ubi_longitud')" required class="mt-1 block w-full bg-gray-50" 
+                        oninput="this.value = parseFloat(this.value).toFixed(5)" />
                     <x-input-error :messages="$errors->get('ubi_longitud')" class="mt-2" />
                 </div>
             </div>

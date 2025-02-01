@@ -6,8 +6,11 @@
                 @method('PUT')
 
                 <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
-                    {{ __('Editar Especie') }}
+                    {{ __('Editar Especie') $especie->esp_nombre_cientifico }}
                 </h2>
+                <div class="mb-4 text-sm text-gray-600">
+                    <p><strong>*</strong> Los campos marcados con asterisco son obligatorios.</p>
+                </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <!-- Left Column -->

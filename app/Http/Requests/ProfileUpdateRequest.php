@@ -22,16 +22,15 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
-            'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
-            'user_telefono' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
+            'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
+            'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
+            'user_telefono' => ['required', 'digits:10'],
             'user_cedula' => [
                 'required', 
                 'string', 
-                'min:10',
-                'max:10', 
-                'regex:/^[0-9_]+$/',
-                Rule::unique(User::class)->ignore($this->user()->user_cedula, 'user_cedula'),
+                'size:10',
+                'regex:/^[0-9]+$/',
+                Rule::unique(User::class)->ignore($this->user()->user_id, 'user_id'),
             ],
             'user_email' => [
                 'required',
@@ -57,8 +56,7 @@ class ProfileUpdateRequest extends FormRequest
             'user_apellido.regex' => 'El apellido solo puede contener letras y espacios.',
 
             'user_telefono.required' => 'El teléfono es obligatorio.',
-            'user_telefono.regex' => 'El teléfono debe contener 10 dígitos.',
-            'user_telefono.max' => 'El teléfono no puede exceder los 10 caracteres.',
+            'user_telefono.digits' => 'El teléfono debe contener exactamente 10 dígitos.',
 
             'user_cedula.required' => 'La cédula es obligatoria.',
             'user_cedula.string' => 'La cédula debe ser una cadena de texto.',

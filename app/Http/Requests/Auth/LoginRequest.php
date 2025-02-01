@@ -43,8 +43,8 @@ class LoginRequest extends FormRequest
 
         if (! Auth::attempt([
             'user_email' => $this->input('user_email'),
-            'password' => $this->input('user_password'), // Laravel mapeará este campo gracias a `getAuthPassword`
-        ], $this->boolean('remember'))) {
+            'password' => $this->input('user_password'),
+        ])) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

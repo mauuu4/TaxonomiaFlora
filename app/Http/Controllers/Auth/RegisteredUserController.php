@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 class RegisteredUserController extends Controller
 {
@@ -31,13 +32,25 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'user_cedula' => ['required', 'regex:/^[0-9]{10}$/', 'max:10', 'unique:'.User::class],
-            'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
-            'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
-            'user_telefono' => ['required', 'regex:/^[0-9]{10}$/', 'max:10'],
-            'user_email' => ['required', 'string', 'lowercase', 'email', 'max:35', 'unique:'.User::class],
-            'user_password' => ['required', 'confirmed',Rules\Password::defaults()],
-
+            'user_cedula' => [
+                'required', 
+                'string', 
+                'size:10',
+                'regex:/^[0-9]+$/',
+                Rule::unique(User::class)
+            ],
+            'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
+            'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
+            'user_telefono' => ['required', 'digits:10'],
+            'user_email' => [
+                'required', 
+                'string', 
+                'lowercase', 
+                'email', 
+                'max:35', 
+                Rule::unique(User::class)
+            ],
+            'user_password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         // Busca el tipus_id correspondiente al tipo "user"

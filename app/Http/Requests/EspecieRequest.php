@@ -60,7 +60,7 @@ class EspecieRequest extends FormRequest
             'epiteto.required' => 'El epíteto específico es obligatorio.',
             'epiteto.string' => 'El epíteto específico debe ser una cadena de texto.',
             'epiteto.max' => 'El epíteto específico no puede exceder los 28 caracteres.',
-            'epiteto.regex' => 'El epíteto específico debe contener solo letras minúsculas (ejemplo: "glabra").',
+            'epiteto.regex' => 'El epíteto específico debe contener solo letras minúsculas (ejemplo: "officinale").',
             
             'esp_nombre_cientifico.required' => 'El nombre científico es obligatorio.',
             'esp_nombre_cientifico.min' => 'El nombre científico debe tener al menos 3 caracteres.',

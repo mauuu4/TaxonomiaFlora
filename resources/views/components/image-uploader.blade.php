@@ -4,7 +4,7 @@
     x-data="imageUploader('{{ $name }}', {{ $maxImages }})"
     {{ $attributes }}
 >
-    <x-input-label :for="$name" :value="__($label)" class="text-gray-600" />
+    <x-input-label :for="$name" :value="__($label)" class="text-gray-950" />
     <small class="text-gray-500">Máximo {{ $maxImages }} imágenes permitidas</small>
     
     <input 

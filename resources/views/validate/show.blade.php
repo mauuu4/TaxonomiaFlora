@@ -275,13 +275,40 @@
                                         </path>
                                     </svg> {{ __('ELIMINAR') }}
                                 </x-danger-button>
+
                             </div>
+                            
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <x-modal name="confirm-especie-deletion" :show="$errors->isNotEmpty()" focusable>
+        <form method="post" action="{{ route('especies.destroy', $registro->especie->esp_id) }}"
+            class="p-6">
+            @csrf
+            @method('delete')
+
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('¿Estás seguro de que deseas eliminar esta especie?') }}
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600">
+                {{ __('Una vez eliminada, toda la información asociada a esta especie será removida de forma permanente. Por favor, confirma tu acción antes de proceder.') }}
+            </p>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancelar') }}
+                </x-secondary-button>
+
+                <x-danger-button class="ms-3">
+                    {{ __('Eliminar') }}
+                </x-danger-button>
+            </div>
+        </form>
+    </x-modal>
     <script>
         function gallery() {
             return {

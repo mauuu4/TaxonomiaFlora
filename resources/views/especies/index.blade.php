@@ -62,7 +62,15 @@
         </div>
     </div>
     <x-modal name="create-especie-modal" :show="$errors->isNotEmpty()" focusable maxWidth="4xl">
-        <div class="p-10">
+        <div class="p-10 relative">
+        <!-- Botón de cerrar -->
+        <button 
+            type="button" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-500 transition-colors"
+            x-on:click="$dispatch('close')">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
             <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
                 {{ __('Registrar Especie') }}
             </h2>

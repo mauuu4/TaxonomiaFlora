@@ -118,6 +118,7 @@
                         @if($especie->imagenes && $especie->imagenes->count() > 0)
                             <div class="mt-4">
                                 <x-input-label :value="__('Imágenes Actuales')" class="text-gray-950" />
+                                <p class="text-sm text-gray-600 mb-2">Marque las casillas para eliminar imágenes. Debe mantener al menos una imagen.</p>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
                                     @foreach($especie->imagenes as $imagen)
                                         <div class="relative">

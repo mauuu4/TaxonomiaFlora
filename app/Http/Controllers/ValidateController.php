@@ -22,8 +22,7 @@ class ValidateController extends Controller
 
         $query = DB::table('vista_registros_especies')->orderBy('created_at', 'desc');
 
-        $estado = $request->estado ?? 'Pendiente';
-        $query->where('regis_estado', $estado);
+        if ($request->estado) $query->where('regis_estado', $request->estado);
 
         $search = $request->search;
         if ($search) {
@@ -42,7 +41,7 @@ class ValidateController extends Controller
         // Paginación
         $registros = $query->paginate(10);
         
-        return view('validate.index', compact('registros', 'generos' ,'familias', 'estado'));
+        return view('validate.index', compact('registros', 'generos' ,'familias'));
     }
 
     public function show($regis_id)

@@ -7,6 +7,7 @@ use App\Http\Controllers\FamiliaController;
 use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaxonomistRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidateController;
 use Illuminate\Support\Facades\Route;
@@ -52,5 +53,14 @@ Route::get('/nosotros', function () {
 Route::get('/preguntas-frecuentes', function () {
     return view('home.preguntas-frecuentes');
 });
+
+Route::get('/request-taxonomist', [TaxonomistRequestController::class, 'create'])
+    ->middleware('auth')
+    ->name('request-taxonomist.create');
+
+// Para enviar la solicitud
+Route::post('/request-taxonomist', [TaxonomistRequestController::class, 'store'])
+    ->middleware('auth')
+    ->name('request-taxonomist.store');
 
 require __DIR__ . '/auth.php';

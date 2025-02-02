@@ -29,6 +29,24 @@
                             @endif
                         </p>
                     </div>
+                    
+                    <!-- Nuevo: Tarjeta de solicitud para taxónomo -->
+                    @if(Auth::user()->hasRole('Usuario'))
+                        <div class="mb-6 bg-gray-100 border-l-4 border-gray-500 p-4 rounded-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-green-700 font-semibold">
+                                    ¿Eres investigador o especialista en taxonomía?
+                                </p>
+                                <p class="text-sm text-green-600 mt-1">
+                                    Solicita privilegios para validar especies y contribuir al catálogo científico.
+                                </p>
+                            </div>
+                            <a href="{{ route('request-taxonomist.create') }}" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md ml-4 transition-colors">
+                                Solicitar Rol
+                            </a>
+                        </div>
+                    @endif
 
                     <!-- Tarjetas Estadísticas Dinámicas -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

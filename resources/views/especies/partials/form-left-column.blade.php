@@ -83,7 +83,7 @@
         <x-input-label for="esp_descripcion" :value="__('Descripción *')" class="text-gray-600" />
         <textarea id="esp_descripcion" name="esp_descripcion" 
             class="block mt-1 w-full rounded-md border-gray-300"
-            rows="4">{{ old('esp_descripcion', '') }}</textarea>
+            rows="4" required >{{ old('esp_descripcion', '') }}</textarea>
         <x-input-error :messages="$errors->get('esp_descripcion')" class="mt-2" />
     </div>
 

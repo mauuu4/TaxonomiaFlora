@@ -28,7 +28,7 @@ class EspecieRequest extends FormRequest
             ],
             'epiteto' => ['required', 'string', 'max:28', 'regex:/^[a-z]+$/'],
             'esp_nombre_comun' => ['required', 'min:3', 'max:50', 'regex:/^(?!^\d+$)[a-zA-Z0-9\sáéíóúÁÉÍÓÚñÑ\-]+$/'],
-            'esp_descripcion' => ['nullable', 'string', 'max:500', 'regex:/\S/'],
+            'esp_descripcion' => ['required', 'string', 'max:500', 'regex:/\S/'],
             'ubi_longitud' => ['required', 'numeric', 'between:-180,180'],
             'ubi_latitud' => ['required', 'numeric', 'between:-90,90'],
             'ubi_region' => ['required', 'string', 'max:30'],
@@ -59,8 +59,8 @@ class EspecieRequest extends FormRequest
 
             'epiteto.required' => 'El epíteto específico es obligatorio.',
             'epiteto.string' => 'El epíteto específico debe ser una cadena de texto.',
-            'epiteto.max' => 'El epíteto específico no puede exceder los 20 caracteres.',
-            'epiteto.regex' => 'El epíteto específico debe contener solo letras minúsculas.',
+            'epiteto.max' => 'El epíteto específico no puede exceder los 28 caracteres.',
+            'epiteto.regex' => 'El epíteto específico debe contener solo letras minúsculas (ejemplo: "glabra").',
             
             'esp_nombre_cientifico.required' => 'El nombre científico es obligatorio.',
             'esp_nombre_cientifico.min' => 'El nombre científico debe tener al menos 3 caracteres.',

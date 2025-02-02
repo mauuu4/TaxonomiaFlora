@@ -276,6 +276,7 @@ return [
         'user_apellido'            => 'apellido',
         'user_email'               => 'email',
         'user_telefono'            => 'telefono',
+        'user_cedula'              => 'cedula',
         'user_password'            => 'contraseña',
         'value'                    => 'valor',
         'winner'                   => 'ganador',

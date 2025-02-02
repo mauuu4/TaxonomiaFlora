@@ -21,7 +21,7 @@
 <?php
     $color = match ($level) {
         'success', 'error' => $level,
-        default => 'primary',
+        default => 'success',
     };
 ?>
 <x-mail::button :url="$actionUrl" :color="$color">

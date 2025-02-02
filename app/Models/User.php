@@ -94,4 +94,9 @@ class User extends Authenticatable
     {
         return $this->roles()->where('tipus_detalles', $roleName)->exists();
     }
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->user_email; // en lugar de $this->email
+    }
 }

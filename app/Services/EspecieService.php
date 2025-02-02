@@ -7,9 +7,13 @@ use App\Models\Genero;
 use App\Models\Imagen;
 use App\Models\Ubicacion;
 use App\Models\Registro;
+use App\Models\Tipo;
+use App\Models\User;
+use App\Notifications\EspeciePendingValidation;
+use App\Notifications\NewSpeciesForValidation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Notification;
 class EspecieService
 {
     public function getFilteredPaginatedRegistros($search = null, $genero = null, $familia = null, $estado = null)
@@ -45,6 +49,7 @@ class EspecieService
             // Create especie with validation state
             $data['esp_estado_valid'] = false;
             $especie = Especie::create($data);
+            $registro = $this->createRegistro($especie);
             
             // Handle images if present
             if (isset($data['esp_imagenes'])) {
@@ -60,6 +65,9 @@ class EspecieService
 
             // Create registro
             $this->createRegistro($especie);
+
+            // Notify taxonomists
+            $this->notifyTaxonomos($registro, 'creada');
 
             return $especie;
         });
@@ -115,6 +123,12 @@ class EspecieService
     
             // Update registration status
             $this->updateRegistroEstado($especie);
+
+            $registro = Registro::where('esp_id', $especie->esp_id)
+                ->latest()
+                ->first();
+                
+            $this->notifyTaxonomos($registro, 'actualizado');
     
             return $especie;
         });
@@ -197,7 +211,7 @@ class EspecieService
 
     private function createRegistro(Especie $especie)
     {
-        Registro::create([
+        return Registro::create([
             'esp_id' => $especie->esp_id,
             'user_id' => auth()->id(),
             'regis_estado' => 'Pendiente'
@@ -208,5 +222,14 @@ class EspecieService
     {
         $registro = Registro::where('esp_id', $especie->esp_id)->first();
         return $registro->update(['regis_estado' => 'Pendiente']);
+    }
+
+    private function notifyTaxonomos(Registro $registro, string $accion)
+    {
+        $taxonomos = User::whereHas('roles', function($query) {
+            $query->where('tipus_detalles', 'Taxonomo');
+        })->get();
+    
+        Notification::send($taxonomos, new EspeciePendingValidation($registro, $accion));
     }
 }

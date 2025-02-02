@@ -1,12 +1,12 @@
 <x-app-layout>
     <div class="min-h-screen flex flex-col items-center pt-6 sm:pt-0 bg-gray-50">
         <div class="w-full max-w-4xl mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
-            <form method="POST" action="{{ route('especies.update', $especie->esp_id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('especies.update', $especie->esp_id) }}" enctype="multipart/form-data" class="mt-4">
                 @csrf
                 @method('PUT')
 
                 <h2 class="text-lg font-medium text-gray-900 mb-6 text-center">
-                    {{ __('Editar Especie') $especie->esp_nombre_cientifico }}
+                    {{ __('Editar Especie:') }} {{ $especie->esp_nombre_cientifico }}
                 </h2>
                 <div class="mb-4 text-sm text-gray-600">
                     <p><strong>*</strong> Los campos marcados con asterisco son obligatorios.</p>
@@ -32,7 +32,7 @@
                     }">
                         <!-- Género -->
                         <div>
-                            <x-input-label for="esp_gene_id" :value="__('Género')" class="text-gray-600" />
+                            <x-input-label for="esp_gene_id" :value="__('Género *')" class="text-gray-950" />
                             <select 
                                 id="esp_gene_id" 
                                 name="esp_gene_id" 
@@ -54,7 +54,7 @@
                     
                         <!-- Epíteto -->
                         <div>
-                            <x-input-label for="epiteto" :value="__('Epíteto')" class="text-gray-600" />
+                            <x-input-label for="epiteto" :value="__('Epíteto Específico *')" class="text-gray-950" />
                             <x-text-input 
                                 id="epiteto" 
                                 class="block mt-1 w-full" 
@@ -63,13 +63,14 @@
                                 x-model="epithet"
                                 @input="updateScientificName()"
                                 :value="old('epiteto', substr($especie->esp_nombre_cientifico, strpos($especie->esp_nombre_cientifico, ' ') + 1 ?? ''))" 
+                                placeholder="Ej: officinale"
                                 required
                             />
                             <x-input-error :messages="$errors->get('epiteto')" class="mt-2" />
                         </div>
                     
                         <div>
-                            <x-input-label :value="__('Nombre Científico')" class="text-gray-600" />
+                            <x-input-label :value="__('Nombre Científico')" class="text-gray-950" />
                             <div 
                                 x-text="scientificName || 'El nombre científico se genera automáticamente: Género + epíteto'"
                                 :class="scientificName 
@@ -85,24 +86,38 @@
                                 :value="scientificName"
                             />
                         </div>
+
                         <!-- Nombre Común -->
                         <div>
-                            <x-input-label for="esp_nombre_comun" :value="__('Nombre Común')" />
-                            <x-text-input id="esp_nombre_comun" class="block mt-1 w-full" type="text" name="esp_nombre_comun" :value="old('esp_nombre_comun', $especie->esp_nombre_comun)" required />
+                            <x-input-label for="esp_nombre_comun" :value="__('Nombre Común *')" class="text-gray-950" />
+                            <x-text-input 
+                            id="esp_nombre_comun" 
+                            class="block mt-1 w-full" 
+                            type="text" 
+                            name="esp_nombre_comun" 
+                            :value="old('esp_nombre_comun', $especie->esp_nombre_comun)" 
+                            placeholder="Ej: Diente de león"
+                            required />
                             <x-input-error :messages="$errors->get('esp_nombre_comun')" class="mt-2" />
                         </div>
                         <!-- Descripción -->
                         <div>
-                            <x-input-label for="esp_descripcion" :value="__('Descripción')" />
-                            <textarea id="esp_descripcion" name="esp_descripcion" 
+                            <x-input-label for="esp_descripcion" :value="__('Descripción *')" class="text-gray-950" />
+                            <textarea 
+                                id="esp_descripcion" 
+                                name="esp_descripcion" 
                                 class="block mt-1 w-full rounded-md border-gray-300"
-                                rows="4">{{ old('esp_descripcion', $especie->esp_descripcion) }}</textarea>
+                                rows="3"
+                                placeholder="Ej: Planta herbácea perenne muy común en prados y jardines..."
+                                required
+                                >{{ old('esp_descripcion', $especie->esp_descripcion) }}</textarea>
                             <x-input-error :messages="$errors->get('esp_descripcion')" class="mt-2" />
                         </div>
+
                         <!-- Imágenes Actuales -->
                         @if($especie->imagenes && $especie->imagenes->count() > 0)
                             <div class="mt-4">
-                                <x-input-label :value="__('Imágenes Actuales')" />
+                                <x-input-label :value="__('Imágenes Actuales')" class="text-gray-950" />
                                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
                                     @foreach($especie->imagenes as $imagen)
                                         <div class="relative">
@@ -135,49 +150,80 @@
 
                         <!-- Nuevas Imágenes -->
                         <x-image-uploader 
-                        name="nuevas_imagenes" 
-                        label="Imágenes" 
-                        :maxImages="5"
+                            name="nuevas_imagenes" 
+                            label="Agregar nuevas imágenes" 
+                            :maxImages="5 - $especie->imagenes->count()"
                         />
 
                     </div>
+                    
                     <!-- Right Column -->
-                    <div>
+                    <div class="space-y-4">
                         <!-- Ubicación -->
                         @if($ubicacion = $especie->ubicaciones->first())
-                            <div class="mt-4">
-                                <x-input-label :value="__('Ubicación')" class="font-bold mb-2"/>
+                            <div>
+                                <x-input-label :value="__('Ubicación')" class="text-gray-950 font-bold mb-2"/>
                                 <x-map-location :lat="$ubicacion->ubi_latitud" :lng="$ubicacion->ubi_longitud" />
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-2 gap-4 mt-4">
                                     <div>
-                                        <x-input-label for="ubi_latitud" :value="__('Latitud')" />
-                                        <x-text-input id="ubi_latitud" type="number" name="ubi_latitud" step="any" 
+                                        <x-input-label for="ubi_latitud" :value="__('Latitud *')" class="text-gray-950" />
+                                        <x-text-input 
+                                            id="ubi_latitud" 
+                                            type="number" 
+                                            name="ubi_latitud" 
+                                            step="0.00001" 
                                             :value="old('ubi_latitud', $ubicacion->ubi_latitud)" 
-                                            required class="mt-1 block w-full" />
+                                            required 
+                                            class="mt-1 block w-full bg-gray-50" 
+                                            placeholder="Ej: 0.35836"
+                                            oninput="this.value = parseFloat(this.value).toFixed(5)"
+                                        />
                                         <x-input-error :messages="$errors->get('ubi_latitud')" class="mt-2" />
                                     </div>
+
                                     <div>
-                                        <x-input-label for="ubi_longitud" :value="__('Longitud')" />
-                                        <x-text-input id="ubi_longitud" type="number" name="ubi_longitud" step="any" 
+                                        <x-input-label for="ubi_longitud" :value="__('Longitud *')" class="text-gray-950" />
+                                        <x-text-input 
+                                            id="ubi_longitud" 
+                                            type="number" 
+                                            name="ubi_longitud" 
+                                            step="0.00001" 
                                             :value="old('ubi_longitud', $ubicacion->ubi_longitud)" 
-                                            required class="mt-1 block w-full" />
+                                            required 
+                                            class="mt-1 block w-full bg-gray-50" 
+                                            placeholder="Ej: -78.11147"
+                                            oninput="this.value = parseFloat(this.value).toFixed(5)"
+                                        />
                                         <x-input-error :messages="$errors->get('ubi_longitud')" class="mt-2" />
                                     </div>
                                 </div>
         
                                 <div class="mt-4">
-                                    <x-input-label for="ubi_region" :value="__('Región')" />
-                                    <x-text-input id="ubi_region" type="text" name="ubi_region" 
-                                        :value="old('ubi_region', $ubicacion->ubi_region)" 
-                                        required class="mt-1 block w-full" />
+                                    <x-input-label for="ubi_region" :value="__('Región *')" class="text-gray-950" />
+                                    <select 
+                                        id="ubi_region" 
+                                        name="ubi_region" 
+                                        required 
+                                        class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 focus:border-green-500 focus:ring-green-500"
+                                    >
+                                        <option value="" disabled>Seleccione una región</option>
+                                        <option value="Sierra" {{ old('ubi_region', $ubicacion->ubi_region) == 'Sierra' ? 'selected' : '' }}>Sierra</option>
+                                        <option value="Costa" {{ old('ubi_region', $ubicacion->ubi_region) == 'Costa' ? 'selected' : '' }}>Costa</option>
+                                        <option value="Amazonía" {{ old('ubi_region', $ubicacion->ubi_region) == 'Amazonía' ? 'selected' : '' }}>Amazonía</option>
+                                        <option value="Galápagos" {{ old('ubi_region', $ubicacion->ubi_region) == 'Galápagos' ? 'selected' : '' }}>Región Insular (Galápagos)</option>
+                                    </select>
                                     <x-input-error :messages="$errors->get('ubi_region')" class="mt-2" />
                                 </div>
         
                                 <div class="mt-4">
-                                    <x-input-label for="ubi_descripcion" :value="__('Descripción de la ubicación')" />
-                                    <textarea id="ubi_descripcion" name="ubi_descripcion" 
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        rows="3">{{ old('ubi_descripcion', $ubicacion->ubi_descripcion) }}</textarea>
+                                    <x-input-label for="ubi_descripcion" :value="__('Descripción de la ubicación (Opcional)')" class="text-gray-950" />
+                                    <textarea 
+                                        id="ubi_descripcion" 
+                                        name="ubi_descripcion" 
+                                        class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50"
+                                        rows="2" 
+                                        placeholder="Ej: Zona montañosa cercana al río, altitud 2800 msnm..."
+                                    >{{ old('ubi_descripcion', $ubicacion->ubi_descripcion) }}</textarea>
                                     <x-input-error :messages="$errors->get('ubi_descripcion')" class="mt-2" />
                                 </div>
                             </div>
@@ -190,7 +236,7 @@
                     <x-secondary-button href="{{ route('especies.show', $especie->esp_id) }}">
                         {{ __('Cancelar') }}
                     </x-secondary-button>
-                    <x-primary-button type="submit" class="bg-green-500 hover:bg-green-700 focus:bg-green-700 active:bg-green-700">
+                    <x-primary-button class="bg-green-500 hover:bg-green-700 focus:bg-green-700 active:bg-green-700">
                         {{ __('Actualizar') }}
                     </x-primary-button>
                 </div>

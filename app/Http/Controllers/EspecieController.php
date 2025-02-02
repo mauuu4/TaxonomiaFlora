@@ -108,9 +108,21 @@ class EspecieController extends Controller
         try {
             $especie = Especie::find($especie);
 
+            $imagenesActuales = $especie->imagenes()->count();
+            $imagenesAEliminar = $request->input('imagenes_eliminar', []);
+            $nuevasImagenes = $request->file('nuevas_imagenes', []);
+
+            $totalImagenesDespuesDeUpdate = $imagenesActuales - count($imagenesAEliminar) + count($nuevasImagenes);
+
             if (!$especie || !$this->checkPermission($especie->esp_id, 'edit')) {
                 return redirect()->route('especies.index')
                     ->with('error', 'No tienes permiso para actualizar esta especie.');
+            }
+
+            if ($totalImagenesDespuesDeUpdate < 1) {
+                return back()
+                    ->withInput()
+                    ->with(['error' => 'Debe mantener al menos una imagen para la especie.']);
             }
 
             $this->especieService->update($especie, $request->validated());

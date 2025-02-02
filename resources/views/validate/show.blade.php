@@ -197,62 +197,86 @@
                             </div>
                         </div>
                     @endif
-                    <!-- Formulario de Validación -->
-                    <div class="bg-white rounded-lg shadow-sm p-6" x-data="{ action: 'validate' }">
-                        <h2 class="text-xl font-semibold mb-4">Validación</h2>
-                        
-                        <div class="mb-4">
-                            <div class="flex space-x-4 mb-4">
-                                <button @click="action = 'validate'" 
-                                        :class="action === 'validate' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                                        class="px-4 py-2 rounded-md">
-                                    Validar
-                                </button>
-                                <button @click="action = 'reject'" 
-                                        :class="action === 'reject' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'"
-                                        class="px-4 py-2 rounded-md">
-                                    Rechazar
-                                </button>
+                    <!-- Formulario de Validación Mejorado -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Validación de Especie</h2>
+                        <form x-data="{ action: 'validate' }" 
+                            :action="action === 'validate' ? '{{ route('validate.validate', $registro->regis_id) }}' : '{{ route('validate.reject', $registro->regis_id) }}'" 
+                            method="POST"
+                            class="space-y-6">
+                            @csrf
+                            <input type="hidden" name="regis_id" value="{{ $registro->regis_id }}">
+
+                            <!-- Campo de Comentarios -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Comentarios de Validación <span class="text-red-500">*</span>
+                                </label>
+                                <textarea name="valid_comentarios" 
+                                        rows="4"
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+                                        placeholder="Ingrese los comentarios de validación..."
+                                        required></textarea>
+                                @error('valid_comentarios')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
 
-                            <form x-show="action === 'validate'"
-                                  action="{{ route('validate.validate', $registro->regis_id) }}" 
-                                  method="POST">
-                                @csrf
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Comentarios de Validación
-                                    </label>
-                                    <textarea name="valid_comentarios" 
-                                              rows="4" 
-                                              class="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                              required></textarea>
-                                </div>
+                            <!-- Botones de Acción -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                
+                                <!-- Rechazar -->
                                 <button type="submit" 
-                                        class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-150 ease-in-out">
-                                    Validar Especie
+                                        @click="action = 'reject'"
+                                        class="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg 
+                                            transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 
+                                            focus:ring-red-500 focus:ring-offset-2">
+                                    <span class="flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                        Rechazar
+                                    </span>
                                 </button>
-                            </form>
 
-                            <form x-show="action === 'reject'"
-                                  action="{{ route('validate.reject', $registro->regis_id) }}" 
-                                  method="POST">
-                                @csrf
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Motivo del Rechazo
-                                    </label>
-                                    <textarea name="valid_comentarios" 
-                                              rows="4" 
-                                              class="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                              required></textarea>
-                                </div>
+                                <!-- Validar -->
                                 <button type="submit" 
-                                        class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-150 ease-in-out">
-                                    Rechazar Especie
+                                        @click="action = 'validate'"
+                                        class="w-full bg-green-600 hover:bg-green-700 text-white rounded-lg 
+                                            transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 
+                                            focus:ring-emerald-500 focus:ring-offset-2">
+                                    <span class="flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Validar
+                                    </span>
                                 </button>
-                            </form>
-                        </div>
+
+                                <!-- Editar -->
+                                <x-secondary-button href="{{ route('especies.edit', $registro->especie->esp_id) }}"
+                                    class="bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
+                                    </svg>
+                                    Editar
+                                </x-secondary-button>
+
+                                <!-- Eliminar -->
+                                <x-danger-button x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'confirm-especie-deletion')">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                        </path>
+                                    </svg> {{ __('ELIMINAR') }}
+                                </x-danger-button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

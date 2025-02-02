@@ -71,23 +71,7 @@ class EspecieController extends Controller
             $validacion->user_nombre = User::find($validacion->valid_user_id)->user_nombre ?? 'Usuario desconocido';
         });
 
-        $canEdit = false;
-        $canDelete = false;
-            
-        if (auth()->check()) {
-            // Check if current user can edit/delete
-            $canEdit = DB::select(
-                'SELECT check_especie_permissions(?, ?, ?)', 
-                [auth()->id(), $especie->esp_id, 'edit']
-            )[0]->check_especie_permissions;
-            
-            $canDelete = DB::select(
-                'SELECT check_especie_permissions(?, ?, ?)', 
-                [auth()->id(), $especie->esp_id, 'delete']
-            )[0]->check_especie_permissions;
-        }
-
-        return view('especies.show', compact('especie', 'validaciones', 'canEdit', 'canDelete'));
+        return view('especies.show', compact('especie', 'validaciones'));
     }
 
     public function edit($especie)

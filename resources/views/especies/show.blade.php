@@ -220,8 +220,7 @@
                                     Volver
                                 </x-secondary-button>
                             @endif
-
-                            @if ($canEdit)
+                            @if(auth()->id() == $especie->registros->first()->user_id)
                                 <x-secondary-button href="{{ route('especies.edit', $especie->esp_id) }}"
                                     class="bg-green-600 text-white rounded-lg hover:bg-green-700">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
@@ -232,9 +231,7 @@
                                     </svg>
                                     Editar
                                 </x-secondary-button>
-                            @endif
 
-                            @if ($canDelete)
                                 <x-danger-button x-data=""
                                     x-on:click.prevent="$dispatch('open-modal', 'confirm-especie-deletion')">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"

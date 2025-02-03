@@ -4,7 +4,7 @@
     'interactive' => true // Define si el marcador es interactivo
 ])
 
-<div class="mt-2 h-64 bg-gray-100 rounded-lg border border-gray-200 relative z-0">
+<div class="mt-2 h-72 bg-gray-100 rounded-lg border border-gray-200 relative z-0">
     <div id="map" class="h-full rounded-lg" x-init="
         $watch('show', value => {
             if (value) {

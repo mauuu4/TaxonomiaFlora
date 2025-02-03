@@ -1,9 +1,14 @@
 <div class="space-y-4">
     <div>
         <div>
-            <x-input-label :value="__('Ubicación')" class="text-gray-950 font-bold mb-2"/>
-            <x-map-location :lat="0.35836" :lng="-78.11147" />
-            <div class="grid grid-cols-2 gap-4 mt-4">
+            <x-input-label :value="__('Ubicación *')" class="text-gray-950 font-bold"/>
+            <label class="block text-sm text-gray-600">Seleccione la ubicación de la especie en el mapa.</label>
+
+            <div class="mb-4">
+                <x-map-location :lat="0.35836" :lng="-78.11147" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-5">
                 <div>
                     <x-input-label for="ubi_latitud" :value="__('Latitud *')" class="text-gray-950" />
                     <x-text-input id="ubi_latitud" type="number" name="ubi_latitud" step="0.00001" 
@@ -42,7 +47,7 @@
                 <x-input-label for="ubi_descripcion" :value="__('Descripción de la ubicación. (Opcional)')" class="text-gray-950" />
                 <textarea id="ubi_descripcion" name="ubi_descripcion" 
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50"
-                    rows="2" placeholder="Ej: Zona montañosa cercana al río, altitud 2800 msnm...">{{ old('ubi_descripcion') }}</textarea>
+                    rows="3" placeholder="Ej: Zona montañosa cercana al río, altitud 2800 msnm...">{{ old('ubi_descripcion') }}</textarea>
                 <x-input-error :messages="$errors->get('ubi_descripcion')" class="mt-2" />
             </div>
         </div>

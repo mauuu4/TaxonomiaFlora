@@ -287,9 +287,16 @@
 
                 <!-- Botones -->
                 <div class="flex items-center justify-center mt-6 space-x-4">
-                    <x-secondary-button href="{{ route('especies.show', $especie->esp_id) }}">
-                        {{ __('Cancelar') }}
-                    </x-secondary-button>
+                    {{-- si la ruta anterior es validate.show  regresar a esta misma--}}
+                    @if (url()->previous() == route('validate.show', $especie->registros->first()->regis_id) )                    
+                        <x-secondary-button href="{{ route('validate.show', $especie->registros->first()->regis_id) }}">
+                            {{ __('Cancelar') }}
+                        </x-secondary-button>
+                    @else
+                        <x-secondary-button href="{{ route('especies.show', $especie->esp_id) }}">
+                            {{ __('Cancelar') }}
+                        </x-secondary-button>
+                    @endif
                     <x-primary-button class="bg-green-500 hover:bg-green-700 focus:bg-green-700 active:bg-green-700">
                         {{ __('Actualizar') }}
                     </x-primary-button>

@@ -34,44 +34,33 @@ class UserSeeder extends Seeder
 
         User::create([
             'tipus_id' => Tipo::where('tipus_detalles', 'Administrador')->first()->tipus_id,
-            'user_cedula' => '1234567890',
-            'user_nombre' => 'admin',
-            'user_apellido' => 'admin',
-            'user_telefono' => '1234567890',
-            'user_email' => 'admin@gmail.com',
-            'user_password' => bcrypt('admin123'),
-            'user_estado' => true,
-        ]);
-
-        User::create([
-            'tipus_id' => Tipo::where('tipus_detalles', 'Taxonomo')->first()->tipus_id,
-            'user_cedula' => '1234567890',
+            'user_cedula' => '1900717867',
             'user_nombre' => 'Mauricio',
             'user_apellido' => 'Romero',
             'user_email' => 'mauriciord2004@gmail.com',
-            'user_telefono' => '1234567890',
+            'user_telefono' => '0985507475',
             'user_password' => bcrypt('mau12345'),
-            'user_estado' => false,
+            'user_estado' => true,
         ]);
         User::create([
             'tipus_id' => Tipo::where('tipus_detalles', 'Usuario')->first()->tipus_id,
-            'user_cedula' => '1234567890',
+            'user_cedula' => '1050364452',
             'user_nombre' => 'Steven',
             'user_apellido' => 'Moran',
-            'user_email' => 'stevenmoran@gmail.com',
-            'user_telefono' => '1234567890',
+            'user_email' => 'stevenmoran0308@gmail.com',
+            'user_telefono' => '0987191099',
             'user_password' => bcrypt('steven12345'),
             'user_estado' => true,
         ]);
         User::create([
-            'tipus_id' => Tipo::where('tipus_detalles', 'Usuario')->first()->tipus_id,
-            'user_cedula' => '1234567890',
+            'tipus_id' => Tipo::where('tipus_detalles', 'Taxonomo')->first()->tipus_id,
+            'user_cedula' => '1727760140',
             'user_nombre' => 'Jean',
             'user_apellido' => 'Torres',
             'user_email' => 'jeanmtu@outlook.com',
-            'user_telefono' => '1234567890',
+            'user_telefono' => '0979581190',
             'user_password' => bcrypt('jean12345'),
-            'user_estado' => false,
+            'user_estado' => true,
         ]);
 
         // User::factory(100)->create();

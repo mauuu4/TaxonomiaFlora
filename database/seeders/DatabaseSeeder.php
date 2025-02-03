@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             ReinoSeeder::class,
             FamiliaSeeder::class,
             GeneroSeeder::class,
-            EspecieSeeder::class,
+            // EspecieSeeder::class,
         ]);
     }
 }

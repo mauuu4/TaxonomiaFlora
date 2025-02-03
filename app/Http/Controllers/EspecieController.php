@@ -23,9 +23,13 @@ class EspecieController extends Controller
 
     public function index(Request $request)
     {
-        // Obtener todos los géneros y familias para mostrarlos en el formulario de filtro
-        $generos = Genero::all();
-        $familias = Familia::all();
+        $familias = Familia::whereHas('reino', function($query) {
+            $query->where('reino_nombre', 'Plantae');
+        })->get();
+
+        $generos = Genero::whereHas('familia.reino', function($query) {
+            $query->where('reino_nombre', 'Plantae');
+        })->get();
 
         // Obtenemos los registros filtrados según los parámetros
         $registros = $this->especieService->getFilteredPaginatedRegistros(

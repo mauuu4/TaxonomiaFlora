@@ -7,10 +7,8 @@ use App\Models\Genero;
 use App\Models\Imagen;
 use App\Models\Ubicacion;
 use App\Models\Registro;
-use App\Models\Tipo;
 use App\Models\User;
 use App\Notifications\EspeciePendingValidation;
-use App\Notifications\NewSpeciesForValidation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
@@ -62,9 +60,6 @@ class EspecieService
 
             // Create ubicacion
             $this->storeUbicacion($especie, $data);
-
-            // Create registro
-            $this->createRegistro($especie);
 
             // Notify taxonomists
             $this->notifyTaxonomos($registro, 'creada');

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Especie;
 use App\Models\Familia;
-use App\Models\Reino;
+use App\Models\Genero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,13 +11,13 @@ class ExplorerController extends Controller
 {
     public function especies(Request $request)
     {
-        $plantae = Reino::where('reino_nombre', 'Plantae')->first();
-        $familias = $plantae->familias;
-        
-        $generos = collect();
-        foreach ($familias as $familia) {
-            $generos = $generos->merge($familia->generos);
-        }
+        $familias = Familia::whereHas('reino', function($query) {
+            $query->where('reino_nombre', 'Plantae');
+        })->get();
+
+        $generos = Genero::whereHas('familia.reino', function($query) {
+            $query->where('reino_nombre', 'Plantae');
+        })->get();
 
         $query = DB::table('vista_registros_especies')
             ->orderBy('created_at', 'desc');

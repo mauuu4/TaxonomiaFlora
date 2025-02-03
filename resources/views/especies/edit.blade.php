@@ -19,10 +19,41 @@
                         epithet: '{{ old('epiteto', substr($especie->esp_nombre_cientifico, strpos($especie->esp_nombre_cientifico, ' ') + 1 ?? '')) }}',
                         genreName: '',
                         scientificName: '{{ old('esp_nombre_cientifico', $especie->esp_nombre_cientifico) }}',
+                        search: '',
+                        isOpen: false,
+                        filteredGeneros: [],
+                        allGeneros: @js($generos),
+                        
+                        init() {
+                            this.filteredGeneros = this.allGeneros;
+                            this.updateGenreName();
+                        },
+                        
+                        filterGeneros() {
+                            if (!this.search) {
+                                this.filteredGeneros = this.allGeneros;
+                            } else {
+                                this.filteredGeneros = this.allGeneros.filter(genero => 
+                                    genero.gene_nombre.toLowerCase().includes(this.search.toLowerCase())
+                                );
+                            }
+                        },
+                        
+                        selectGenero(generoId, generoNombre) {
+                            this.genre = generoId;
+                            this.genreName = generoNombre;
+                            this.search = generoNombre;
+                            this.isOpen = false;
+                            this.updateScientificName();
+                        },
+                        
+                        updateGenreName() {
+                            const selectedGenero = this.allGeneros.find(g => g.gene_id === parseInt(this.genre));
+                            this.genreName = selectedGenero ? selectedGenero.gene_nombre : '';
+                            this.search = this.genreName;
+                        },
+                        
                         updateScientificName() {
-                            const selectedOption = document.querySelector(`#esp_gene_id option[value='${this.genre}']`);
-                            this.genreName = selectedOption && this.genre !== '' ? selectedOption.text : '';
-                            
                             if (this.genreName && this.genreName !== 'Seleccione un género' && this.epithet) {
                                 this.scientificName = `${this.genreName} ${this.epithet}`;
                             } else {
@@ -31,24 +62,46 @@
                         }
                     }">
                         <!-- Género -->
-                        <div>
+                        <div class="relative">
                             <x-input-label for="esp_gene_id" :value="__('Género *')" class="text-gray-950" />
-                            <select 
-                                id="esp_gene_id" 
-                                name="esp_gene_id" 
-                                x-model="genre"
-                                @change="updateScientificName()"
-                                class="block mt-1 w-full rounded-md border-gray-300 py-2 px-3" 
-                                required 
-                                autofocus
-                            >
-                                <option value="">Seleccione un género</option>
-                                @foreach($generos as $genero)
-                                    <option value="{{ $genero->gene_id }}" {{ old('esp_gene_id', $especie->esp_gene_id) == $genero->gene_id ? 'selected' : '' }}>
-                                        {{ $genero->gene_nombre }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            
+                            <!-- Input de búsqueda -->
+                            <div class="relative">
+                                <input
+                                    type="text"
+                                    x-model="search"
+                                    @click="isOpen = true"
+                                    @input="filterGeneros(); isOpen = true"
+                                    placeholder="Buscar género..."
+                                    class="block mt-1 w-full rounded-md border-gray-300 py-2 px-3"
+                                >
+                                
+                                <!-- Lista desplegable de resultados -->
+                                <div
+                                    x-show="isOpen"
+                                    @click.outside="isOpen = false"
+                                    class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg"
+                                    style="display: none;"
+                                >
+                                    <ul class="max-h-60 overflow-y-auto py-1">
+                                        <template x-for="genero in filteredGeneros" :key="genero.gene_id">
+                                            <li
+                                                @mousedown.prevent="selectGenero(genero.gene_id, genero.gene_nombre)"
+                                                class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                                :class="{'bg-gray-100': genre == genero.gene_id}"
+                                                x-text="genero.gene_nombre"
+                                            ></li>
+                                        </template>
+                                        <li x-show="filteredGeneros.length === 0" class="px-4 py-2 text-gray-500">
+                                            No se encontraron resultados
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                    
+                            <!-- Input oculto para enviar el valor seleccionado -->
+                            <input type="hidden" name="esp_gene_id" x-model="genre" required>
+                            
                             <x-input-error :messages="$errors->get('esp_gene_id')" class="mt-2" />
                         </div>
                     

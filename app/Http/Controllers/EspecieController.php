@@ -125,7 +125,7 @@ class EspecieController extends Controller
         }
     }
 
-    public function destroy($especie)
+    public function destroy($especie, Request $request)
     {
         try {
             $especie = Especie::find($especie);
@@ -136,9 +136,16 @@ class EspecieController extends Controller
             }
     
             $this->especieService->delete($especie);
-    
-            return redirect()->route('especies.index')
-                ->with('warning', 'Especie y todos sus datos relacionados eliminados exitosamente.');
+            
+            $origin = $request->input('origin');
+
+            if ($origin === 'validate') {
+                return redirect()->route('validate.index')
+                    ->with('warning', 'Especie y todos sus datos relacionados eliminados exitosamente.');
+            } else {
+                return redirect()->route('especies.index')
+                    ->with('warning', 'Especie y todos sus datos relacionados eliminados exitosamente.');
+            }
         } catch (\Exception $e) {
             return back()->with('error', 'Error al eliminar la especie: ' . $e->getMessage());
         }

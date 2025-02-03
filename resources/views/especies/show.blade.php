@@ -249,6 +249,8 @@
                                     @csrf
                                     @method('delete')
 
+                                    <input type="hidden" name="origin" value="especies">
+
                                     <h2 class="text-lg font-medium text-gray-900">
                                         {{ __('¿Estás seguro de que deseas eliminar esta especie?') }}
                                     </h2>

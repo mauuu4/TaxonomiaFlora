@@ -31,46 +31,67 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'user_cedula' => [
-                'required', 
-                'string', 
-                'size:10',
-                'regex:/^[0-9]+$/',
-                Rule::unique(User::class)
-            ],
-            'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
-            'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
-            'user_telefono' => ['required', 'digits:10'],
-            'user_email' => [
-                'required', 
-                'string', 
-                'lowercase', 
-                'email', 
-                'max:35', 
-                Rule::unique(User::class)
-            ],
-            'user_password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        try {
+            $request->validate([
+                'user_cedula' => [
+                    'required', 
+                    'string', 
+                    'size:10',
+                    'regex:/^[0-9]+$/',
+                    Rule::unique(User::class)
+                ],
+                'user_nombre' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
+                'user_apellido' => ['required', 'string', 'max:50', 'regex:/^[\p{L}\s]+$/u'],
+                'user_telefono' => ['required', 'digits:10'],
+                'user_email' => [
+                    'required', 
+                    'string', 
+                    'lowercase', 
+                    'email', 
+                    'max:35', 
+                    Rule::unique(User::class)
+                ],
+                'user_password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
 
-        // Busca el tipus_id correspondiente al tipo "user"
-        $tipoUsuario = Tipo::where('tipus_detalles', 'Usuario')->first();
+            // Busca el tipus_id correspondiente al tipo "user"
+            $tipoUsuario = Tipo::where('tipus_detalles', 'Usuario')->first();
 
-        $user = User::create([
-            'tipus_id' => $tipoUsuario->tipus_id,
-            'user_cedula' => $request->user_cedula,
-            'user_nombre' => $request->user_nombre,
-            'user_apellido' => $request->user_apellido,
-            'user_telefono' => $request->user_telefono,
-            'user_email' => $request->user_email,
-            'user_password' => Hash::make($request->user_password),
-            'user_estado' => false,
-        ]);
+            $user = User::create([
+                'tipus_id' => $tipoUsuario->tipus_id,
+                'user_cedula' => $request->user_cedula,
+                'user_nombre' => $request->user_nombre,
+                'user_apellido' => $request->user_apellido,
+                'user_telefono' => $request->user_telefono,
+                'user_email' => $request->user_email,
+                'user_password' => Hash::make($request->user_password),
+                'user_estado' => false,
+            ]);
 
-        event(new Registered($user));
+            event(new Registered($user));
 
-        Auth::login($user);
+            Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+            return redirect(route('dashboard', absolute: false));
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Verificar si el error es del trigger de validación de cédula
+            if (str_contains($e->getMessage(), 'Cédula no válida')) {
+                // Extraer el mensaje específico del error
+                preg_match('/ERROR: (.+?) CONTEXT/', $e->getMessage(), $matches);
+                $errorMessage = $matches[1] ?? 'Cedula no válida';
+                
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['user_cedula' => $errorMessage]);
+            }
+            
+            // Si es otro tipo de error de base de datos
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['error' => 'Ha ocurrido un error al procesar la solicitud']);
+        }
     }
 }

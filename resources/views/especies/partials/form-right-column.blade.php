@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="mt-4">
+            <div class="mt-9">
                 <x-input-label for="ubi_region" :value="__('Región *')" class="text-gray-950" />
                 <select 
                     id="ubi_region" 

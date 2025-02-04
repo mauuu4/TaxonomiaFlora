@@ -160,7 +160,7 @@
                                 id="esp_descripcion" 
                                 name="esp_descripcion" 
                                 class="block mt-1 w-full rounded-md border-gray-300"
-                                rows="3"
+                                rows="2"
                                 placeholder="Ej: Planta herbácea perenne muy común en prados y jardines..."
                                 required
                                 >{{ old('esp_descripcion', $especie->esp_descripcion) }}</textarea>
@@ -216,9 +216,14 @@
                         <!-- Ubicación -->
                         @if($ubicacion = $especie->ubicaciones->first())
                             <div>
-                                <x-input-label :value="__('Ubicación')" class="text-gray-950 font-bold mb-2"/>
-                                <x-map-location :lat="$ubicacion->ubi_latitud" :lng="$ubicacion->ubi_longitud" />
-                                <div class="grid grid-cols-2 gap-4 mt-4">
+                                <x-input-label :value="__('Ubicación *')" class="text-gray-950 font-bold"/>
+
+                                <label class="block text-sm text-gray-600">Seleccione la ubicación de la especie en el mapa.</label>
+                                <div class="mb-4">
+                                    <x-map-location :lat="$ubicacion->ubi_latitud" :lng="$ubicacion->ubi_longitud" />
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4 mt-5">
                                     <div>
                                         <x-input-label for="ubi_latitud" :value="__('Latitud *')" class="text-gray-950" />
                                         <x-text-input 
@@ -252,7 +257,7 @@
                                     </div>
                                 </div>
         
-                                <div class="mt-4">
+                                <div class="mt-9">
                                     <x-input-label for="ubi_region" :value="__('Región *')" class="text-gray-950" />
                                     <select 
                                         id="ubi_region" 
@@ -275,7 +280,7 @@
                                         id="ubi_descripcion" 
                                         name="ubi_descripcion" 
                                         class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50"
-                                        rows="2" 
+                                        rows="3" 
                                         placeholder="Ej: Zona montañosa cercana al río, altitud 2800 msnm..."
                                     >{{ old('ubi_descripcion', $ubicacion->ubi_descripcion) }}</textarea>
                                     <x-input-error :messages="$errors->get('ubi_descripcion')" class="mt-2" />

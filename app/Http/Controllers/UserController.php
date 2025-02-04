@@ -12,8 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $tipos = Tipo::whereIn('tipus_detalles', ['Usuario', 'Administrador', 'Taxonomo'])->get();
-        $users = User::whereIn('tipus_id', $tipos->pluck('tipus_id'))->paginate(10);
+        $users = User::with('roles')->paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
@@ -66,7 +65,7 @@ class UserController extends Controller
 
     public function edit($user)
     {
-        $tipos = Tipo::all();
+        $tipos = Tipo::whereIn('tipus_detalles', ['Usuario', 'Administrador', 'Taxonomo'])->get();
         $user = User::with('roles')->findOrFail($user);
         return view('admin.users.edit', compact('user', 'tipos'));
     }

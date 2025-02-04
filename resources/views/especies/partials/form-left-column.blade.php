@@ -136,7 +136,7 @@
         <x-input-label for="esp_descripcion" :value="__('Descripción *')" class="text-gray-950" />
         <textarea id="esp_descripcion" name="esp_descripcion" 
             class="block mt-1 w-full rounded-md border-gray-300"
-            rows="3" placeholder="Ej: Planta herbácea perenne muy común en prados y jardines..."
+            rows="2" placeholder="Ej: Planta herbácea perenne muy común en prados y jardines..."
             required >{{ old('esp_descripcion', '') }}</textarea>
         <x-input-error :messages="$errors->get('esp_descripcion')" class="mt-2" />
     </div>

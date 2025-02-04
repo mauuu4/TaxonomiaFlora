@@ -62,7 +62,7 @@ class EspecieService
             $this->storeUbicacion($especie, $data);
 
             // Notify taxonomists
-            $this->notifyTaxonomos($registro, 'creada');
+            $this->notifyTaxonomos($registro, 'creado');
 
             return $especie;
         });
